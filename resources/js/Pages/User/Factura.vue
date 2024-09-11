@@ -278,10 +278,6 @@ export default {
             this.total_quantidade = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.quantidade), 0)
             this.total_preco = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)
             this.total_geral = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)
-            /*   .reduce((a, b) => a + b, 0)  */
-            // alert(JSON.stringify(this.total_geral))
-            /*  alert(JSON.stringify( total.map(({total_g}) => total_g)
-            .reduce((a, b) => a + b, 0)))  */
         },
         EmitirFatura() {
             axios.post('/financas/emitir-factura', {
@@ -316,7 +312,7 @@ export default {
                 return "red";
             } else return "green";
         },
-        aceitarTarefa() {
+        aceitarFactura() {
             this.$inertia.put(
                 "/tarefas/aceitar-tarefa/" + this.pagamento.id,
                 this.pagamento,
@@ -478,7 +474,7 @@ export default {
                 }
             );
         },
-        aceitarTarefa(item) {
+        aceitarFactura(item) {
             // this.editedIndex = this.tarefas.indexOf(item)
             this.pagamento = Object.assign({}, item);
 
@@ -516,7 +512,7 @@ export default {
         },
 
         save() {
-            if (this.$refs["formTarefas"].validate()) {
+            if (this.$refs["form"].validate()) {
                 if (this.editedIndex > -1) {
                     this.pagamento.projecto_id;
 
@@ -569,14 +565,10 @@ export default {
         user() {
             return this.$page.props.auth.user;
         },
-        // $tempoecucao=internalValue
     },
 
     mounted() {
-        //if(this.projecto_marcado){
-        // alert(JSON.stringify(projecto_marcado))
-        //}
-        // alert(JSON.stringify(projetos))
+
     },
 
     created() {

@@ -1,16 +1,6 @@
 <template>
     <app-layout>
         <div class="dashboard">
-            <!--  <v-row>
-                <v-col cols-12 sm="6" md="5">
-                    <v-card elevation="0">
-                        <h3 class="black--text text-left font-weight-bold pa-2">
-                            PagamentoS :({{ this.Pagamentos.length }})
-                       
-                        </h3>
-                    </v-card>
-                </v-col>
-            </v-row> -->
             <v-card elevation="0" class="my-5">
                 <v-row>
                     <v-col cols="6" sm="6" md="6">
@@ -27,22 +17,6 @@
                     </v-col> 
                 </v-row>
             </v-card>
-
-<!--             <v-card class="my-5 elevation-0">
-                <v-card-title>
-                    <v-row class="mx-2 mt-5">
-                        <v-col class="text-right">
-                          <v-btn outlined rounded title="Adicionar" class="font-weight-bold"
-                                @click="pesquisarPagamento()">Pesquisar
-                            </v-btn> 
-                            <v-btn rounded title="Adicionar" class="font-weight-bold teal white--text"
-                                @click="carregarDialog()">Gerar Factura
-                            </v-btn> -
-                         
-                        </v-col>
-                    </v-row>
-                </v-card-title>
-            </v-card> -->
             <v-container>
                 <v-card class="elevation-0">
                     <template>

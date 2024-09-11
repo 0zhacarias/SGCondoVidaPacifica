@@ -19,41 +19,19 @@ class DashboardController extends Controller
          ->with('funcao')->first();
 
       if ($responsavel_logado->funcao->id == 1) {
-         $data['contarTarefasPendente'] = Apartamento::count();
-         $data['contarTarefasAndamento'] = Apartamento::count();
-         $data['contarTarefasaviliacao'] = Apartamento::count();
-         $data['contarTarefasfinalizada'] = Apartamento::count();
-         $data['contarTarefasatrazada'] = Apartamento::count();
-         $data['contarTarefasnegado'] = Apartamento::count();
-         $tarefas = Apartamento::get();
-
+         $data['apartamentos'] = Apartamento::count();
+         $data['condominos'] = Pessoa::count();
+         $data['mesesNPago'] = Apartamento::count();
+         $data['valorPago'] = Apartamento::count();
+         $data['condominosSemDividas'] = Pessoa::limit(5)->get();
       } else {
-         $responsavel_logado = Pessoa::where('user_id', auth()
-                        ->user()->id)->select('id')
-                        ->first();
-      $controltarefa = ControlTarefa::where('responsavel_id', $responsavel_logado->id)     //foi issado o id, para conseguir acessar as tarefas
-         ->select('tarefa_id')
-         ->get();
-         $data['contarTarefasPendente'] = Apartamento::count();
-         $data['contarTarefasAndamento'] = Apartamento::count();
-         $data['contarTarefasaviliacao'] = Apartamento::count();
-         $data['contarTarefasfinalizada'] = Apartamento::count();
-         $data['contarTarefasatrazada'] = Apartamento::count();
-         $data['contarTarefasnegado'] = Apartamento::count();
-         $tarefas = Apartamento::get();
+         $data['apartamentos'] = Apartamento::count();
+         $data['condominos'] = Pessoa::count();
+         $data['mesesNPago'] = Apartamento::count();
+         $data['valorPago'] = Apartamento::count();
+         $data['condominosSemDividas'] = Pessoa::limit(5)->get();
       }
-      $i = 0;
-      foreach ($tarefas as $tarefa) {
-         $data['tarefas'][] = $tarefa;
-         $i++;
-         if ($i == 5) {
-            break;
-         }
-      }
-      $data['projetoestado'] = Bloco::count();
-      $data['tarefaestado'] = Apartamento::count();
-      // return response()->json($data);
-      return Inertia::render('Hm/Dashboard', $data);
+      return Inertia::render('Dashboard', $data);
 }
  /*   public function grafico_responsaveis_tarefa_dashboard(Request $request)
    {

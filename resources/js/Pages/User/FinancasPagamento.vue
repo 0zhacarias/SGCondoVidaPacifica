@@ -4,7 +4,7 @@
             <v-card elevation="0">
                 <v-row>
                     <v-col cols="6" sm="6" md="6">
-                        <h3 class="font-weight-bold">Pagamento ()</h3>
+                        <h3 class="font-weight-bold">Pagamento</h3>
                     </v-col>
                 </v-row>
             </v-card>
@@ -66,10 +66,6 @@ export default {
         "tarefas",
         "projetos",
         "responsaveis",
-        "estado_tarefas",
-        "control_tarefas",
-        "funcao",
-        "index",
         "projecto_marcado",
     ],
     components: {

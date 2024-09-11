@@ -23,33 +23,25 @@
                     <v-row class="mx-2 mt-5">
                         <v-col cols="6" sm="6" md="2">
                             <label for="">Bloco</label>
-                            <!-- <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Pesquisar projectos"
-                dense
-
-              >
-              </v-text-field> -->
-                            <v-autocomplete prepend-icon="" @change="filtrarEstado()" v-model="query" item-value="id"
+                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" item-value="id"
                                 item-text="nome_proj" type="text" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="3">
                             <label for="">Sindico</label>
-                            <v-autocomplete prepend-icon="" @change="filtrarEstado()" v-model="query" item-value="id"
+                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" item-value="id"
                                 item-text="nome_responsavel" type="text" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="2">
                             <label for="">N apartamento</label>
-                            <v-autocomplete @change="filtrarEstado()" clearable v-model="query" item-text="designacao"
+                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" item-text="designacao"
                                 item-value="id" prepend-icon="" outlined dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="2">
                             <label for="">Tipologia</label>
-                            <v-autocomplete @change="filtrarEstado()" clearable v-model="query" item-text="designacao"
+                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" item-text="designacao"
                                 item-value="id" prepend-icon="" label="Tipologia" outlined dense>
                             </v-autocomplete>
                         </v-col>
@@ -110,156 +102,13 @@
                                     </v-icon>
                                     Remover
                                 </button>
-                                <!--      <v-icon
-                                        color="green"
-                                        icon
-                                        small
-                                        @click="verDetalhe(item)"
-                                        title="Visualizar detalhes"
-                                    >
-                                        visibility
-                                    </v-icon> -->
-                                <!--   <v-menu
-                                        transition="slide-x-transition"
-                                        bottom
-                                        right
-                                        v-if="item.estado_apartamento_id != 4"
-                                    >
-                                        <template
-                                            v-slot:activator="{ on, attrs }"
-                                        >
-                                            <v-btn
-                                                color="black"
-                                                dark
-                                                icon
-                                                v-bind="attrs"
-                                                v-on="on"
-                                                title="Mais opções"
-                                                small
-                                            >
-                                                <v-icon
-                                                    >mdi-dots-vertical</v-icon
-                                                >
-                                            </v-btn>
-                                        </template>
-
-<v-list>
-    <v-list-item v-if="
-                                                    item.estado_apartamento_id ==
-                                                        1 ||
-                                                    item.estado_apartamento_id == 2
-                                                ">
-        <v-list-item-title>
-            <a icon color="orange" class="text-decoration-none" @click="
-                                                            adicionarResponsavel(
-                                                                item
-                                                            )
-                                                        " title="Adicionar Responsavel">
-                Adicionar Responsavel
-            </a>
-        </v-list-item-title>
-    </v-list-item>
-    <v-list-item v-if="
-                                                    item.estado_apartamento_id ==
-                                                        1 ||
-                                                    item.estado_apartamento_id ==
-                                                        2 ||
-                                                    (item.estado_apartamento_id ==
-                                                        3 &&
-                                                        user.can[
-                                                            'apartamento cancelada'
-                                                        ])
-                                                ">
-        <v-list-item-title>
-            <a icon color="orange" class="text-decoration-none" @click="
-                                                            cancelaapartamento(item)
-                                                        " title="Cancelar à apartamento">
-                Cancelar à apartamento
-            </a>
-        </v-list-item-title>
-    </v-list-item>
-
-    <v-list-item v-if="
-                                                    (item.created_by ==
-                                                        user.id &&
-                                                        item.percentagem ==
-                                                            100 &&
-                                                        item.estado_apartamento_id ==
-                                                            3) ||
-                                                    item.estado_apartamento_id == 5
-                                                ">
-        <v-list-item-title>
-            <a icon color="orange" class="text-decoration-none" @click="
-                                                            apartamentoConcluido(
-                                                                item
-                                                            )
-                                                        " title="apartamento concluido">
-                Concluir apartamento
-            </a>
-        </v-list-item-title>
-    </v-list-item>
-</v-list>
-</v-menu> -->
-                                <span> </span>
                             </template>
                         </v-data-table>
-                        <v-card-title>
-                            <v-spacer class="" vertical></v-spacer>
-                            <!--   <div class="">
-                                <v-btn
-                                    v-if="user.can['Historico de apartamentos']"
-                                    color="red"
-                                    :href="'/apartamentos/pdf-historico-apartamentos/'"
-                                    target="__blank"
-                                    class="remover-link white--text font-weight-bold"
-                                >
-                                    PDF Histórico
-                                    <v-icon
-                                        title="Exportar em pdf"
-                                        color="white"
-                                    >
-                                        mdi-file-export</v-icon
-                                    >
-                                </v-btn>
-                                <v-btn
-                                    color="black"
-                                    :href="
-                                        this.projecto_marcado
-                                            ? '/apartamentos/listar-pdf-apartamentos/' +
-                                              this.projecto_marcado
-                                            : '/apartamentos/listar-pdf-apartamentos/' +
-                                              null
-                                    "
-                                    target="__blank"
-                                    class="remover-link white--text font-weight-bold"
-                                >
-                                    Exportar
-                                    <v-icon
-                                        title="Exportar em pdf"
-                                        color="white"
-                                    >
-                                        mdi-file-export</v-icon
-                                    >
-                                </v-btn>
-                                <v-btn
-                                    bottom
-                                    color="corprincipal"
-                                    dark
-                                    @click="carregarDialog()"
-                                >
-                                    <v-icon title="Adicionar apartamento"
-                                        >add
-                                    </v-icon>
-                                </v-btn>
-
-                            </div> -->
-                        </v-card-title>
-
                         <v-card-text> </v-card-text>
                     </template>
                 </v-card>
             </v-container>
-            <v-dialog v-if="dialog" v-model="dialog" persistent width="700px">
+            <v-dialog v-if="dialogApartamento" v-model="dialogApartamento" persistent width="700px">
                 <v-card>
                     <v-toolbar class="text-uppercase font-weight-bold" elevation="2">
                         <v-toolbar-title>
@@ -349,8 +198,8 @@
                         apartamento?</v-card-title>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn rounded outlined color="red" dark @click="closeDelete">não</v-btn>
-                        <v-btn rounded outlined color="#00897B" dark @click="deleteItemConfirm">sim</v-btn>
+                        <v-btn rounded outlined color="red" dark @click="closeDelete()">não</v-btn>
+                        <v-btn rounded outlined color="#00897B" dark @click="deleteItemConfirm()">sim</v-btn>
                         <v-spacer></v-spacer>
                     </v-card-actions>
                 </v-card>
@@ -517,166 +366,8 @@
                                 </v-card>
                             </v-list>
                         </v-card>
-
-                        <v-card v-if="apartamento.control_apartamentos" class="">
-                            <v-card-actions class="pa-0">
-                                <v-subheader class="font-weight-bold ml-0 mb-2 teal--text text-uppercase"><span
-                                        style="font-weight: bolder">LISTA DE RESPONSAVEIS
-                                    </span></v-subheader>
-
-                                <v-spacer></v-spacer>
-
-                                <v-btn icon @click="show2 = !show2">
-                                    <v-icon>{{
-                                        show2
-                                            ? "mdi-chevron-up"
-                                            : "mdi-chevron-down"
-                                    }}</v-icon>
-                                </v-btn>
-                            </v-card-actions>
-
-                            <v-expand-transition>
-                                <div v-show="show2">
-                                    <v-data-table :headers="headersResponsavelDetalhes"
-                                        :items="apartamento.control_apartamentos" hide-default-footer>
-                                        <template v-slot:item.actions="{ item }">
-                                            <v-icon small @click="deleteResponsavel(item)">
-                                                mdi-delete
-                                            </v-icon>
-                                        </template>
-                                    </v-data-table>
-                                </div>
-                            </v-expand-transition>
-                        </v-card>
-                        <v-card v-if="apartamento.percentagem_apartamento" class="">
-                            <v-card-actions class="pa-0">
-                                <v-subheader class="font-weight-bold ml-0 mb-2 teal--text text-uppercase"><span
-                                        style="font-weight: bolder">HISTÓRICO DE PERCENGAGEM
-                                    </span></v-subheader>
-                                <v-spacer></v-spacer>
-
-                                <v-btn icon @click="show3 = !show3">
-                                    <v-icon>{{
-                                        show3
-                                            ? "mdi-chevron-up"
-                                            : "mdi-chevron-down"
-                                    }}</v-icon>
-                                </v-btn>
-                            </v-card-actions>
-
-                            <v-expand-transition>
-                                <div v-show="show3">
-                                    <v-data-table :headers="headersPercentagemlDetalhes"
-                                        :items="apartamento.percentagem_apartamento" hide-default-footer>
-                                        <template slot="no-data">
-                                            sem nenhum dado
-                                        </template>
-                                        <template slot="no-results">
-                                            não foi encontrado nehum dado na
-                                            pesquisa
-                                        </template>
-                                    </v-data-table>
-                                </div>
-                            </v-expand-transition>
-                        </v-card>
                     </v-container>
                     <div style="flex: 1 1 auto"></div>
-                </v-card>
-            </v-dialog>
-            <v-dialog v-if="dialogResponsavel" v-model="dialogResponsavel" max-width="500px">
-                <v-card>
-                    <v-toolbar class="text-uppercase font-weight-bold" elevation="2">
-                        <v-toolbar-title>
-                            Adicionar responsaveis a apartamento
-                        </v-toolbar-title>
-                    </v-toolbar>
-                    <v-card-text>
-                        <v-form ref="formResponsavel" lazy-validation>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" md="12">
-                                        <v-autocomplete multiple v-model="apartamento_responsavel.responsavel_id
-                                            " chips small-chips :items="responsaveisapartamentos" item-text="name"
-                                            item-value="id" prepend-icon="person" :menu-props="{
-                                                bottom: true,
-                                                offsetY: true,
-                                            }">
-                                        </v-autocomplete>
-
-                                        <v-col cols="12"> </v-col>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-form>
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red" dark @click="cancelarDialogResponsavel()">Cancelar</v-btn>
-                        <v-btn v-if="apartamento_responsavel.responsavel_id.length > 0" dark color="#00897B"
-                            @click="saveResponsavel()">
-                            Adicionar</v-btn>
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <v-dialog v-if="dialogDeleteResponsavel" v-model="dialogDeleteResponsavel" max-width="500px">
-                <v-card>
-                    <v-card-title class="text-h6">Tens a certeza que pretendes eliminar?</v-card-title>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red" dark @click="closeDeleteResponsavel()">não</v-btn>
-                        <v-btn color="#00897B" dark @click="deleteResponsavelConfirm()">sim</v-btn>
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-if="dialogResponsaveladicionados" v-model="dialogResponsaveladicionados" max-width="500px">
-                <v-card>
-                    <v-card-text class="text-h5 py-3">
-                        Todos os responsaveis já foram adicionados para o
-                        projecto!
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red" dark @click="dialogResponsaveladicionados = false">Fechar</v-btn>
-
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-            <v-dialog v-if="dialogNaoExisteResponsavel" v-model="dialogNaoExisteResponsavel" max-width="500px">
-                <v-card>
-                    <v-card-text class="text-h5 py-3">
-                        Não exite membros de equipe associado ao projecto desta
-                        apartamento!
-                    </v-card-text>
-                    <v-card-actions>
-                        <v-spacer></v-spacer>
-                        <v-btn color="red" dark @click="dialogNaoExisteResponsavel = false">Fechar</v-btn>
-
-                        <v-spacer></v-spacer>
-                    </v-card-actions>
-                </v-card>
-            </v-dialog>
-
-            <v-dialog v-if="dialogPercentagem" v-model="dialogPercentagem" max-width="500px">
-                <v-card>
-                    <v-card-title class="text-h5">Alterar a percentagem</v-card-title>
-                    <v-form ref="formPercentagem" lazy-validation>
-                        <v-card-text>
-                            <v-text-field label="Alterar Percentagem" :rules="alterarPercentagemRules"
-                                :aria-errormessage="erros.percentagem" v-model="apartamento.percentagem"
-                                prepend-icon="percent" minlength="1" maxlegth="99" type="number" min="1" max="100">
-                            </v-text-field>
-                        </v-card-text>
-                        <v-card-text>
-                            <v-text-field label="Motivo da alteração da percentagem" :rules="motivoPercentagemRules"
-                                :aria-errormessage="erros.percentagem" v-model="apartamento.designacao"
-                                prepend-icon="description">
-                            </v-text-field>
-                        </v-card-text>
-                    </v-form>
                 </v-card>
             </v-dialog>
 
@@ -719,207 +410,14 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            <!-- <v-row justify="center">
-                <v-dialog v-model="dialogDetalheapartamento" fullscreen hide-overlay transition="dialog-bottom-transition">
-
-                    <v-card>
-                        <v-toolbar dark color="#00987b">
-                            <v-btn icon dark @click="dialog = false">
-
-                            </v-btn>
-                        </v-toolbar>
-
-                        <v-divider></v-divider>
-
-                    </v-card>
-                </v-dialog>
-            </v-row> -->
-
-            <v-row justify="center">
-                <v-dialog v-if="dialogDetalheapartamento" v-model="dialogDetalheapartamento" fullscreen hide-overlay
-                    transition="dialog-bottom-transition">
-                    <v-card class="green lighten-5">
-                        <v-toolbar class="text-h5 text-white corprincipal">
-                            <v-spacer></v-spacer>
-                            Detalhes da apartamento
-                            <v-btn icon dark @click="dialogDetalheapartamento = false">
-                                <v-icon>mdi-close</v-icon>
-                            </v-btn>
-                        </v-toolbar>
-                        <v-container>
-                            <v-card-text>
-                                <v-card class="ma-0">
-                                    <v-subheader class="headertop font-weight-regular">
-                                        <span style="font-weight: bolder">
-                                            DADOS DA apartamento
-                                        </span>
-                                        <v-spacer></v-spacer>
-                                        <span>
-                                            <a :href="'/apartamentos/arquivo-pdf-apartamento/' +
-                                                apartamento.id
-                                                " target="__blank" class="remover-link">
-                                                <v-icon title="Exportar em pdf" color="#fff">
-                                                    mdi-file-export</v-icon>
-                                                         </a> </span>
-                                    </v-subheader>
-                                    <v-row class="mx-auto text-left">
-                                        <v-col cols="4">
-                                            <div class="font-weight-normal">
-                                                <strong>Data de Inicio da
-                                                    apartamento</strong><br />
-                                                {{ apartamento.data_inicio_real }}
-                                                <br /><br />
-                                                <strong>Percentagem da
-                                                    apartamento</strong><br />
-                                                {{ apartamento.percentagem }}%
-                                            </div>
-                                        </v-col>
-                                        <v-col cols="4">
-                                            <div class="font-weight-normal">
-                                                <strong>Dias de Execução
-                                                    apartamento</strong><br />
-                                                {{ apartamento.tempo_execucao }}
-                                                <br /><br />
-                                                <strong>Estado da apartamento</strong><br />
-                                                {{
-                                                    apartamento.estado_apartamento
-                                                        .designacao
-                                                }}
-                                            </div>
-                                        </v-col>
-                                        <v-col cols="4">
-                                            <div class="font-weight-normal">
-                                                <strong>Data Final da
-                                                    apartamento</strong><br />
-                                                {{ apartamento.data_fim_real }}
-                                                <br /><br />
-                                                <!-- <strong>Data de validade</strong><br />
-                      {{
-
-                      }} -->
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-
-                                    <v-row class="mx-auto text-left">
-                                        <v-col cols="4"> </v-col>
-                                    </v-row>
-
-                                    <v-expansion-panels v-model="panel_motivo">
-                                        <v-expansion-panel>
-                                            <v-expansion-panel-header>
-                                                <header class="font-weight-bold ml-0 mb-2 blue--text">
-                                                    <v-icon title="Descrição do Comunicado">dehaze</v-icon>
-                                                    Clique para ver a dercição
-                                                    da apartamento
-                                                </header>
-                                            </v-expansion-panel-header>
-
-                                            <v-expansion-panel-content>
-                                                <v-row class="mx-auto">
-                                                    <v-col cols="12" md="6">
-                                                    </v-col>
-                                                </v-row>
-
-                                                <v-card-text class="text-justify white text--corprincipal"
-                                                    v-html="apartamento.nome_apartamento">
-                                                </v-card-text>
-                                            </v-expansion-panel-content>
-                                        </v-expansion-panel>
-                                    </v-expansion-panels>
-                                </v-card>
-                                <v-card class="my-5 elevation-5">
-                                    <v-subheader class="headertop font-weight-regular"><span
-                                            style="font-weight: bolder">DADOS DO
-                                            PROJECTO
-                                        </span></v-subheader>
-                                    <v-row class="mx-auto text-left">
-                                        <v-col cols="4">
-                                            <div class="font-weight-normal">
-                                                <strong>Nome do projecto</strong><br /><br />
-                                                dash{{
-                                                    apartamento.projecto.nome_proj
-                                                }}
-                                            </div>
-                                        </v-col>
-
-                                        <v-col cols="4">
-                                            <div class="font-weight-normal">
-                                                <strong>
-                                                    Prioridade do
-                                                    Projecto:</strong><br /><br />
-                                                {{
-                                                    apartamento.projecto
-                                                        .prioridade_proj
-                                                }}
-                                            </div>
-                                        </v-col>
-
-                                        <v-col cols="4">
-                                            <div class="font-weight-normal">
-                                                <strong>Estado do Projecto</strong><br /><br />
-                                                {{
-                                                    apartamento.projecto
-                                                        .estado_projeto
-                                                        .designacao
-                                                }}
-                                            </div>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                                <v-card v-if="apartamento.control_apartamentos" class="">
-                                    <v-subheader class="font-weight-regular headertop"><span
-                                            style="font-weight: bolder">LISTA DE
-                                            RESPONSAVEIS
-                                        </span></v-subheader>
-                                    <v-divider />
-
-                                    <v-data-table :headers="headersResponsavelDetalhes"
-                                        :items="apartamento.control_apartamentos" hide-default-footer>
-                                        <template v-slot:item.actions="{ item }">
-                                            <v-icon small @click="deleteResponsavel(item)">
-                                                mdi-delete
-                                            </v-icon>
-                                        </template>
-                                        <template slot="no-data">
-                                            sem nenhum dado
-                                        </template>
-                                        <template slot="no-results">
-                                            não foi encontrado nehum dado na
-                                            pesquisa
-                                        </template>
-                                    </v-data-table>
-                                </v-card>
-                            </v-card-text>
-                        </v-container>
-                        <div style="flex: 1 1 auto"></div>
-                    </v-card>
-                </v-dialog>
-            </v-row>
-            <v-row>
-                <v-col cols="12" md="4">
-                    <v-btn bottom color="corprincipal" dark fab fixed right @click="carregarDialog()">
-                        <v-icon>add </v-icon>
-                    </v-btn>
-                </v-col>
-            </v-row>
         </div>
     </app-layout>
 </template>
 
 <script>
-import { isExists } from "date-fns/esm";
 import AppLayout from "../../Shared/AppLayout";
 import TabApartamento from "../../components/TabApartamento";
 
-const gradients = [
-    ["#222"],
-    ["#42b3f4"],
-    ["red", "orange", "yellow"],
-    ["purple", "violet"],
-    ["#00c6ff", "#F0F", "#FF0"],
-    ["#f72047", "#ffd200", "#1feaea"],
-];
 export default {
     // props são variaveis que podem ser acessadas em qualquer parte do projeto e aqui estou a usalos para armazenas os dados vindo do banco de dado.
     props: [
@@ -942,26 +440,13 @@ export default {
     data() {
         return {
             // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
-            responsaveisapartamentos: [],
-            responsaveis_projeto: [],
-            show3: "",
-            show: "",
-            show2: "",
-            dialogResponsavel: false,
-            dialogResponsaveladicionados: false,
-            dialogNaoExisteResponsavel: false,
-            dialogDeleteResponsavel: false,
-            dialog: false,
-            dialogDelete: false,
+           dialogApartamento:false,
             dialogDetalheapartamento: false,
-            dialogPercentagem: false,
-            panel_motivo: "",
             dialogRejeitarapartamento: false,
             dialogCancelaapartamento: false,
             apartamento_responsavel: {
                 responsavel_id: [],
             },
-            idprojecto: "",
             apartamento: {
 
             },
@@ -1181,15 +666,15 @@ export default {
         },
 
         carregarDialog() {
+            this.dialogApartamento = true;
             this.apartamento = Object.assign({}, this.defaultapartamento);
             this.editedIndex = -1;
-            this.dialog = true;
         },
 
         editItem(item) {
             this.editedIndex = this.apartamentos.indexOf(item);
             this.apartamento = Object.assign({}, item);
-            this.dialog = true;
+            this.dialogApartamento = true;
         },
         verDetalhe(item) {
             this.apartamento = Object.assign({}, item);
@@ -1227,68 +712,16 @@ export default {
                 this.closeDelete();
         },
 
-        adicionarApartamentos() {
-            this.filtrarProjectoResponsavel();
-        },
-
-        apartamentoConcluido(item) {
-            // this.editedIndex = this.apartamentos.indexOf(item)
-            this.apartamento = Object.assign({}, item);
-            this.$inertia.put(
-                "/apartamentos/apartamento-concluido/" + this.apartamento.id,
-                this.apartamento,
-                {
-                    onFinish: () => {
-                        if (this.$page.props.flash.success != null) {
-                            Vue.toasted.global.defaultSuccess({
-                                msg: "" + this.$page.props.flash.success,
-                            });
-                        }
-                        if (this.$page.props.flash.error != null) {
-                            Vue.toasted.global.defaultError({
-                                msg: "" + this.$page.props.flash.error,
-                            });
-                        }
-                        this.cancelarDialogPercentagem();
-                    },
-                }
-            );
-        },
-        aceitarapartamento(item) {
-            // this.editedIndex = this.apartamentos.indexOf(item)
-            this.apartamento = Object.assign({}, item);
-
-            this.$inertia.put(
-                "/apartamentos/aceitar-apartamento/" + this.apartamento.id,
-                this.apartamento,
-                {
-                    onFinish: () => {
-                        if (this.$page.props.flash.success != null) {
-                            Vue.toasted.global.defaultSuccess({
-                                msg: "" + this.$page.props.flash.success,
-                            });
-                        }
-                        if (this.$page.props.flash.error != null) {
-                            Vue.toasted.global.defaultError({
-                                msg: "" + this.$page.props.flash.error,
-                            });
-                        }
-                        this.cancelarDialogPercentagem();
-                    },
-                }
-            );
-        },
-
         cancelarDialog() {
             this.apartamento = Object.assign({}, this.defaultapartamento);
             this.editedIndex = -1;
-            this.dialog = false;
+            this.dialogApartamento = false;
         },
 
         closeSave() {
             this.apartamento = Object.assign({}, this.defaultapartamento);
             this.editedIndex = -1;
-            this.dialog = false;
+            this.dialogApartamento = false;
         },
 
         save() {
@@ -1341,7 +774,7 @@ export default {
         },
 
   
-        filtrarEstado() {
+        filtroApartamento() {
             if (this.projecto_marcado) {
                 this.query.projecto_id = this.projecto_marcado;
             }

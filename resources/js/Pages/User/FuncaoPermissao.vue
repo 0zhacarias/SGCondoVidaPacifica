@@ -633,44 +633,6 @@ export default {
         this.editedIndex = -1;
       }, 100);
     },
-    // adicionar-funcao
-    // saveRoles() {
-    //   if (this.$refs["form"].validate()) {
-    //     if (this.editedIndex > -1) {
-    //       this.$inertia.put(`/permission/editar-funcao/${this.role.id} `, this.role, {
-    //         onFinish: () => {
-    //                 if(this.$page.props.flash.success!=null){
-    //                     Vue.toasted.global.defaultSuccess({
-    //                         msg: "" +this.$page.props.flash.success,
-    //                     });
-    //                 }
-    //                 if (this.$page.props.flash.error != null) {
-    //                     Vue.toasted.global.defaultError({
-    //                         msg: "" + this.$page.props.flash.error,
-    //                     })
-    //                 }
-    //             },
-
-    //       });
-    //       this.close();
-    //     } else {
-    //       this.$inertia.post("/permission/adicionar-funcao",
-    //         this.role,{
-    //         onFinish: () => {
-    //           alert("oooo")
-    //           if(this.$page.props.flash.success!=null){
-    //                     Vue.toasted.global.defaultSuccess({
-    //                         msg: "aaa",
-    //                     });
-    //                 }
-    //                 }
-
-    //       }),
-    //       this.close();
-
-    //     }
-    //     }
-    //   },
     save() {
       if (this.$refs["form"].validate()) {
         if (this.editedIndex > -1) {

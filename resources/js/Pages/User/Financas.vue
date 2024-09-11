@@ -18,19 +18,19 @@
                         <v-col cols="6" sm="6" md="3">
                             <label for="">Bloco</label>
 
-                            <v-autocomplete prepend-icon="" @change="filtrarEstado()" v-model="query.bloco" item-value="id"
+                            <v-autocomplete prepend-icon="" @change="fitroFinanca()" v-model="query.bloco" item-value="id"
                                 item-text="descricao_bloco" type="text" :items="blocos" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="3">
                             <label for="">Condomino</label>
-                            <v-autocomplete prepend-icon="" @change="filtrarEstado()" v-model="query.condomino" item-value="id"
+                            <v-autocomplete prepend-icon="" @change="fitroFinanca()" v-model="query.condomino" item-value="id"
                               :items="condominos"  item-text="nome_pessoa" type="text" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="3">
                             <label for="">Apartamentos</label>
-                            <v-autocomplete @change="filtrarEstado()" clearable v-model="query.apartamento" item-text="designacao"
+                            <v-autocomplete @change="fitroFinanca()" clearable v-model="query.apartamento" item-text="designacao"
                                :items="apartamentos" item-value="id" prepend-icon="" outlined dense>
                             </v-autocomplete>
                         </v-col>
@@ -174,7 +174,7 @@ export default {
             }) 
         },
    
-        filtrarEstado() {
+        fitroFinanca() {
             if (this.projecto_marcado) {
                 this.query.projecto_id = this.projecto_marcado;
             }
@@ -189,30 +189,6 @@ export default {
                     //toastr.warning('Houve uma falha ao carregar os dados!...');
                 });
         },
-        // Este metodos serve para filtrar todos os membros de alguma tarefa!
-        filtrarResponsavelTarefa() {
-            axios
-                .get("/tarefas/filtrar-responsavel-tarefa", {
-                    params: this.tarefa_responsavel,
-                })
-                .then((response) => {
-                    this.responsaveisTarefas = response.data.responsaveis;
-                    let exite = response.data.existe_responsaveis;
-                    if (exite == 1) {
-                        if (this.responsaveisTarefas.length > 0) {
-                            this.dialogResponsavel = true;
-                        } else {
-                            this.dialogResponsaveladicionados = true;
-                        }
-                    } else {
-                        this.dialogNaoExisteResponsavel = true;
-                    }
-                })
-                .catch((error) => {
-                    //toastr.warning('Houve uma falha ao carregar os dados!...');
-                });
-        },
-
     },
 
     computed: {
