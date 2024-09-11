@@ -32,16 +32,6 @@
 
       
             <v-spacer />
-            <!-- <v-text-field
-      class="hidden-sm-and-down white--text white"
-        flat
-        solo-inverted
-        hide-details
-        prepend-inner-icon="search"
-        label="Procurar"
-        color="white"
-      /> -->
-
             <v-spacer />
             <inertia-link href="/home" class="white--text remover-link">
                 <v-btn icon class="white--text">
@@ -55,7 +45,6 @@
                 :content="quantidadenotificacao"
                 :value="quantidadenotificacao"
             >
-                <!-- <inertia-link href="/tarefas/tarefa"> -->
                 <v-menu bottom offset-y>
                     <template v-slot:activator="{ on, attrs }">
                         <v-btn
@@ -162,19 +151,7 @@
                     </v-list-item>
                 </v-list>
             </v-menu>
-            <!-- <v-btn
-                icon
-                large
-            >
-                <v-avatar
-                size="32px"
-                item
-                >
-                <v-img
-                    src="https://cdn.vuetifyjs.com/images/logos/logo.svg"
-                    alt="Vuetify"
-                /></v-avatar>
-            </v-btn> -->
+
         </v-app-bar>
 
         <v-navigation-drawer
@@ -1076,14 +1053,14 @@
         </v-navigation-drawer>
 
         <!-- Sizes your content based upon application components -->
-        <v-main id="#scrolling-techniques-1" class="body">
+        <v-main id="#scrolling-techniques-1" class="body mt-16 pa-16">
             <!-- Provides the application the proper gutter -->
-            <v-container>
+          <!--   <v-container> -->
                 <!-- <v-overlay :value="overlay">
           <v-img src="/img/loader4.gif"></v-img>
         </v-overlay> -->
                 <slot />
-            </v-container>
+            <!-- </v-container> -->
         </v-main>
 
 
