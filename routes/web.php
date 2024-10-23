@@ -71,7 +71,6 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard',[App\Http\Controllers\DashboardController::class, 'dashboard']);
     Route::get('/grafico-responsaveis-tarefa-dashboard', [App\Http\Controllers\DashboardController::class, 'grafico_responsaveis_tarefa_dashboard']);
     Route::get('/projectos-departamento-dasboard', [App\Http\Controllers\DashboardController::class, 'projectos_departamento_dasboard']);
-    Route::get('/percentagem-estados-projectos', [App\Http\Controllers\DashboardController::class, 'percentagem_estados_projectos']);
     Route::get('/estatistica-grafico-pendente', [App\Http\Controllers\DashboardController::class, 'estatistica_grafico_pendente']);
     Route::get('/atualizar-tarefas-atrasada', [App\Http\Controllers\ApartamentoController::class, 'atualizar_tarefa_atrasada']);
 
@@ -107,11 +106,6 @@ Route::group(['prefix' => 'blocos', 'middleware' => 'auth'], function () {
     Route::get('/arquivo-pdf-projecto/{id_projeto}',[App\Http\Controllers\BlocoController::class,'export_projecto_pdf']);
     Route::get('/listar-pdf-projectos',[App\Http\Controllers\BlocoController::class,'listar_pdf_projectos']);
  
-    Route::put('activar-producao/{id}', [App\Http\Controllers\BlocoController::class, 'activar_producao']);
-    Route::put('desactivar-producao/{id}', [App\Http\Controllers\BlocoController::class, 'desactivar_producao']);
-    /*Tipo de projecto e a area */
-    Route::get('/filtrar-tipo-projectos', [App\Http\Controllers\BlocoController::class, 'filtrar_tipo_projectos']);
-    Route::get('/filtrar-tecnologia', [App\Http\Controllers\BlocoController::class, 'filtrar_tecnologias']);
 
 });
 
@@ -133,14 +127,6 @@ Route::group(['prefix' => 'apartamentos', 'middleware' => 'auth'], function () {
 //Grupo de routas de dvs
 Route::group(['prefix' => 'responsaveis', 'middleware' => 'auth'], function () {
     Route::resource('/responsavel', App\Http\Controllers\PessoaController::class);
-    Route::get('/estatistica', [\App\Http\Controllers\PessoaController::class, 'estatistica_responsaveis'])->name('estatisticaresponsaveis');
-    Route::get('/membros-equipa-pdf', [\App\Http\Controllers\PessoaController::class, 'membros_equipa_pdf'])->name('estatisticaresponsaveis');
-    Route::post('/ativar-chefe-area', [App\Http\Controllers\PessoaController::class, 'ativar_chefe_area']);
-    Route::post('/desativar-chefe-area', [App\Http\Controllers\PessoaController::class, 'desativar_chefe_area']);
-    Route::get('/perfil', function () {
-        return Inertia::render('User/Habilidades');
-    });
-
 });
 
 Route::group(['prefix' => 'permission', 'middleware' => ['auth']], function () {

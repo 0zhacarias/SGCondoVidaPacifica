@@ -7766,7 +7766,7 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       });
       this.todos_servicos = this.servicos_selecionado.push(dados);
     },
-    TotalGeral: function TotalGeral(total) {
+    TotalGeral: function TotalGeral() {
       this.total_quantidade = total.reduce(function (primeiro, ultimo) {
         return primeiro + parseInt(ultimo.quantidade);
       }, 0);

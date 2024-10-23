@@ -274,7 +274,7 @@ export default {
 
 
         },
-        TotalGeral(total) {
+        TotalGeral( ) {
             this.total_quantidade = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.quantidade), 0)
             this.total_preco = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)
             this.total_geral = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)
