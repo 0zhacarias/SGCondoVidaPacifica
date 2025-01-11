@@ -23,25 +23,25 @@
                     <v-row class="mx-2 mt-5">
                         <v-col cols="6" sm="6" md="2">
                             <label for="">Bloco</label>
-                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" item-value="id"
-                                item-text="nome_proj" type="text" outlined clearable dense>
+                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" :items="blocos" v-model="query" item-value="id"
+                                item-text="descricao_bloco" type="text" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="3">
                             <label for="">Sindico</label>
-                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" item-value="id"
-                                item-text="nome_responsavel" type="text" outlined clearable dense>
+                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" :items="sindicos" item-value="id"
+                                item-text="nome_pessoa" type="text" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="2">
-                            <label for="">N apartamento</label>
-                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" item-text="designacao"
+                            <label for="">Apartamento</label>
+                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" :items="apartamentos"  item-text="designacao"
                                 item-value="id" prepend-icon="" outlined dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="2">
                             <label for="">Tipologia</label>
-                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" item-text="designacao"
+                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" :items="tipos_apartamento"  item-text="descricao"
                                 item-value="id" prepend-icon="" label="Tipologia" outlined dense>
                             </v-autocomplete>
                         </v-col>
@@ -54,7 +54,7 @@
 
                         <v-col class="text-right">
                             <v-btn outlined rounded title="Adicionar" class="font-weight-bold"
-                                @click="carregarDialog()">Pesquisar
+                                @click="filtarInformacoes()">Pesquisar
                             </v-btn>
                         </v-col>
                     </v-row>
@@ -417,6 +417,7 @@
 <script>
 import AppLayout from "../../Shared/AppLayout";
 import TabApartamento from "../../components/TabApartamento";
+import Bloco from "./Bloco.vue";
 
 export default {
     // props são variaveis que podem ser acessadas em qualquer parte do projeto e aqui estou a usalos para armazenas os dados vindo do banco de dado.
@@ -429,8 +430,7 @@ export default {
         "control_apartamentos",
         "sindicos",
         'blocos',
-        'condominos',
-        'apartamentos'
+        'bloco_id'
     ],
     components: {
         AppLayout,
@@ -448,7 +448,7 @@ export default {
                 responsavel_id: [],
             },
             apartamento: {
-
+                bloco_id:[]
             },
             defaultapartamento: {
 
@@ -727,7 +727,7 @@ export default {
         save() {
             if (this.$refs["formapartamentos"].validate()) {
                 if (this.editedIndex > -1) {
-                    this.apartamento.projecto_id;
+                    this.apartamento.bloco_id=this.bloco_id;
 
                     this.$inertia.put(
                         `/apartamentos/apartamento/${this.apartamento.id}`,
@@ -750,10 +750,8 @@ export default {
                         }
                     );
                 } else {
-                    if (this.projecto_marcado) {
-                        this.apartamento.projecto_id = this.projecto_marcado;
-                    }
-                    //  alert(JSON.stringify(this.apartamento))
+                    this.apartamento.bloco_id=this.bloco_id;
+                    // alert(JSON.stringify(this.bloco_id))
                     this.$inertia.post("/apartamentos/apartamento", this.apartamento, {
                         onFinish: () => {
                             if (this.$page.props.flash.success != null) {

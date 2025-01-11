@@ -30,7 +30,17 @@ class ApartamentoController extends Controller
 
     {
         try {
-            $data['todos_apartamentos'] = Apartamento::with('condomino','tipo_apartamento','estado_apartamento')->get();
+            $responsavel_logado = Pessoa::where('user_id', auth()
+         ->user()->id)
+         ->with('funcao')->first();
+
+      if ($responsavel_logado->funcao->id == 1) {
+        $data['todos_apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+
+      }else if($responsavel_logado->funcao->id == 2){
+        $data['todos_apartamentos'] = Apartamento::where('created_by',$responsavel_logado->user_id)->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+
+      }
             return Inertia::render('User/Apartamento', $data);
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -42,29 +52,40 @@ class ApartamentoController extends Controller
         $id = base64_decode(base64_decode(base64_decode($id)));
         try {
             $responsavel_logado = Pessoa::where('user_id', auth()->user()->id)->first();
-     
-            if ($responsavel_logado->funcao->id == 1 || $responsavel_logado->funcao->id == 2) {
-
-                $data['tipos_apartamento'] = TipoApartamento::orderBy('created_at', 'desc')->get();
-                $data['apartamentos'] = Apartamento::with('condomino','tipo_apartamento','estado_apartamento')->get();
-                $sindico_id=Bloco::find($id)->pluck('sindico_id')->first();
-               // dd($sindico_id);
-$data['sindicos']=Pessoa::with('apartamento','genero')->where('id',$sindico_id)->get();
-                //dd( $data['apartamentos'],$sindicos);
-                $data['projetos'] = Bloco::all();
-                $data['condominos'] = Pessoa::with('funcao')->get();
-            } else {
+            $sindico_id = Bloco::find($id)->pluck('sindico_id')->first();
+            $data['bloco_id'] =$id;
+            $data['tipos_apartamento'] = TipoApartamento::orderBy('created_at', 'desc')->get();
+           
+            if ($responsavel_logado->funcao->id == 1) {
+                $data['apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+                $data['condominos'] = Pessoa::where('funcao_id',2)->get();
+                // dd($sindico_id);
+                $data['sindicos'] = Pessoa::with('apartamento', 'genero')->where('id', $sindico_id)->get();
+               // dd( $data['sindicos']);
+                $data['blocos'] = Bloco::get();
+                
+            } elseif($responsavel_logado->funcao->id == 2){
+                $data['apartamentos'] = Apartamento::where('created_by',$responsavel_logado->user_id)
+                ->orWhere('bloco_id',$id)
+                ->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+                $data['condominos'] = Pessoa::where('funcao_id',3)->get();
+                $data['sindicos'] = Pessoa::with('apartamento', 'genero')->where('id', $sindico_id)->get();
+                $data['blocos'] = Bloco::find($id)->get();
+               /*  with(['funcao'=>function($query){
+                    $query->where('id',2);
+                }])->get();
+                dd($data['condominos']); */
+            }
+            else {
                 $data['tipos_apartamento'] = Apartamento::whereIn('created_by', $responsavel_logado)->orderBy('created_at', 'desc')->get();
                 $data['apartamentos'] = Apartamento::whereIn('created_by', $responsavel_logado)->orderBy('created_at', 'desc')->get();
-
             }
 
-           
-            return Inertia::render('User/Apartamento',$data);
+
+            return Inertia::render('User/Apartamento', $data);
         } catch (\Exception $e) {
             dd($e->getMessage());
         }
-        
     }
 
 
@@ -83,13 +104,15 @@ $data['sindicos']=Pessoa::with('apartamento','genero')->where('id',$sindico_id)-
     {
 
         try {
-            //dd(request());
+           //dd((request()));
             DB::beginTransaction();
-           /*  $data_aux = strtotime($request->get('data_inicio_real') . "+" . $request->get('tempo_execucao') . "days");
+            /*  $data_aux = strtotime($request->get('data_inicio_real') . "+" . $request->get('tempo_execucao') . "days");
             $data_termino = date("Y-m-d H:i:s", $data_aux); */
             $data = request()->all();
-            $data['estado_apartamento_id']=1;
-            $data['condomino_id']=implode(request()->condomino_id);
+            $data['estado_apartamento_id'] = 1;
+            $data['created_by'] = auth()->id();
+            $data['bloco_id'] = (int) request()->bloco_id;
+            $data['condomino_id'] = implode(request()->condomino_id);
 
             $apartamento = Apartamento::create($data);
             DB::commit();
@@ -114,7 +137,7 @@ $data['sindicos']=Pessoa::with('apartamento','genero')->where('id',$sindico_id)-
             }
         } catch (\Exception $e) {
             // DB::rollback();
-             dd($e->getMessage());
+            dd($e->getMessage());
             // DB::commit();
             return redirect()->back()->with('error', 'Não foi possivel cadastrar essa apartamento');
             //    return redirect('/tarefas/apartamento');
@@ -222,7 +245,6 @@ $data['sindicos']=Pessoa::with('apartamento','genero')->where('id',$sindico_id)-
         } catch (\Exception $e) {
             // dd($e->getMessage());
             return redirect()->back()->with('error', 'Não foi possivel é ditar a percentagem de vido a alguma informação incorreta');
-
         }
     }
 
@@ -239,11 +261,10 @@ $data['sindicos']=Pessoa::with('apartamento','genero')->where('id',$sindico_id)-
     public function listar_tarefa($id)
     {
         $id = base64_decode(base64_decode(base64_decode($id)));
-DB::beginTransaction();
-DB::commit();
-DB::rollBack();
+        DB::beginTransaction();
+        DB::commit();
+        DB::rollBack();
         try {
-
         } catch (\Exception $e) {
         }
     }
@@ -255,12 +276,9 @@ DB::rollBack();
     }
     public function filtrar_tarefa_responsavel(Request $request)
     {
- try{
-
- }
- catch(\Exception $ex){
-    
- }
+        try {
+        } catch (\Exception $ex) {
+        }
         return response()->json($request);
     }
 
@@ -327,8 +345,8 @@ DB::rollBack();
     public function update(Request $request, $id)
     {
         DB::beginTransaction();
-DB::commit();
-DB::rollBack();
+        DB::commit();
+        DB::rollBack();
         try {
             $apartamento = Apartamento::find($id);
             $estado_tarefa_id = $apartamento->estado_tarefa_id;

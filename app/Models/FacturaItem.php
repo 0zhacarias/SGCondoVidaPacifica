@@ -11,4 +11,8 @@ class FacturaItem extends Model
     
     protected $table='factura_itens';
     protected $guarded=['id'];
+    public function factura() {
+        return $this->belongsTo(Factura::class);
+        
+    }
 }

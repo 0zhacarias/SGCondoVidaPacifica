@@ -6,6 +6,7 @@ use App\Models\Pagamento;
 use App\Models\Factura;
 use App\Models\FacturaItem;
 use App\Models\ImagemPagamento;
+use App\Models\Pessoa;
 use App\Models\Servico;
 use Illuminate\Http\Request;
 
@@ -43,6 +44,7 @@ class PagamentoController extends Controller
         if ($factura) {
             $factura->estado_factura_id = 1;
             $factura->update();
+            $pesoa_id=Pessoa::where('user_id',auth()->id())->pluck('id')->first();
             $pagamento = Pagamento::create([
                 'factura_id' => $request->input('pagamento_faturas')['id'],
                 'observacao' => $request->input('pagamento_faturas')['descricao'],
@@ -51,7 +53,7 @@ class PagamentoController extends Controller
                 'nome_banco' => $request->input('nome_banco'),
                 'forma_pagamento_id' => $request->input('forma_pagamento_id'),
                 'valor_depositado' => $request->input('valor_depositado'),
-                'created_by' => auth()->id(),
+                'created_by' => $pesoa_id,
                 'estado_pagamento_id' => 1,
                 'data_pago_banco' => date('Y-m-d'),
             ]);
@@ -89,6 +91,9 @@ class PagamentoController extends Controller
     }
     function despesas()
     {
+        $pessoa_id=Pessoa::where('user_id',auth()->id())->pluck('id')->first();
+      
+       // dd(2);
         // Definição dos meses com suas descrições e números
         $meses = [
             ['nome' => 'Janeiro', 'numero' => 1],
@@ -113,17 +118,28 @@ class PagamentoController extends Controller
                 'servicos' => []
             ];
         }
-        $anoAtual = now()->year; // ou use um valor fixo se necessário
+       
 
+        $anoAtual = now()->year; // ou use um valor fixo se necessário
+        /* $servesExiste = FacturaItem::
+        whereHas('factura', function ($query){
+            $query->where('estado_factura_id',2);
+        })->get();
+        dd($servesExiste); */
         foreach ($meses as $mes) {
             $numero = $mes['numero'];
 
             // Obtém os serviços para o mês e ano específico
             $todosServicos = Servico::all(); // Supondo que você tem um modelo para Serviços
+            //dd($todosServicos);
             foreach ($todosServicos as $todos) {
-                $servesExiste = FacturaItem::where('servico_id', $todos->id)
-                    ->where('created_by', auth()->id())
-                    //->whereYear('created_at', $anoAtual)
+                $servesExiste = FacturaItem::
+                whereHas('factura', function ($query){
+                    $query->where('estado_factura_id',2);
+                })->
+                where('servico_id', $todos->id)
+                    ->where('created_by', $pessoa_id)
+                  //  ->whereYear('created_at', $anoAtual)
                     ->whereMonth('created_at', $numero)
                     ->pluck('created_by')
                     ->first();
@@ -142,6 +158,7 @@ class PagamentoController extends Controller
                         'descricao' => $objeto->servicos,
                         'created_by' => $objeto->created_by
                     ];
+                   // dump($arrayObjetos);
                 } else {
                     // Adiciona o serviço com uma descrição de 'Nenhum dado disponível'
                     $arrayObjetos[$numero]['servicos'][] = [

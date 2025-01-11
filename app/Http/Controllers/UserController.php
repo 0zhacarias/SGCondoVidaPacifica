@@ -9,6 +9,7 @@ use App\Models\Responsavel;
 use App\Models\Funcoes;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Genero;
+use App\Models\Pessoa;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\DB;
@@ -28,11 +29,11 @@ class UserController extends Controller
 
     public function perfil()
     {
-            $data['generos'] = Genero::all();
-            //
-            $data['usuario'] = User::where('id', auth()->user()->id)->with('responsavel.funcao', 'responsavel.genero', 'responsavel.estadoCivil')->first();
-            //    dd($data['usuario']);
-            return Inertia::render('User/Perfil', $data);
+        $data['generos'] = Genero::all();
+        //
+        $data['usuario'] = User::where('id', auth()->user()->id)->with('responsavel.funcao', 'responsavel.genero', 'responsavel.estadoCivil')->first();
+        //    dd($data['usuario']);
+        return Inertia::render('User/Perfil', $data);
     }
 
     public function create()
@@ -41,13 +42,15 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-         //dd($request);
+        //   dd($request);
         DB::beginTransaction();
 
         try {
             $usernames = preg_split('/\s+/', mb_strtolower($request->name, "utf-8"), -1, PREG_SPLIT_NO_EMPTY);
             $username = head($usernames) . '.' . last($usernames);
-
+            
+            $nomecompleto = preg_split('/\s+/', ucfirst($request->name), -1, PREG_SPLIT_NO_EMPTY);
+         //   dd(head($nomecompleto));
             $user = User::create([
                 'name' => isset($request->name) ? $request->name : '',
 
@@ -56,6 +59,30 @@ class UserController extends Controller
                 'password' => Hash::make("sigcond"),
                 'username' => $username,
             ]);
+            /*  if ($user) {
+
+
+                if ($request->get('funcao_id') == 1) {
+                    $user->assignRole('Administrador');
+                } elseif ($request->get('funcao_id') == 2) {
+                    $user->assignRole('Sindico');
+                } elseif ($request->get('funcao_id') == 3) {
+                    $user->assignRole('Condomino');
+                } 
+            } */
+            Pessoa::create([
+                'nome_pessoa' => head($nomecompleto),
+                'sobre_nome_pessoa' => last($nomecompleto),
+                'numero_identificacao' => isset($request->numero_identificacao) ? $request->numero_identificacao : $user->telefone,
+                'email_pessoa' => isset($request->email) ? $request->email : null,
+                'telefone_pessoa' =>  $user->telefone,
+                'user_id' => $user->id,
+                'funcao_id' => Funcoes::where('designacao',$request->roles)->pluck('id')->first(),
+                'estado_civil_id' => null,
+                'tipo_documento_identificacao_id' => isset($request->tipo_documento_identificacao_id) ? $request->tipo_documento_identificacao_id : null,
+                'genero_id' => null,
+                'chefe_area' => null,
+            ]);
             $user->assignRole($request->roles);
             // RemoveRole();
 
@@ -63,13 +90,11 @@ class UserController extends Controller
 
             // return redirect('users/user');
             DB::commit();
-            return redirect()->back()->with('success ', 'Foi cadastrado com sucesso');
+            return redirect()->back()->with('success ', 'Foi cadastrado com sucesso o utilizador');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Não foi possível realizar está operação.');
+            return redirect()->back()->with('error', 'Não foi possível realizar está operação.'.$e->getMessage());
         }
-
-   
     }
     public function edit(Request  $request)
     {

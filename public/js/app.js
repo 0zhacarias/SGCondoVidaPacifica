@@ -5581,6 +5581,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.vue");
 /* harmony import */ var _components_TabApartamento__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/TabApartamento */ "./resources/js/components/TabApartamento.vue");
+/* harmony import */ var _Bloco_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Bloco.vue */ "./resources/js/Pages/User/Bloco.vue");
 //
 //
 //
@@ -5997,11 +5998,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // props são variaveis que podem ser acessadas em qualquer parte do projeto e aqui estou a usalos para armazenas os dados vindo do banco de dado.
-  props: ["tipos_apartamento", "todos_apartamentos", "apartamentos", "condominos", "estado_apartamentos", "control_apartamentos", "sindicos", 'blocos', 'condominos', 'apartamentos'],
+  props: ["tipos_apartamento", "todos_apartamentos", "apartamentos", "condominos", "estado_apartamentos", "control_apartamentos", "sindicos", 'blocos', 'bloco_id'],
   components: {
     AppLayout: _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     TabApartamento: _components_TabApartamento__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -6016,7 +6018,9 @@ __webpack_require__.r(__webpack_exports__);
       apartamento_responsavel: {
         responsavel_id: []
       },
-      apartamento: {},
+      apartamento: {
+        bloco_id: []
+      },
       defaultapartamento: {},
       projecto_apartamento: {},
       query: {},
@@ -6271,7 +6275,7 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.$refs["formapartamentos"].validate()) {
         if (this.editedIndex > -1) {
-          this.apartamento.projecto_id;
+          this.apartamento.bloco_id = this.bloco_id;
           this.$inertia.put("/apartamentos/apartamento/".concat(this.apartamento.id), this.apartamento, {
             onFinish: function onFinish() {
               if (_this8.$page.props.flash.success != null) {
@@ -6290,10 +6294,7 @@ __webpack_require__.r(__webpack_exports__);
             }
           });
         } else {
-          if (this.projecto_marcado) {
-            this.apartamento.projecto_id = this.projecto_marcado;
-          } //  alert(JSON.stringify(this.apartamento))
-
+          this.apartamento.bloco_id = this.bloco_id; // alert(JSON.stringify(this.bloco_id))
 
           this.$inertia.post("/apartamentos/apartamento", this.apartamento, {
             onFinish: function onFinish() {
@@ -9247,7 +9248,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.vue");
-//
 //
 //
 //
@@ -13972,6 +13972,63 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
@@ -14340,7 +14397,7 @@ __webpack_require__.r(__webpack_exports__);
       deletedIndex: -1,
       headersBloco: [{
         text: "Nº",
-        value: "descricao",
+        value: "id",
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
       }, {
@@ -14349,7 +14406,7 @@ __webpack_require__.r(__webpack_exports__);
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
       }, {
-        text: "Nome do condominio",
+        text: "Nome do condomino",
         value: "condomino.nome_pessoa",
         "class": "font-weight-bold  black--text subtitle-1 my-3",
         sortable: false
@@ -14379,15 +14436,17 @@ __webpack_require__.r(__webpack_exports__);
       }],
       headersSindico: [{
         text: "Nº",
-        value: "",
+        value: "id",
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
-      }, {
-        text: "Descrição do Apartamento",
-        value: "apartamento.descricao",
-        "class": "font-weight-bold black--text subtitle-1 my-3 ",
-        sortable: false
-      }, {
+      },
+      /*   {
+            text: "Descrição do Apartamento",
+            value: "apartamento.descricao",
+            class: "font-weight-bold black--text subtitle-1 my-3 ",
+            sortable: false,
+        }, */
+      {
         text: "Nome do Sindico",
         value: "nome_pessoa",
         "class": "font-weight-bold  black--text subtitle-1 my-3",
@@ -97368,8 +97427,9 @@ var render = function () {
                         _c("v-autocomplete", {
                           attrs: {
                             "prepend-icon": "",
+                            items: _vm.blocos,
                             "item-value": "id",
-                            "item-text": "nome_proj",
+                            "item-text": "descricao_bloco",
                             type: "text",
                             outlined: "",
                             clearable: "",
@@ -97403,8 +97463,9 @@ var render = function () {
                         _c("v-autocomplete", {
                           attrs: {
                             "prepend-icon": "",
+                            items: _vm.sindicos,
                             "item-value": "id",
-                            "item-text": "nome_responsavel",
+                            "item-text": "nome_pessoa",
                             type: "text",
                             outlined: "",
                             clearable: "",
@@ -97432,12 +97493,13 @@ var render = function () {
                       { attrs: { cols: "6", sm: "6", md: "2" } },
                       [
                         _c("label", { attrs: { for: "" } }, [
-                          _vm._v("N apartamento"),
+                          _vm._v("Apartamento"),
                         ]),
                         _vm._v(" "),
                         _c("v-autocomplete", {
                           attrs: {
                             clearable: "",
+                            items: _vm.apartamentos,
                             "item-text": "designacao",
                             "item-value": "id",
                             "prepend-icon": "",
@@ -97472,7 +97534,8 @@ var render = function () {
                         _c("v-autocomplete", {
                           attrs: {
                             clearable: "",
-                            "item-text": "designacao",
+                            items: _vm.tipos_apartamento,
+                            "item-text": "descricao",
                             "item-value": "id",
                             "prepend-icon": "",
                             label: "Tipologia",
@@ -97541,7 +97604,7 @@ var render = function () {
                             },
                             on: {
                               click: function ($event) {
-                                return _vm.carregarDialog()
+                                return _vm.filtarInformacoes()
                               },
                             },
                           },
@@ -99419,7 +99482,7 @@ var render = function () {
                                   cols: "12",
                                   sm: "12",
                                   md: "6",
-                                  lg: _vm.blocos.length <= 3 ? 6 : 3,
+                                  lg: _vm.blocos.length <= 3 ? 6 : 4,
                                 },
                                 on: {
                                   click: function ($event) {
@@ -99463,7 +99526,7 @@ var render = function () {
                                     _c("div", { staticClass: "text-h6 ml-1" }, [
                                       _c("div", [
                                         _vm._v(
-                                          "\n                                            Bloco\n                                            "
+                                          "\n                                            Bloco:b\n                                            "
                                         ),
                                         _c(
                                           "span",
@@ -99474,7 +99537,7 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("div", [
                                         _vm._v(
-                                          "\n                                            Sindico\n                                            "
+                                          "\n                                            Sindico: \n                                            "
                                         ),
                                         _c(
                                           "span",
@@ -99493,7 +99556,7 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("div", [
                                         _vm._v(
-                                          "\n                                            Nº de Apartamentos\n                                            "
+                                          "\n                                            Nº de Apartamentos: \n                                            "
                                         ),
                                         _c(
                                           "span",
@@ -99633,28 +99696,6 @@ var render = function () {
                                                     ),
                                                   ],
                                                   1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-btn",
-                                                  {
-                                                    staticStyle: {
-                                                      "background-color":
-                                                        "#19a1be",
-                                                    },
-                                                    attrs: {
-                                                      justify: "end",
-                                                      align: "right",
-                                                      rounded: "",
-                                                      dark: "",
-                                                      icon: "",
-                                                    },
-                                                  },
-                                                  [
-                                                    _vm._v(
-                                                      "\n                                                    Ver\n                                                    \n                                                "
-                                                    ),
-                                                  ]
                                                 ),
                                                 _vm._v(" "),
                                                 _c(
@@ -102419,7 +102460,8 @@ var render = function () {
                                       {
                                         attrs: {
                                           color:
-                                            servico.created_by == _vm.user.id
+                                            servico.created_by ==
+                                            _vm.user.responsavel.id
                                               ? "green"
                                               : "red",
                                         },
@@ -102431,7 +102473,7 @@ var render = function () {
                                               "Serviços :" +
                                                 _vm._s(
                                                   servico.created_by ==
-                                                    _vm.user.id
+                                                    _vm.user.responsavel.id
                                                     ? "Pago"
                                                     : "Não pago"
                                                 )
@@ -103961,7 +104003,7 @@ var render = function () {
         ],
         1
       ),
-      _vm._v("\n    -->\n    "),
+      _vm._v(" "),
       _vm.dialogDelete
         ? _c(
             "v-dialog",
@@ -103994,7 +104036,7 @@ var render = function () {
                           attrs: {
                             rounded: "",
                             outlined: "",
-                            color: "red",
+                            color: "#00897B",
                             dark: "",
                           },
                           on: {
@@ -104012,7 +104054,7 @@ var render = function () {
                           attrs: {
                             rounded: "",
                             outlined: "",
-                            color: "#00897B",
+                            color: "red",
                             dark: "",
                           },
                           on: {
@@ -104131,7 +104173,11 @@ var render = function () {
                           _c(
                             "v-btn",
                             {
-                              attrs: { rounded: "", outlined: "", dark: "" },
+                              attrs: {
+                                rounded: "",
+                                outlined: "",
+                                color: "red",
+                              },
                               on: {
                                 click: function ($event) {
                                   return _vm.cancelarDialog()
@@ -104144,7 +104190,11 @@ var render = function () {
                           _c(
                             "v-btn",
                             {
-                              attrs: { rounded: "", outlined: "", dark: "" },
+                              attrs: {
+                                rounded: "",
+                                outlined: "",
+                                color: "#00897B",
+                              },
                               on: {
                                 click: function ($event) {
                                   return _vm.save()
@@ -111228,11 +111278,15 @@ var render = function () {
                       _c(
                         "v-list-item-content",
                         [
-                          _c("v-list-item-title", [
-                            _vm._v(
-                              "\n                          Despesas\n                        "
-                            ),
-                          ]),
+                          _c(
+                            "v-list-item-title",
+                            { staticClass: "font-weight-bold" },
+                            [
+                              _vm._v(
+                                "\n                          Despesas\n                        "
+                              ),
+                            ]
+                          ),
                         ],
                         1
                       ),
@@ -111333,11 +111387,15 @@ var render = function () {
                       _c(
                         "v-list-item-content",
                         [
-                          _c("v-list-item-title", [
-                            _vm._v(
-                              "\n                          Pagamentos\n                        "
-                            ),
-                          ]),
+                          _c(
+                            "v-list-item-title",
+                            { staticClass: "font-weight-bold" },
+                            [
+                              _vm._v(
+                                "\n                          Pagamentos\n                        "
+                              ),
+                            ]
+                          ),
                         ],
                         1
                       ),
@@ -111385,13 +111443,122 @@ var render = function () {
                       _c(
                         "v-list-item-content",
                         [
-                          _c("v-list-item-title", [
-                            _vm._v(
-                              "\n                          Relatório\n                        "
-                            ),
-                          ]),
+                          _c(
+                            "v-list-item-title",
+                            { staticClass: "font-weight-bold" },
+                            [
+                              _vm._v(
+                                "\n                          Relatório\n                        "
+                              ),
+                            ]
+                          ),
                         ],
                         1
+                      ),
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.user.can["Gerir funções"]
+                ? _c(
+                    "inertia-link",
+                    {
+                      staticClass:
+                        "color-text-link remover-link py-2 font-weight-medium text-caption",
+                      class: {
+                        active_name_group:
+                          _vm.$page.url === "/tabela_de_apoio/funcoes",
+                        active: _vm.$page.url === "/tabela_de_apoio/funcoes",
+                      },
+                      attrs: {
+                        href: "/tabela_de_apoio/funcoes",
+                        as: "v-list-item",
+                      },
+                    },
+                    [
+                      _c(
+                        "v-list-item-action",
+                        [
+                          _c(
+                            "v-icon",
+                            {
+                              attrs: {
+                                color:
+                                  _vm.$page.url === "/tabela_de_apoio/funcoes"
+                                    ? "white"
+                                    : "",
+                              },
+                            },
+                            [_vm._v("list")]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-item-content",
+                        [
+                          _c(
+                            "v-list-item-title",
+                            { staticClass: "font-weight-bold" },
+                            [_vm._v(" Funções ")]
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.user.can["gerir permissao"]
+                ? _c(
+                    "inertia-link",
+                    {
+                      staticClass: "color-text-link remover-link",
+                      class: {
+                        active:
+                          _vm.$page.url === "/permission/funcoes-permissoes",
+                      },
+                      attrs: {
+                        link: "",
+                        href: "/permission/funcoes-permissoes",
+                        as: "v-list-item",
+                      },
+                    },
+                    [
+                      _c(
+                        "v-list-item-icon",
+                        [
+                          _c(
+                            "v-icon",
+                            {
+                              attrs: {
+                                color:
+                                  _vm.$page.url ===
+                                  "/permission/funcoes-permissoes"
+                                    ? "white"
+                                    : "",
+                              },
+                            },
+                            [_vm._v("settings")]
+                          ),
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-list-item-title",
+                        {
+                          staticClass: "font-weight-bold",
+                          class: {
+                            active_name_group:
+                              _vm.$page.url ===
+                              "/permission/funcoes-permissoes",
+                          },
+                        },
+                        [_vm._v("Funções e Permissões")]
                       ),
                     ],
                     1

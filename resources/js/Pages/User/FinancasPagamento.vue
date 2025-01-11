@@ -26,9 +26,9 @@
                                         <v-row class="m-0 p-0">
                                             <v-col class="p-1" v-for="servico in item.servicos" :key="servico"
                                                 :md="item.servicos.length > 4 ? 2 : 3">
-                                                <v-card :color="servico.created_by==user.id? 'green' : 'red'">
+                                                <v-card :color="servico.created_by==user.responsavel.id? 'green' : 'red'">
                                                     <v-card-text>
-                                                      <h4>Serviços :{{servico.created_by==user.id?"Pago" :"Não pago"}}</h4>  {{ servico.descricao }}
+                                                      <h4>Serviços :{{servico.created_by==user.responsavel.id?"Pago" :"Não pago"}}</h4>  {{ servico.descricao }}
                                                     </v-card-text>
                                                 </v-card>
                                             </v-col>

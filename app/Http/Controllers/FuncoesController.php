@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Funcoes;
 use App\Models\Responsavel;
+use Spatie\Permission\Models\Role;
 
 class FuncoesController extends Controller
 {
@@ -22,6 +23,10 @@ class FuncoesController extends Controller
         try
         {
             Funcoes::create($request ->all());
+            Role::create([
+                'name'=> $request->designacao, 
+                'guard_name'=> "web"
+            ]);
        //     return redirect('/tabela_de_apoio/funcoes');
             return redirect()->back()->with('success', 'foi possivel');
         }catch(\Exception $e){

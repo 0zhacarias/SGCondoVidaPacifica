@@ -83,7 +83,7 @@
                             <v-row align="center" justify="center" dense>
                                 <v-col v-for="item in props.items" :key="item.nome_proj"
                                     @click="tarefasProjecto(item.id)" cols="12" sm="12" md="6"
-                                    :lg="blocos.length <= 3 ? 6 : 3">
+                                    :lg="blocos.length <= 3 ? 6 : 4">
                                     <v-card class="mx-auto" color="#0E85A3" dark max-width="400">
                                         <v-card-title style="background-color: #19a1be">
                                             <v-icon large center>
@@ -94,16 +94,16 @@
 
                                         <div class="text-h6 ml-1">
                                             <div>
-                                                Bloco
+                                                Bloco:b
                                                 <span class="font-weight-bold">{{ item.descricao_bloco }}</span>
                                             </div>
                                             <div>
-                                                Sindico
+                                                Sindico: 
                                                 <span class="font-weight-bold">{{ item.sindico.nome_pessoa }}
                                                     {{ item.sindico.sobre_nome_pessoa }}</span>
                                             </div>
                                             <div>
-                                                Nº de Apartamentos
+                                                Nº de Apartamentos: 
                                                 <span class="font-weight-bold">{{ item.numero_apartamento }}</span>
                                             </div>
                                         </div>
@@ -141,12 +141,12 @@
                                                         " color="blue" title="Visualizar a documentação do bloco">
                                                         <v-icon small>attach_file</v-icon>
                                                     </v-btn>
-                                                    <v-btn justify="end"  align="right" style="
+                                                    <!-- <v-btn justify="end"  align="right" style="
                                                             background-color: #19a1be;
                                                         " rounded dark icon>
                                                         Ver
                                                         
-                                                    </v-btn>
+                                                    </v-btn> -->
                                                     <v-menu transition="slide-x-transition" bottom right>
                                                         <template v-slot:activator="{
                                                             on,

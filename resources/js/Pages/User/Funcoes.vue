@@ -88,7 +88,6 @@
                 </template>
             </v-card>
         </v-container>
-        -->
         <v-dialog v-if="dialogDelete" v-model="dialogDelete" max-width="500px">
             <v-card>
                 <v-card-title class="h1"
@@ -96,8 +95,8 @@
                 >
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn rounded outlined color="red" dark @click="closeDelete()">não</v-btn>
-                    <v-btn rounded outlined color="#00897B" dark @click="deleteItemConfirm()"
+                    <v-btn rounded outlined color="#00897B" dark @click="closeDelete()">não</v-btn>
+                    <v-btn rounded outlined color="red" dark @click="deleteItemConfirm()"
                         >sim</v-btn
                     >
                     <v-spacer></v-spacer>
@@ -139,8 +138,8 @@
                         </v-row>
                     </v-card-text>
                     <v-card-actions class="justify-end">
-                        <v-btn rounded outlined dark @click="cancelarDialog()">Cancelar</v-btn>
-                        <v-btn rounded outlined dark @click="save()">{{
+                        <v-btn rounded outlined  color="red" @click="cancelarDialog()">Cancelar</v-btn>
+                        <v-btn rounded outlined color="#00897B"  @click="save()">{{
                             editedIndex > -1 ? "atualizar" : "adicionar"
                         }}</v-btn>
                     </v-card-actions>

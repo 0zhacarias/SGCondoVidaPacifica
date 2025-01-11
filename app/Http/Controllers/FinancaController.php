@@ -83,9 +83,9 @@ class FinancaController extends Controller
     public function store(Request $request)
     {
         DB::beginTransaction();
-       // dd(request()->servicos);
+       //dd(request());
        $pessoa=Pessoa::where('user_id',auth()->id())->with('apartamento')->first();
-      // dd($pessoa->apartamento->id,count( request()->servicos));
+     // dd($pessoa->apartamento->id,count( request()->servicos));
         $descricao="Emissão de facturas para os serviços do condominio";
          $factura= Factura::create([
             'descricao'=>$descricao,
@@ -94,12 +94,13 @@ class FinancaController extends Controller
             'total_geral'=>$request->input('total_preco_factura'),
             'apartamento_id'=>$pessoa->apartamento->id,
             'valor_depositado'=>$request->input('valor_depositado'),
-            'created_by'=>auth()->id(),
+            'created_by'=>$pessoa->id,
             'estado_factura_id'=>5,
             'data_vencimento'=>date('Y-m-d'),
 
         ]); 
         $servicos= request()->servicos;
+       // dd($servicos);
         $iva=0.14;
         $total_iva=$iva*count($servicos);
         $total_geral=0;
@@ -112,10 +113,12 @@ class FinancaController extends Controller
         
             FacturaItem::create([
                 'factura_id'=>$factura->id,
+                'servico_id'=>$servico['id'],
                 'quantidade'=>$servico['quantidade'],
                 'preco'=>$servico['preco'],
                 'designacao'=>$servico['designacao'],
                 'total'=>$servico['total_g'],
+                'created_by'=>$pessoa->user_id,
             ]);
 
         }
@@ -129,8 +132,8 @@ class FinancaController extends Controller
         DB::rollBack();
     }
 public function relatorio_factura($id) {
-    $factura = Factura::with('factura_itens','estado_fatura','apartamento','pessoa')->find($id);
     //dd($apartamento);
+    $factura = Factura::with('factura_itens','estado_fatura','apartamento','pessoa')->find($id);
     $pdf = PDF::loadView('factura_pdf', [
         'factura' => $factura
     ]);

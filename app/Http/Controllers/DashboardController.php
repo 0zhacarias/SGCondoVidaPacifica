@@ -24,11 +24,19 @@ class DashboardController extends Controller
          $data['mesesNPago'] = Apartamento::count();
          $data['valorPago'] = Apartamento::count();
          $data['condominosSemDividas'] = Pessoa::limit(5)->get();
-      } else {
-         $data['apartamentos'] = Apartamento::count();
-         $data['condominos'] = Pessoa::count();
-         $data['mesesNPago'] = Apartamento::count();
-         $data['valorPago'] = Apartamento::count();
+      } elseif($responsavel_logado->funcao->id == 2){
+         //dd(2);
+         $data['apartamentos'] = Apartamento::where('created_by',$responsavel_logado->user_id)->count();
+         $data['mesesNPago'] = Apartamento::where('created_by',$responsavel_logado->user_id)->count();
+         $data['valorPago'] = Apartamento::where('created_by',$responsavel_logado->user_id)->count();
+         $data['condominos'] = Pessoa::where('user_id',$responsavel_logado->user_id)->count();
+      }
+      else {
+       //  dd(1);
+         $data['apartamentos'] = Apartamento::where('condomino_id',$responsavel_logado->id)->count();
+         $data['mesesNPago'] = Apartamento::where('condomino_id',$responsavel_logado->id)->count();
+         $data['valorPago'] = Apartamento::where('condomino_id',$responsavel_logado->id)->count();
+         $data['condominos'] = Pessoa::where('id',$responsavel_logado->id)->count();
          $data['condominosSemDividas'] = Pessoa::limit(5)->get();
       }
       return Inertia::render('Dashboard', $data);

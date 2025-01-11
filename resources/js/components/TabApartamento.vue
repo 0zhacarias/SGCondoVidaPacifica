@@ -202,7 +202,7 @@ export default {
             headersBloco: [
                 {
                     text: "Nº",
-                    value: "descricao",
+                    value: "id",
                     class: "font-weight-bold black--text subtitle-1 my-3 ",
                     sortable: false,
                 },
@@ -213,7 +213,7 @@ export default {
                     sortable: false,
                 },
                 {
-                    text: "Nome do condominio",
+                    text: "Nome do condomino",
                     value: "condomino.nome_pessoa",
                     class: "font-weight-bold  black--text subtitle-1 my-3",
                     sortable: false,
@@ -252,16 +252,16 @@ export default {
             headersSindico: [
                 {
                     text: "Nº",
-                    value: "",
+                    value: "id",
                     class: "font-weight-bold black--text subtitle-1 my-3 ",
                     sortable: false,
                 },
-                {
+              /*   {
                     text: "Descrição do Apartamento",
                     value: "apartamento.descricao",
                     class: "font-weight-bold black--text subtitle-1 my-3 ",
                     sortable: false,
-                },
+                }, */
                 {
                     text: "Nome do Sindico",
                     value: "nome_pessoa",

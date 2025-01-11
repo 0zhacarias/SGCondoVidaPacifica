@@ -31,14 +31,24 @@ Route::get('/utilizador', function () {
 });*/
 
 //Routa raiz da cara principal do sistema
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
 Auth::routes();
 
 //Gupo de routas do dashboard após o login
 
 //Rotas do SIGCOND
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 
+    Route::get('/home', [App\Http\Controllers\DashboardController::class, 'index'])->name('MenuIncial');
+    Route::get('/dashboard',[App\Http\Controllers\DashboardController::class, 'dashboard']);
+    Route::get('/grafico-responsaveis-tarefa-dashboard', [App\Http\Controllers\DashboardController::class, 'grafico_responsaveis_tarefa_dashboard']);
+    Route::get('/projectos-departamento-dasboard', [App\Http\Controllers\DashboardController::class, 'projectos_departamento_dasboard']);
+    Route::get('/estatistica-grafico-pendente', [App\Http\Controllers\DashboardController::class, 'estatistica_grafico_pendente']);
+    Route::get('/atualizar-tarefas-atrasada', [App\Http\Controllers\ApartamentoController::class, 'atualizar_tarefa_atrasada']);
+
+
+});
 Route::group(['middleware'=>'auth', 'prefix'=>'financas'], function(){
     Route::get('despesa',[DespesaController::class,'index']);
     Route::post('/despesas-saida',[DespesaController::class,'store'])->name('saida');
@@ -66,22 +76,11 @@ Route::group(['middleware'=>'auth', 'prefix'=>'relatorios'],function(){
 });
 
 
-Route::group(['middleware' => 'auth'], function () {
-
-    Route::get('/home', [App\Http\Controllers\DashboardController::class, 'index'])->name('MenuIncial');
-    Route::get('/dashboard',[App\Http\Controllers\DashboardController::class, 'dashboard']);
-    Route::get('/grafico-responsaveis-tarefa-dashboard', [App\Http\Controllers\DashboardController::class, 'grafico_responsaveis_tarefa_dashboard']);
-    Route::get('/projectos-departamento-dasboard', [App\Http\Controllers\DashboardController::class, 'projectos_departamento_dasboard']);
-    Route::get('/estatistica-grafico-pendente', [App\Http\Controllers\DashboardController::class, 'estatistica_grafico_pendente']);
-    Route::get('/atualizar-tarefas-atrasada', [App\Http\Controllers\ApartamentoController::class, 'atualizar_tarefa_atrasada']);
-
-
-});
 Route::group(['prefix'=>'apartamentos','middleware'=>'auth'],function(){
 Route::get('apartamento',[ApartamentoController::class,'index']);
 });
 Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
-    Route::resource('user', \App\Http\Controllers\UserController::class);
+   Route::resource('user', \App\Http\Controllers\UserController::class);
     Route::get('/perfils', [\App\Http\Controllers\UserController::class, 'perfil'])->name('perfil');
     Route::put('atualizar-senha/{id}', [\App\Http\Controllers\UserController::class, 'atualizar_senha']);
     Route::put('atualizar-perfil/{id}', [\App\Http\Controllers\UserController::class, 'atualizar_perfil']);
@@ -142,6 +141,9 @@ Route::group(['prefix' => 'permission', 'middleware' => ['auth']], function () {
     Route::delete('/delete-funcao/{id}', [App\Http\Controllers\FuncoesPermissoesController::class, 'deleteRoles']);
     Route::delete('/delete-permissao/{id}', [App\Http\Controllers\FuncoesPermissoesController::class, 'deletePermissions']);
     Route::get('/associar-funcoes-permissoes', [App\Http\Controllers\FuncoesPermissoesController::class, 'funcao_permissao']);
+});
+Route::group(['prefix' => 'tabela_de_apoio', 'middleware' => 'auth'], function () {
+    Route::resource('/funcoes', App\Http\Controllers\FuncoesController::class);
 });
 
 

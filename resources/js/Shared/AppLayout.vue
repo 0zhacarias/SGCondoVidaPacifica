@@ -537,7 +537,7 @@
                             >
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>
+                            <v-list-item-title class="font-weight-bold">
                               Despesas
                             </v-list-item-title>
                         </v-list-item-content>
@@ -593,7 +593,7 @@
                             >
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>
+                            <v-list-item-title class="font-weight-bold">
                               Pagamentos
                             </v-list-item-title>
                         </v-list-item-content>
@@ -621,11 +621,66 @@
                             >
                         </v-list-item-action>
                         <v-list-item-content>
-                            <v-list-item-title>
+                            <v-list-item-title class="font-weight-bold">
                               Relatório
                             </v-list-item-title>
                         </v-list-item-content>
                     </inertia-link>
+                    <inertia-link
+                        v-if="user.can['Gerir funções']"
+                        class="color-text-link remover-link py-2 font-weight-medium text-caption"
+                        href="/tabela_de_apoio/funcoes"
+                        as="v-list-item"
+                        :class="{
+                            active_name_group:$page.url === '/tabela_de_apoio/funcoes',
+                            active: $page.url === '/tabela_de_apoio/funcoes',
+
+                        }"
+                    >
+                        <v-list-item-action>
+                            <v-icon
+                                :color="
+                                    $page.url === '/tabela_de_apoio/funcoes'
+                                        ? 'white'
+                                        : ''
+                                "
+                                >list</v-icon
+                            >
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title class="font-weight-bold"> Funções </v-list-item-title>
+                        </v-list-item-content>
+                    </inertia-link>
+                    <inertia-link
+                    v-if="user.can['gerir permissao']"
+                    link
+                    class="color-text-link remover-link"
+                    href="/permission/funcoes-permissoes"
+                    as="v-list-item"
+                    :class="{
+                        active: $page.url === '/permission/funcoes-permissoes',
+                    }"
+                >
+                    <v-list-item-icon>
+                        <v-icon
+                            :color="
+                                $page.url === '/permission/funcoes-permissoes'
+                                    ? 'white'
+                                    : ''
+                            "
+                            >settings</v-icon
+                        >
+                    </v-list-item-icon>
+                    <v-list-item-title
+                        class="font-weight-bold"
+                        :class="{
+                            active_name_group:
+                                $page.url === '/permission/funcoes-permissoes',
+                        }"
+                        >Funções e Permissões</v-list-item-title
+                    >
+                </inertia-link>
+              
              
 
                 <!-- <v-list-item href="/tarefas/tarefa" class="color-text-link remover-link py-2" link  v-if="user.can['gerir tarefas gerais']">
@@ -975,7 +1030,7 @@
                         <v-list-item-content>
                             <v-list-item-title>
                                 Parametrização Acção
-                            </v-list-item-title>
+                            </v-list-item-title>f
                         </v-list-item-content>
                     </inertia-link>
 
@@ -1036,7 +1091,9 @@
                     >
                 </inertia-link>
                 -->
-              
+                
+
+               
                 <v-list-item link @click="logout" class="py-1">
                     <v-list-item-icon>
                         <v-icon>mdi-account-arrow-left</v-icon>

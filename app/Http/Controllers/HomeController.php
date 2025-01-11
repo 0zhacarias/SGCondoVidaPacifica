@@ -24,6 +24,7 @@ class HomeController extends Controller
      */
     public function index()
    {
-    return Inertia::render('Hm/Dashboard');
+    return redirect()->route('MenuIncial');
+    //return Inertia::render('Dashboard');
    }
 }
