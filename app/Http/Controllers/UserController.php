@@ -41,7 +41,7 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-         dd($request);
+         //dd($request);
         DB::beginTransaction();
 
         try {

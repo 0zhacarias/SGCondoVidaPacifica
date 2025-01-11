@@ -45,6 +45,7 @@ Route::group(['middleware'=>'auth', 'prefix'=>'financas'], function(){
     
 Route::get('/index',[FinancaController::class,'index' ])->name('financa.index');
 Route::get('/pagamentos',[FinancaController::class,'despesa_index' ])->name('despesas.index');
+Route::post('/crear_despesa',[FinancaController::class,'crear_despesa' ])->name('crear_despesa');
 Route::get('/factura_pagamentos',[FinancaController::class,'pagamento_index' ])->name('pagamento.index');
 Route::get('/factura',[FinancaController::class,'factura']);
 Route::post('/emitir-factura',[FinancaController::class,'store'])->name('emitir_factura');

@@ -1055,12 +1055,12 @@
         <!-- Sizes your content based upon application components -->
         <v-main id="#scrolling-techniques-1" class="body mt-16 pa-16">
             <!-- Provides the application the proper gutter -->
-          <!--   <v-container> -->
+            <v-container>
                 <!-- <v-overlay :value="overlay">
           <v-img src="/img/loader4.gif"></v-img>
         </v-overlay> -->
                 <slot />
-            <!-- </v-container> -->
+            </v-container>
         </v-main>
 
 

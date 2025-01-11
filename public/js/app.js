@@ -7084,6 +7084,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -7102,6 +7152,9 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
     return {
       // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
       factura: {},
+      despesa: {},
+      defaultdespesa: {},
+      dialogDespesas: false,
       servicos_selecionado: [],
       todos_servicos: [],
       query: {
@@ -7147,6 +7200,39 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
     };
   },
   methods: {
+    carregarDialog: function carregarDialog() {
+      this.despesa = Object.assign({}, this.defaultdespesa);
+      this.editIndex = -1;
+      this.dialogDespesas = true;
+    },
+    closeSave: function closeSave() {
+      this.dialogDespesas = Object.assign({}, this.defaultdespesa);
+      this.editedIndex = -1;
+      this.dialogDespesas = false;
+    },
+    saveDespesas: function saveDespesas() {
+      var _this = this;
+
+      if (this.$refs["formdespesa"].validate()) {
+        this.$inertia.post("/financas/crear_despesa", this.despesa, {
+          onFinish: function onFinish() {
+            if (_this.$page.props.flash.success != null) {
+              Vue.toasted.global.defaultSuccess({
+                msg: "" + _this.$page.props.flash.success
+              });
+            }
+
+            if (_this.$page.props.flash.error != null) {
+              Vue.toasted.global.defaultError({
+                msg: "" + _this.$page.props.flash.error
+              });
+            }
+
+            _this.closeSave();
+          }
+        });
+      }
+    },
     Servicos: function Servicos(item) {
       var dados = this.servicos_map.find(function (eleem) {
         return eleem.id == item;
@@ -7159,23 +7245,29 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       }, 0);
       this.total_preco = total.reduce(function (primeiro, ultimo) {
         return primeiro + parseInt(ultimo.preco);
-      }, 0);
+      }, 0).toLocaleString('pt-AO', {
+        style: 'currency',
+        currency: 'AOA'
+      });
       this.total_geral = total.reduce(function (primeiro, ultimo) {
         return primeiro + parseInt(ultimo.total_g);
-      }, 0);
+      }, 0).toLocaleString('pt-AO', {
+        style: 'currency',
+        currency: 'AOA'
+      });
     },
     DespesaServicos: function DespesaServicos() {
-      var _this = this;
+      var _this2 = this;
 
       axios__WEBPACK_IMPORTED_MODULE_3___default().post('/financas/despesas-saida', {
         servicos: this.servicos_selecionado
       }).then(function (response) {
         window.open('/relatorios/despesas/' + response.data.despesa_id);
-        _this.servicos_selecionado = [];
-        _this.pagamento = [];
-        _this.total_quantidade = 0;
-        _this.total_preco = 0;
-        _this.total_geral = 0;
+        _this2.servicos_selecionado = [];
+        _this2.pagamento = [];
+        _this2.total_quantidade = 0;
+        _this2.total_preco = 0;
+        _this2.total_geral = 0;
       });
     }
   },
@@ -7772,10 +7864,16 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       }, 0);
       this.total_preco = total.reduce(function (primeiro, ultimo) {
         return primeiro + parseInt(ultimo.preco);
-      }, 0);
+      }, 0).toLocaleString('pt-AO', {
+        style: 'currency',
+        currency: 'AOA'
+      });
       this.total_geral = total.reduce(function (primeiro, ultimo) {
         return primeiro + parseInt(ultimo.total_g);
-      }, 0);
+      }, 0).toLocaleString('pt-AO', {
+        style: 'currency',
+        currency: 'AOA'
+      });
     },
     EmitirFatura: function EmitirFatura() {
       var _this = this;
@@ -10880,6 +10978,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 
 
@@ -11115,10 +11215,11 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       this.dialogPagamento = true;
     },
     editItem: function editItem(item) {
-      this.filtrarProjectoResponsavel(item.projecto_id);
-      this.editedIndex = this.Pagamentos.indexOf(item);
+      //alert(JSON.stringify(this.facturas));
+      this.editedIndex = this.facturas.indexOf(item); //this.filtrarProjectoResponsavel(item.projecto_id);
+
       this.pagamento = Object.assign({}, item);
-      this.dialog = true;
+      this.dialogPagamento = true;
     },
     verDetalhe: function verDetalhe(item) {
       this.pagamento = Object.assign({}, item);
@@ -11200,11 +11301,11 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
                   msg: "" + _this9.$page.props.flash.error
                 });
               }
-
-              _this9.cancelarDialog();
             }
           });
         }
+
+        this.cancelarDialog();
       }
     }
   },
@@ -100480,7 +100581,7 @@ var render = function () {
           [
             _c(
               "v-card",
-              { staticClass: "mb-10 p-2", attrs: { elevation: "0" } },
+              { staticClass: "mb-10", attrs: { elevation: "0" } },
               [
                 _c(
                   "v-row",
@@ -100490,6 +100591,248 @@ var render = function () {
                         _vm._v("Despesas"),
                       ]),
                     ]),
+                    _vm._v(" "),
+                    _c(
+                      "v-col",
+                      { staticClass: "text-right" },
+                      [
+                        _c(
+                          "v-btn",
+                          {
+                            staticClass: "white--text font-weight-bold",
+                            attrs: {
+                              color: "corprincipal",
+                              title: "cadastrar despesas",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.carregarDialog()
+                              },
+                            },
+                          },
+                          [_vm._v("Adicionar\n                        ")]
+                        ),
+                        _vm._v(" "),
+                        _vm.dialogDespesas
+                          ? _c(
+                              "v-dialog",
+                              {
+                                attrs: { width: "500", persistent: "" },
+                                model: {
+                                  value: _vm.dialogDespesas,
+                                  callback: function ($$v) {
+                                    _vm.dialogDespesas = $$v
+                                  },
+                                  expression: "dialogDespesas",
+                                },
+                              },
+                              [
+                                _c(
+                                  "v-card",
+                                  [
+                                    _c(
+                                      "v-toolbar",
+                                      {
+                                        staticClass:
+                                          "text-uppercase font-weight-bold",
+                                        attrs: { elevation: "0" },
+                                      },
+                                      [
+                                        _c("v-toolbar-title", [
+                                          _vm._v(
+                                            "\n                                        " +
+                                              _vm._s(
+                                                _vm.editedIndex == -1
+                                                  ? "Adicionar Despesa"
+                                                  : "Atualizar Despesa"
+                                              ) +
+                                              "\n                                    "
+                                          ),
+                                        ]),
+                                        _vm._v(" "),
+                                        _c("v-spacer"),
+                                        _vm._v(" "),
+                                        _c(
+                                          "v-icon",
+                                          {
+                                            attrs: { color: "red" },
+                                            on: {
+                                              click: function ($event) {
+                                                return _vm.closeSave()
+                                              },
+                                            },
+                                          },
+                                          [_vm._v("mdi-close")]
+                                        ),
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-card-text",
+                                      [
+                                        _c(
+                                          "v-card",
+                                          {
+                                            staticClass: "mb-2",
+                                            attrs: { flat: "" },
+                                          },
+                                          [
+                                            _c(
+                                              "v-form",
+                                              {
+                                                ref: "formdespesa",
+                                                attrs: {
+                                                  "lazy-validation": "",
+                                                },
+                                              },
+                                              [
+                                                _c(
+                                                  "v-row",
+                                                  [
+                                                    _c(
+                                                      "v-col",
+                                                      { attrs: { cols: "7" } },
+                                                      [
+                                                        _c("v-text-field", {
+                                                          staticClass: "pb-2",
+                                                          attrs: {
+                                                            outlined: "",
+                                                            dense: "",
+                                                            label:
+                                                              "Designação do despesa",
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm.despesa
+                                                                .designacao,
+                                                            callback: function (
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm.despesa,
+                                                                "designacao",
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "despesa.designacao\n                                                        ",
+                                                          },
+                                                        }),
+                                                      ],
+                                                      1
+                                                    ),
+                                                    _vm._v(" "),
+                                                    _c(
+                                                      "v-col",
+                                                      { attrs: { cols: "5" } },
+                                                      [
+                                                        _c("v-text-field", {
+                                                          attrs: {
+                                                            outlined: "",
+                                                            dense: "",
+                                                            type: "number",
+                                                            label: "Valor ",
+                                                            "hide-details":
+                                                              "auto",
+                                                            min: "1",
+                                                            max: "99999",
+                                                          },
+                                                          model: {
+                                                            value:
+                                                              _vm.despesa.preco,
+                                                            callback: function (
+                                                              $$v
+                                                            ) {
+                                                              _vm.$set(
+                                                                _vm.despesa,
+                                                                "preco",
+                                                                $$v
+                                                              )
+                                                            },
+                                                            expression:
+                                                              "despesa.preco",
+                                                          },
+                                                        }),
+                                                      ],
+                                                      1
+                                                    ),
+                                                  ],
+                                                  1
+                                                ),
+                                                _vm._v(" "),
+                                                _c("v-flex", {
+                                                  staticClass: "text-right",
+                                                  attrs: { top: "" },
+                                                }),
+                                                _vm._v(" "),
+                                                _c("v-spacer"),
+                                                _vm._v(" "),
+                                                _c(
+                                                  "div",
+                                                  { staticClass: "text-right" },
+                                                  [
+                                                    _vm.editedIndex == -1
+                                                      ? _c(
+                                                          "v-btn",
+                                                          {
+                                                            attrs: {
+                                                              color: "teal",
+                                                              dark: "",
+                                                            },
+                                                            on: {
+                                                              click: function (
+                                                                $event
+                                                              ) {
+                                                                return _vm.saveDespesas()
+                                                              },
+                                                            },
+                                                          },
+                                                          [_vm._v("Guardar")]
+                                                        )
+                                                      : _vm._e(),
+                                                    _vm._v(" "),
+                                                    _vm.editedIndex > -1
+                                                      ? _c(
+                                                          "v-btn",
+                                                          {
+                                                            attrs: {
+                                                              color: "teal",
+                                                              dark: "",
+                                                            },
+                                                            on: {
+                                                              click: function (
+                                                                $event
+                                                              ) {
+                                                                return _vm.saveDespesas()
+                                                              },
+                                                            },
+                                                          },
+                                                          [_vm._v("Actualizar")]
+                                                        )
+                                                      : _vm._e(),
+                                                  ],
+                                                  1
+                                                ),
+                                              ],
+                                              1
+                                            ),
+                                          ],
+                                          1
+                                        ),
+                                      ],
+                                      1
+                                    ),
+                                  ],
+                                  1
+                                ),
+                              ],
+                              1
+                            )
+                          : _vm._e(),
+                      ],
+                      1
+                    ),
                   ],
                   1
                 ),
@@ -100624,7 +100967,17 @@ var render = function () {
                                                 ]),
                                                 _vm._v(" "),
                                                 _c("td", [
-                                                  _vm._v(_vm._s(item.preco)),
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      item.preco.toLocaleString(
+                                                        "pt-AO",
+                                                        {
+                                                          style: "currency",
+                                                          currency: "AOA",
+                                                        }
+                                                      )
+                                                    )
+                                                  ),
                                                 ]),
                                                 _vm._v(" "),
                                                 _c(
@@ -100692,7 +101045,13 @@ var render = function () {
                                                         _vm._s(
                                                           (item.total_g =
                                                             item.preco *
-                                                            item.quantidade)
+                                                            item.quantidade).toLocaleString(
+                                                            "pt-AO",
+                                                            {
+                                                              style: "currency",
+                                                              currency: "AOA",
+                                                            }
+                                                          )
                                                         )
                                                       ),
                                                     ])
@@ -101480,7 +101839,17 @@ var render = function () {
                                                 ]),
                                                 _vm._v(" "),
                                                 _c("td", [
-                                                  _vm._v(_vm._s(item.preco)),
+                                                  _vm._v(
+                                                    _vm._s(
+                                                      item.preco.toLocaleString(
+                                                        "pt-AO",
+                                                        {
+                                                          style: "currency",
+                                                          currency: "AOA",
+                                                        }
+                                                      )
+                                                    )
+                                                  ),
                                                 ]),
                                                 _vm._v(" "),
                                                 _c(
@@ -101548,7 +101917,13 @@ var render = function () {
                                                         _vm._s(
                                                           (item.total_g =
                                                             item.preco *
-                                                            item.quantidade)
+                                                            item.quantidade).toLocaleString(
+                                                            "pt-AO",
+                                                            {
+                                                              style: "currency",
+                                                              currency: "AOA",
+                                                            }
+                                                          )
                                                         )
                                                       ),
                                                     ])
@@ -105434,42 +105809,6 @@ var render = function () {
                                   attrs: { text: "" },
                                   on: {
                                     click: function ($event) {
-                                      return _vm.editItem(item)
-                                    },
-                                  },
-                                },
-                                [
-                                  _c(
-                                    "v-icon",
-                                    {
-                                      staticClass: "mr-2",
-                                      attrs: {
-                                        color: "blue",
-                                        icon: "",
-                                        large: "",
-                                        title: "Editar",
-                                        disabled:
-                                          item.estado_factura_id == 6 ||
-                                          item.estado_factura_id == 7 ||
-                                          item.estado_factura_id == 4,
-                                      },
-                                    },
-                                    [
-                                      _vm._v(
-                                        "\n                                    mdi-pencil\n                                "
-                                      ),
-                                    ]
-                                  ),
-                                ],
-                                1
-                              ),
-                              _vm._v(" "),
-                              _c(
-                                "button",
-                                {
-                                  attrs: { text: "" },
-                                  on: {
-                                    click: function ($event) {
                                       return _vm.deleteItem(item)
                                     },
                                   },
@@ -105485,7 +105824,8 @@ var render = function () {
                                         title: "Apagar factura",
                                         disabled:
                                           !_vm.user.can["Eliminar tarefas"] ||
-                                          item.estado_factura_id == 4,
+                                          item.estado_factura_id == 4 ||
+                                          item.estado_factura_id == 2,
                                       },
                                     },
                                     [
@@ -111099,8 +111439,8 @@ var render = function () {
           staticClass: "body mt-16 pa-16",
           attrs: { id: "#scrolling-techniques-1" },
         },
-        [_vm._t("default")],
-        2
+        [_c("v-container", [_vm._t("default")], 2)],
+        1
       ),
     ],
     1

@@ -46,14 +46,14 @@
                                         <tbody>
                                             <tr v-for="item in servicos_selecionado" :key="item.designacao">
                                                 <td>{{ item.designacao }}</td>
-                                                <td>{{ item.preco }}</td>
+                                                <td>{{ (item.preco).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' }) }}</td>
                                                 <td>
                                                     <v-text-field v-model="item.quantidade" type="number" min="0"
                                                         max="12" dense @keyup.enter="TotalGeral(servicos_selecionado)"
                                                         @input="TotalGeral(servicos_selecionado)">
                                                     </v-text-field>
                                                 </td>
-                                                <td v-if="item.quantidade">{{ item.total_g=item.preco * item.quantidade
+                                                <td v-if="item.quantidade">{{ (item.total_g=item.preco * item.quantidade).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
                                                     }}</td>
                                             </tr>
 
@@ -276,8 +276,9 @@ export default {
         },
         TotalGeral(total) {
             this.total_quantidade = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.quantidade), 0)
-            this.total_preco = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)
-            this.total_geral = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)
+            this.total_preco = (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
+            this.total_geral =  (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
+            
         },
         EmitirFatura() {
             axios.post('/financas/emitir-factura', {

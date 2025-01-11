@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Apartamento;
 use App\Models\Bloco;
+use App\Models\Despesa;
 use App\Models\Financa;
 use App\Models\Servico;
 use App\Models\Factura;
@@ -50,6 +51,17 @@ class FinancaController extends Controller
     }
     public function emitir_factura(Request $request) {
         dd($request);
+    }
+    public function crear_despesa(Request $request) {
+        try {
+
+            Servico::create($request->all());
+            return redirect()->back()->with('success', 'Serviço cadastrado com ssucesso');
+
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Não foi possivel cadastra o serviõ', $th->getMessage());
+        }
+        //dd($request);
     }
  
     /**

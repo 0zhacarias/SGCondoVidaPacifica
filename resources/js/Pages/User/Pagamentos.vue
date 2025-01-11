@@ -38,17 +38,19 @@
                                 não foi encontrado nehum dado na pesquisa
                             </template>
                             <template v-slot:item.actions="{ item }">
-                                <button text @click="editItem(item)">
+                            <!--     <button text @click="editItem(item)">
                                     <v-icon color="blue" icon large class="mr-2" title="Editar" :disabled="item.estado_factura_id == 6 ||
                                         item.estado_factura_id == 7 ||
-                                        item.estado_factura_id == 4
+                                        item.estado_factura_id == 4||
+                                        item.estado_factura_id == 2
                                         ">
                                         mdi-pencil
                                     </v-icon>
-                                </button>
+                                </button> -->
                                 <button text @click="deleteItem(item)">
                                     <v-icon color="red" large icon title="Apagar factura" :disabled="!user.can['Eliminar tarefas'] ||
-                                        item.estado_factura_id == 4
+                                        item.estado_factura_id == 4||
+                                        item.estado_factura_id == 2
                                         ">
                                         mdi mdi-trash-can-outline
                                     </v-icon>
@@ -807,10 +809,11 @@ export default {
         },
 
         editItem(item) {
-            this.filtrarProjectoResponsavel(item.projecto_id);
-            this.editedIndex = this.Pagamentos.indexOf(item);
+            //alert(JSON.stringify(this.facturas));
+            this.editedIndex = this.facturas.indexOf(item);
+            //this.filtrarProjectoResponsavel(item.projecto_id);
             this.pagamento = Object.assign({}, item);
-            this.dialog = true;
+            this.dialogPagamento = true;
         },
         verDetalhe(item) {
             this.pagamento = Object.assign({}, item);
@@ -890,10 +893,11 @@ export default {
                                     msg: "" + this.$page.props.flash.error,
                                 });
                             }
-                            this.cancelarDialog();
+                          
                         },
                     });
                 }
+                this.cancelarDialog();
             }
         },
     },

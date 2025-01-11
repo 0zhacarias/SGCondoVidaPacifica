@@ -3,10 +3,60 @@
         <div class="dashboard">
 
             <v-container>
-                <v-card elevation="0" class="mb-10 p-2">
+                <v-card elevation="0" class="mb-10">
                     <v-row>
                         <v-col cols="6" sm="6" md="6">
                             <h3 class="font-weight-bold">Despesas</h3>
+                        </v-col>
+                        <v-col class="text-right">
+                            <v-btn color="corprincipal" title="cadastrar despesas" class="white--text font-weight-bold"
+                                @click="carregarDialog()">Adicionar
+                            </v-btn>
+                            <v-dialog v-if="dialogDespesas" v-model="dialogDespesas" width="500" persistent>
+                                <v-card>
+                                    <v-toolbar class="text-uppercase font-weight-bold" elevation="0">
+                                        <v-toolbar-title>
+                                            {{
+                                                editedIndex == -1
+                                                    ? "Adicionar Despesa"
+                                                    : "Atualizar Despesa"
+                                            }}
+                                        </v-toolbar-title>
+                                        <v-spacer></v-spacer>
+                                        <v-icon color="red" @click="closeSave()">mdi-close</v-icon>
+                                    </v-toolbar>
+                                    <v-card-text>
+                                        <v-card class="mb-2" flat>
+                                            <v-form ref="formdespesa" lazy-validation>
+                                                <v-row>
+                                                    <v-col cols="7">
+                                                        <v-text-field outlined dense v-model="despesa.designacao
+                                                            " label="Designação do despesa" class="pb-2"
+                                                            >
+                                                        </v-text-field>
+                                                    </v-col>
+                                                    <v-col cols="5">
+                                                        <v-text-field outlined dense v-model="despesa.preco" 
+                                                       type="number" label="Valor " hide-details="auto" min="1" max="99999">
+                                                        </v-text-field>
+                                                    </v-col>
+                                                </v-row>
+                                                <v-flex top class="text-right"></v-flex>
+                                                <v-spacer />
+                                                <div class="text-right">
+                                                    <v-btn color="teal" dark @click="saveDespesas()" v-if="
+                                                        editedIndex ==
+                                                        -1
+                                                    ">Guardar</v-btn>
+                                                    <v-btn color="teal" dark @click="saveDespesas()" v-if="
+                                                        editedIndex > -1
+                                                    ">Actualizar</v-btn>
+                                                </div>
+                                            </v-form>
+                                        </v-card>
+                                    </v-card-text>
+                                </v-card>
+                            </v-dialog>
                         </v-col>
                     </v-row>
                 </v-card>
@@ -46,14 +96,14 @@
                                         <tbody>
                                             <tr v-for="item in servicos_selecionado" :key="item.designacao">
                                                 <td>{{ item.designacao }}</td>
-                                                <td>{{ item.preco }}</td>
+                                                <td>{{ (item.preco).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' }) }}</td>
                                                 <td>
                                                     <v-text-field v-model="item.quantidade" type="number" min="0"
                                                         max="12" dense @keyup.enter="TotalGeral(servicos_selecionado)"
                                                         @input="TotalGeral(servicos_selecionado)">
                                                     </v-text-field>
                                                 </td>
-                                                <td v-if="item.quantidade">{{ item.total_g=item.preco * item.quantidade
+                                                <td v-if="item.quantidade">{{ (item.total_g=item.preco * item.quantidade).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
                                                     }}</td>
                                             </tr>
 
@@ -80,7 +130,7 @@
                         </v-card>
                     </v-col>
                 </v-row>
-                <v-card class="elevation-0 mt-10"  >
+                <v-card class="elevation-0 mt-10">
                     <template>
                         <v-data-table :headers="headers" :items="despesas" :search="search">
                             <template v-slot:item.estadoapartamento="{ item }">
@@ -125,7 +175,7 @@
                         </v-data-table>
                     </template>
                 </v-card>
-        
+
             </v-container>
         </div>
     </app-layout>
@@ -164,7 +214,9 @@ export default {
             // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
             factura: {
             },
-
+            despesa: {},
+            defaultdespesa: {},
+            dialogDespesas: false,
             servicos_selecionado: [],
             todos_servicos: [],
             query: {
@@ -211,13 +263,46 @@ export default {
                 },
             ],
 
-           total_quantidade: 0,
+            total_quantidade: 0,
             total_preco: 0,
             total_geral: 0,
             servicos_map: [],
         };
     },
     methods: {
+        carregarDialog() {
+            this.despesa = Object.assign({}, this.defaultdespesa);
+            this.editIndex = -1;
+            this.dialogDespesas = true;
+        },
+        closeSave() {
+            this.dialogDespesas = Object.assign({}, this.defaultdespesa);
+            this.editedIndex = -1;
+            this.dialogDespesas = false;
+        },
+        saveDespesas() {
+
+
+            if (this.$refs["formdespesa"].validate()) {
+               
+                    this.$inertia.post("/financas/crear_despesa", this.despesa, {
+                        onFinish: () => {
+                            if (this.$page.props.flash.success != null) {
+                                Vue.toasted.global.defaultSuccess({
+                                    msg: "" + this.$page.props.flash.success,
+                                });
+                            }
+                            if (this.$page.props.flash.error != null) {
+                                Vue.toasted.global.defaultError({
+                                    msg: "" + this.$page.props.flash.error,
+                                });
+                            }
+                            this.closeSave();
+                        },
+                    });
+            }
+        },
+
         Servicos(item) {
             let dados = this.servicos_map.find((eleem) => eleem.id == item)
             this.todos_servicos = this.servicos_selecionado.push(dados)
@@ -226,8 +311,9 @@ export default {
         },
         TotalGeral(total) {
             this.total_quantidade = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.quantidade), 0)
-            this.total_preco = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)
-            this.total_geral = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)
+            this.total_preco = (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
+            this.total_geral =  (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
+            
         },
         DespesaServicos() {
             axios.post('/financas/despesas-saida', {

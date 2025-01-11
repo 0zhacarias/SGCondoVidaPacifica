@@ -72,7 +72,8 @@ class DespesaController extends Controller
              DespesasItens::create([
                  'factura_id'=>$despesa->id,
                  'quantidade'=>$servico['quantidade'],
-                 'preco'=>$servico['preco'],
+                 'preco'=> $servico['preco'],
+                // 'preco'=>number_format($servico['preco'], 2, ',', '.'),
                  'designacao'=>$servico['designacao'],
                  
                  'total'=>$servico['total_g'],
