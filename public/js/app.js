@@ -6059,12 +6059,12 @@ __webpack_require__.r(__webpack_exports__);
       }],
       headers: [{
         text: "Nº",
-        value: "descricao",
+        value: "id",
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
       }, {
         text: "Nº do Bloco",
-        value: "designacao",
+        value: "descricao",
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
       }, {
@@ -6726,12 +6726,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 
 
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["blocos", "gestores", "estadoblocos", "funcaoEquipe", "filtroGestores", "filtroProjectos", "categorias", "tipoProjectos"],
+  props: ["blocos", "gestores", "estadoblocos", "funcaoEquipe", "tipologias", "filtroProjectos", "categorias", "tipoProjectos"],
   components: {
     AppLayout: _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     DatePicker: vue_datepicker__WEBPACK_IMPORTED_MODULE_1__["default"]
@@ -7237,6 +7241,9 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
     Servicos: function Servicos(item) {
       var dados = this.servicos_map.find(function (eleem) {
         return eleem.id == item;
+      });
+      this.servicos_map = this.servicos_map.filter(function (elem) {
+        return elem.id != item;
       });
       this.todos_servicos = this.servicos_selecionado.push(dados);
     },
@@ -7854,9 +7861,14 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
   },
   methods: (_methods = {
     Servicos: function Servicos(item) {
-      var dados = this.servicos_map.find(function (eleem) {
-        return eleem.id == item;
-      });
+      var dados = this.servicos_map.find(function (elem) {
+        return elem.id == item;
+      }); //let dadosRemov=
+
+      this.servicos_map = this.servicos_map.filter(function (elem) {
+        return elem.id != item;
+      }); // alert(JSON.stringify(this.servicos_map))
+
       this.todos_servicos = this.servicos_selecionado.push(dados);
     },
     TotalGeral: function TotalGeral(total) {
@@ -8007,10 +8019,6 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       this.dialog = true;
     },
     editItem: function editItem(item) {
-      //  this.idprojecto=item.projecto_id;
-      this.filtrarProjectoResponsavel(item.projecto_id); // this.adicionarResponsavelProjecto(item.projecto_id);
-      //  alert(JSON.stringify(this.idprojecto))
-
       this.editedIndex = this.tarefas.indexOf(item);
       this.pagamento = Object.assign({}, item);
       this.dialog = true;
@@ -8164,7 +8172,6 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
 
     if (this.projecto_marcado) {
       this.pagamento.projecto_id = this.projecto_marcado;
-      this.filtrarProjectoResponsavel();
     }
   },
   progress: function progress() {
@@ -97365,29 +97372,31 @@ var render = function () {
                   ]),
                 ]),
                 _vm._v(" "),
-                _c(
-                  "v-col",
-                  { staticClass: "text-right" },
-                  [
-                    _c(
-                      "v-btn",
-                      {
-                        staticClass: "white--text font-weight-bold",
-                        attrs: {
-                          color: "corprincipal",
-                          title: "Adicionar aparrtamento",
-                        },
-                        on: {
-                          click: function ($event) {
-                            return _vm.carregarDialog()
+                _vm.bloco_id
+                  ? _c(
+                      "v-col",
+                      { staticClass: "text-right" },
+                      [
+                        _c(
+                          "v-btn",
+                          {
+                            staticClass: "white--text font-weight-bold",
+                            attrs: {
+                              color: "corprincipal",
+                              title: "Adicionar aparrtamento",
+                            },
+                            on: {
+                              click: function ($event) {
+                                return _vm.carregarDialog()
+                              },
+                            },
                           },
-                        },
-                      },
-                      [_vm._v("Adicionar\n                    ")]
-                    ),
-                  ],
-                  1
-                ),
+                          [_vm._v("Adicionar\n                    ")]
+                        ),
+                      ],
+                      1
+                    )
+                  : _vm._e(),
               ],
               1
             ),
@@ -97418,75 +97427,81 @@ var render = function () {
                   "v-row",
                   { staticClass: "mx-2 mt-5" },
                   [
-                    _c(
-                      "v-col",
-                      { attrs: { cols: "6", sm: "6", md: "2" } },
-                      [
-                        _c("label", { attrs: { for: "" } }, [_vm._v("Bloco")]),
-                        _vm._v(" "),
-                        _c("v-autocomplete", {
-                          attrs: {
-                            "prepend-icon": "",
-                            items: _vm.blocos,
-                            "item-value": "id",
-                            "item-text": "descricao_bloco",
-                            type: "text",
-                            outlined: "",
-                            clearable: "",
-                            dense: "",
-                          },
-                          on: {
-                            change: function ($event) {
-                              return _vm.filtroApartamento()
-                            },
-                          },
-                          model: {
-                            value: _vm.query,
-                            callback: function ($$v) {
-                              _vm.query = $$v
-                            },
-                            expression: "query",
-                          },
-                        }),
-                      ],
-                      1
-                    ),
+                    _vm.bloco_id
+                      ? _c(
+                          "v-col",
+                          { attrs: { cols: "6", sm: "6", md: "2" } },
+                          [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Bloco"),
+                            ]),
+                            _vm._v(" "),
+                            _c("v-autocomplete", {
+                              attrs: {
+                                "prepend-icon": "",
+                                items: _vm.blocos,
+                                "item-value": "id",
+                                "item-text": "descricao_bloco",
+                                type: "text",
+                                outlined: "",
+                                clearable: "",
+                                dense: "",
+                              },
+                              on: {
+                                change: function ($event) {
+                                  return _vm.filtroApartamento()
+                                },
+                              },
+                              model: {
+                                value: _vm.query,
+                                callback: function ($$v) {
+                                  _vm.query = $$v
+                                },
+                                expression: "query",
+                              },
+                            }),
+                          ],
+                          1
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
-                    _c(
-                      "v-col",
-                      { attrs: { cols: "6", sm: "6", md: "3" } },
-                      [
-                        _c("label", { attrs: { for: "" } }, [
-                          _vm._v("Sindico"),
-                        ]),
-                        _vm._v(" "),
-                        _c("v-autocomplete", {
-                          attrs: {
-                            "prepend-icon": "",
-                            items: _vm.sindicos,
-                            "item-value": "id",
-                            "item-text": "nome_pessoa",
-                            type: "text",
-                            outlined: "",
-                            clearable: "",
-                            dense: "",
-                          },
-                          on: {
-                            change: function ($event) {
-                              return _vm.filtroApartamento()
-                            },
-                          },
-                          model: {
-                            value: _vm.query,
-                            callback: function ($$v) {
-                              _vm.query = $$v
-                            },
-                            expression: "query",
-                          },
-                        }),
-                      ],
-                      1
-                    ),
+                    _vm.bloco_id
+                      ? _c(
+                          "v-col",
+                          { attrs: { cols: "6", sm: "6", md: "3" } },
+                          [
+                            _c("label", { attrs: { for: "" } }, [
+                              _vm._v("Sindico"),
+                            ]),
+                            _vm._v(" "),
+                            _c("v-autocomplete", {
+                              attrs: {
+                                "prepend-icon": "",
+                                items: _vm.sindicos,
+                                "item-value": "id",
+                                "item-text": "nome_pessoa",
+                                type: "text",
+                                outlined: "",
+                                clearable: "",
+                                dense: "",
+                              },
+                              on: {
+                                change: function ($event) {
+                                  return _vm.filtroApartamento()
+                                },
+                              },
+                              model: {
+                                value: _vm.query,
+                                callback: function ($$v) {
+                                  _vm.query = $$v
+                                },
+                                expression: "query",
+                              },
+                            }),
+                          ],
+                          1
+                        )
+                      : _vm._e(),
                     _vm._v(" "),
                     _c(
                       "v-col",
@@ -98012,6 +98027,32 @@ var render = function () {
                                               _vm.erros.condomino_id,
                                             "no-data-text": "sem dados",
                                           },
+                                          scopedSlots: _vm._u(
+                                            [
+                                              {
+                                                key: "item",
+                                                fn: function (data) {
+                                                  return [
+                                                    _vm._v(
+                                                      "\n                                            " +
+                                                        _vm._s(
+                                                          data.item.nome_pessoa
+                                                        ) +
+                                                        "\n                                            " +
+                                                        _vm._s(
+                                                          data.item
+                                                            .sobre_nome_pessoa
+                                                        ) +
+                                                        "\n                                            "
+                                                    ),
+                                                  ]
+                                                },
+                                              },
+                                            ],
+                                            null,
+                                            false,
+                                            377364122
+                                          ),
                                           model: {
                                             value: _vm.apartamento.condomino_id,
                                             callback: function ($$v) {
@@ -99167,9 +99208,9 @@ var render = function () {
               _c("v-col", { attrs: { cols: "6", sm: "6", md: "6" } }, [
                 _c("h3", { staticClass: "font-weight-bold" }, [
                   _vm._v(
-                    "\n                        Blocos (" +
+                    "\n                       Blocos (" +
                       _vm._s(this.blocos.length) +
-                      ")\n                    "
+                      ")\n                   "
                   ),
                 ]),
               ]),
@@ -99192,7 +99233,7 @@ var render = function () {
                         },
                       },
                     },
-                    [_vm._v("Adicionar\n                    ")]
+                    [_vm._v("Adicionar\n                   ")]
                   ),
                 ],
                 1
@@ -99215,7 +99256,7 @@ var render = function () {
               staticStyle: { color: "#0a6e84" },
             },
             [
-              _vm._v("\n                Filtros "),
+              _vm._v("\n               Filtros "),
               _c("span", { staticClass: "mdi mdi-filter-outline" }),
             ]
           ),
@@ -99228,16 +99269,16 @@ var render = function () {
                 [
                   _c(
                     "v-col",
-                    { attrs: { cols: "6", sm: "6", md: "2" } },
+                    { attrs: { cols: "6", sm: "6", md: "3" } },
                     [
                       _c("label", { attrs: { for: "" } }, [_vm._v("Bloco")]),
                       _vm._v(" "),
                       _c("v-autocomplete", {
                         attrs: {
                           "prepend-icon": "",
-                          items: _vm.filtroProjectos,
+                          items: _vm.blocos,
                           "item-value": "id",
-                          "item-text": "nome_proj",
+                          "item-text": "descricao_bloco",
                           type: "text",
                           outlined: "",
                           clearable: "",
@@ -99249,11 +99290,11 @@ var render = function () {
                           },
                         },
                         model: {
-                          value: _vm.query.projecto_id,
+                          value: _vm.query.bloco_id,
                           callback: function ($$v) {
-                            _vm.$set(_vm.query, "projecto_id", $$v)
+                            _vm.$set(_vm.query, "bloco_id", $$v)
                           },
-                          expression: "query.projecto_id",
+                          expression: "query.bloco_id",
                         },
                       }),
                     ],
@@ -99296,42 +99337,7 @@ var render = function () {
                   _vm._v(" "),
                   _c(
                     "v-col",
-                    { attrs: { cols: "6", sm: "6", md: "2" } },
-                    [
-                      _c("label", { attrs: { for: "" } }, [
-                        _vm._v("Nº apartamento"),
-                      ]),
-                      _vm._v(" "),
-                      _c("v-text-field", {
-                        attrs: {
-                          clearable: "",
-                          items: _vm.estadoblocos,
-                          "item-text": "designacao",
-                          "item-value": "id",
-                          "prepend-icon": "",
-                          outlined: "",
-                          dense: "",
-                        },
-                        on: {
-                          change: function ($event) {
-                            return _vm.filtrarEstado()
-                          },
-                        },
-                        model: {
-                          value: _vm.query.estado_bloco_id,
-                          callback: function ($$v) {
-                            _vm.$set(_vm.query, "estado_bloco_id", $$v)
-                          },
-                          expression: "query.estado_bloco_id",
-                        },
-                      }),
-                    ],
-                    1
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "v-col",
-                    { attrs: { cols: "6", sm: "6", md: "2" } },
+                    { attrs: { cols: "6", sm: "6", md: "3" } },
                     [
                       _c("label", { attrs: { for: "" } }, [
                         _vm._v("Tipologia"),
@@ -99340,8 +99346,8 @@ var render = function () {
                       _c("v-autocomplete", {
                         attrs: {
                           clearable: "",
-                          items: _vm.estadoblocos,
-                          "item-text": "designacao",
+                          items: _vm.tipologias,
+                          "item-text": "descricao",
                           "item-value": "id",
                           "prepend-icon": "",
                           label: "Tipologia",
@@ -99412,7 +99418,7 @@ var render = function () {
                             },
                           },
                         },
-                        [_vm._v("Pesquisar\n                        ")]
+                        [_vm._v("Pesquisar\n                       ")]
                       ),
                     ],
                     1
@@ -99515,7 +99521,7 @@ var render = function () {
                                           { attrs: { large: "", center: "" } },
                                           [
                                             _vm._v(
-                                              "\n                                            mdi mdi-home-city\n                                        "
+                                              "\n                                           mdi mdi-home-city\n                                       "
                                             ),
                                           ]
                                         ),
@@ -99526,7 +99532,7 @@ var render = function () {
                                     _c("div", { staticClass: "text-h6 ml-1" }, [
                                       _c("div", [
                                         _vm._v(
-                                          "\n                                            Bloco:b\n                                            "
+                                          "\n                                           Bloco:b\n                                           "
                                         ),
                                         _c(
                                           "span",
@@ -99537,7 +99543,7 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("div", [
                                         _vm._v(
-                                          "\n                                            Sindico: \n                                            "
+                                          "\n                                           Sindico:\n                                           "
                                         ),
                                         _c(
                                           "span",
@@ -99545,7 +99551,7 @@ var render = function () {
                                           [
                                             _vm._v(
                                               _vm._s(item.sindico.nome_pessoa) +
-                                                "\n                                                " +
+                                                "\n                                               " +
                                                 _vm._s(
                                                   item.sindico.sobre_nome_pessoa
                                                 )
@@ -99556,7 +99562,7 @@ var render = function () {
                                       _vm._v(" "),
                                       _c("div", [
                                         _vm._v(
-                                          "\n                                            Nº de Apartamentos: \n                                            "
+                                          "\n                                           Nº de Apartamentos:\n                                           "
                                         ),
                                         _c(
                                           "span",
@@ -99589,34 +99595,6 @@ var render = function () {
                                                   {
                                                     attrs: {
                                                       icon: "",
-                                                      color: "green",
-                                                      title:
-                                                        "Visualizar Projecto",
-                                                    },
-                                                    on: {
-                                                      click: function ($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.verDetalhe(
-                                                          item
-                                                        )
-                                                      },
-                                                    },
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "v-icon",
-                                                      { attrs: { small: "" } },
-                                                      [_vm._v("visibility")]
-                                                    ),
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-btn",
-                                                  {
-                                                    attrs: {
-                                                      icon: "",
                                                       color: "orange",
                                                       title: "Editar ",
                                                     },
@@ -99634,172 +99612,6 @@ var render = function () {
                                                       "v-icon",
                                                       { attrs: { small: "" } },
                                                       [_vm._v("edit")]
-                                                    ),
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-btn",
-                                                  {
-                                                    attrs: {
-                                                      icon: "",
-                                                      color: "red",
-                                                      title: "eliminar",
-                                                      disabled:
-                                                        item.estado_bloco_id ==
-                                                        2,
-                                                    },
-                                                    on: {
-                                                      click: function ($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.deleteItem(
-                                                          item
-                                                        )
-                                                      },
-                                                    },
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "v-icon",
-                                                      { attrs: { small: "" } },
-                                                      [_vm._v("mdi-delete")]
-                                                    ),
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-btn",
-                                                  {
-                                                    attrs: {
-                                                      disabled: !item.arquivos,
-                                                      icon: "",
-                                                      color: "blue",
-                                                      title:
-                                                        "Visualizar a documentação do bloco",
-                                                    },
-                                                    on: {
-                                                      click: function ($event) {
-                                                        $event.stopPropagation()
-                                                        return _vm.redirect(
-                                                          item.arquivos
-                                                        )
-                                                      },
-                                                    },
-                                                  },
-                                                  [
-                                                    _c(
-                                                      "v-icon",
-                                                      { attrs: { small: "" } },
-                                                      [_vm._v("attach_file")]
-                                                    ),
-                                                  ],
-                                                  1
-                                                ),
-                                                _vm._v(" "),
-                                                _c(
-                                                  "v-menu",
-                                                  {
-                                                    attrs: {
-                                                      transition:
-                                                        "slide-x-transition",
-                                                      bottom: "",
-                                                      right: "",
-                                                    },
-                                                    scopedSlots: _vm._u(
-                                                      [
-                                                        {
-                                                          key: "activator",
-                                                          fn: function (ref) {
-                                                            var on = ref.on
-                                                            var attrs =
-                                                              ref.attrs
-                                                            return [
-                                                              _c(
-                                                                "v-btn",
-                                                                _vm._g(
-                                                                  _vm._b(
-                                                                    {
-                                                                      attrs: {
-                                                                        color:
-                                                                          "black",
-                                                                        dark: "",
-                                                                        icon: "",
-                                                                        title:
-                                                                          "Adicionar responsaveis",
-                                                                      },
-                                                                    },
-                                                                    "v-btn",
-                                                                    attrs,
-                                                                    false
-                                                                  ),
-                                                                  on
-                                                                ),
-                                                                [
-                                                                  _c("v-icon", [
-                                                                    _vm._v(
-                                                                      "mdi-dots-vertical"
-                                                                    ),
-                                                                  ]),
-                                                                ],
-                                                                1
-                                                              ),
-                                                            ]
-                                                          },
-                                                        },
-                                                      ],
-                                                      null,
-                                                      true
-                                                    ),
-                                                  },
-                                                  [
-                                                    _vm._v(" "),
-                                                    _c(
-                                                      "v-list",
-                                                      [
-                                                        _c(
-                                                          "v-list-item",
-                                                          [
-                                                            _c(
-                                                              "v-list-item-title",
-                                                              [
-                                                                _c(
-                                                                  "a",
-                                                                  {
-                                                                    staticClass:
-                                                                      "text-decoration-none",
-                                                                    attrs: {
-                                                                      icon: "",
-                                                                      color:
-                                                                        "orange",
-                                                                      title:
-                                                                        "Adicionar Responsavel",
-                                                                    },
-                                                                    on: {
-                                                                      click:
-                                                                        function (
-                                                                          $event
-                                                                        ) {
-                                                                          return _vm.adicionarResponsavel(
-                                                                            item
-                                                                          )
-                                                                        },
-                                                                    },
-                                                                  },
-                                                                  [
-                                                                    _vm._v(
-                                                                      "\n                                                                    Adicionar\n                                                                    Responsavel\n                                                                "
-                                                                    ),
-                                                                  ]
-                                                                ),
-                                                              ]
-                                                            ),
-                                                          ],
-                                                          1
-                                                        ),
-                                                      ],
-                                                      1
                                                     ),
                                                   ],
                                                   1
@@ -99871,9 +99683,9 @@ var render = function () {
                                               ),
                                               [
                                                 _vm._v(
-                                                  "\n                                            " +
+                                                  "\n                                           " +
                                                     _vm._s(_vm.itemsPerPage) +
-                                                    "\n                                            "
+                                                    "\n                                           "
                                                 ),
                                                 _c("v-icon", [
                                                   _vm._v("mdi-chevron-down"),
@@ -99929,11 +99741,11 @@ var render = function () {
                               [
                                 _c("span", { staticClass: "mr-4 grey--text" }, [
                                   _vm._v(
-                                    "\n                                    Páginas " +
+                                    "\n                                   Páginas " +
                                       _vm._s(_vm.page) +
-                                      " de\n                                    " +
+                                      " de\n                                   " +
                                       _vm._s(_vm.numberOfPages) +
-                                      "\n                                "
+                                      "\n                               "
                                   ),
                                 ]),
                                 _vm._v(" "),
@@ -100013,13 +99825,13 @@ var render = function () {
                     [
                       _c("v-toolbar-title", [
                         _vm._v(
-                          "\n                        " +
+                          "\n                       " +
                             _vm._s(
                               _vm.editedIndex == -1
                                 ? "Adicionar Bloco"
                                 : "Atualizar Bloco"
                             ) +
-                            "\n                    "
+                            "\n                   "
                         ),
                       ]),
                       _vm._v(" "),
@@ -100108,7 +99920,7 @@ var render = function () {
                                                               )
                                                             },
                                                             expression:
-                                                              "bloco.designacao\n                                                            ",
+                                                              "bloco.designacao\n                                                           ",
                                                           },
                                                         }),
                                                       ],
@@ -100143,7 +99955,7 @@ var render = function () {
                                                               )
                                                             },
                                                             expression:
-                                                              "bloco.numero_apartamento\n                                                            ",
+                                                              "bloco.numero_apartamento\n                                                           ",
                                                           },
                                                         }),
                                                       ],
@@ -100179,6 +99991,37 @@ var render = function () {
                                                             },
                                                             label: "Sindico!",
                                                           },
+                                                          scopedSlots: _vm._u(
+                                                            [
+                                                              {
+                                                                key: "item",
+                                                                fn: function (
+                                                                  data
+                                                                ) {
+                                                                  return [
+                                                                    _vm._v(
+                                                                      "\n                                                           " +
+                                                                        _vm._s(
+                                                                          data
+                                                                            .item
+                                                                            .nome_pessoa
+                                                                        ) +
+                                                                        "\n                                                           " +
+                                                                        _vm._s(
+                                                                          data
+                                                                            .item
+                                                                            .sobre_nome_pessoa
+                                                                        ) +
+                                                                        "\n                                                           "
+                                                                    ),
+                                                                  ]
+                                                                },
+                                                              },
+                                                            ],
+                                                            null,
+                                                            false,
+                                                            141785690
+                                                          ),
                                                           model: {
                                                             value:
                                                               _vm.bloco
@@ -100193,7 +100036,7 @@ var render = function () {
                                                               )
                                                             },
                                                             expression:
-                                                              "bloco.sindico_id\n                                                            ",
+                                                              "bloco.sindico_id\n                                                           ",
                                                           },
                                                         }),
                                                       ],
@@ -100226,7 +100069,7 @@ var render = function () {
                                                       )
                                                     },
                                                     expression:
-                                                      "bloco.descricao_bloco\n                                                    ",
+                                                      "bloco.descricao_bloco\n                                                   ",
                                                   },
                                                 }),
                                               ],
@@ -100341,7 +100184,7 @@ var render = function () {
                     [
                       _c("v-spacer"),
                       _vm._v(
-                        "\n                    Detalhes do Bloco\n                    "
+                        "\n                   Detalhes do Bloco\n                   "
                       ),
                       _c(
                         "v-btn",
@@ -100381,7 +100224,7 @@ var render = function () {
                         },
                         [
                           _vm._v(
-                            "\n                        Exportar Dados:\n                        "
+                            "\n                       Exportar Dados:\n                       "
                           ),
                           _c(
                             "v-icon",
@@ -100393,7 +100236,7 @@ var render = function () {
                             },
                             [
                               _vm._v(
-                                "\n                            mdi-file-export"
+                                "\n                           mdi-file-export"
                               ),
                             ]
                           ),
@@ -100445,7 +100288,7 @@ var render = function () {
                                                 },
                                                 [
                                                   _vm._v(
-                                                    "\n                                                Dados do Projecto\n                                            "
+                                                    "\n                                               Dados do Projecto\n                                           "
                                                   ),
                                                 ]
                                               ),
@@ -100480,7 +100323,7 @@ var render = function () {
                                                     },
                                                     [
                                                       _vm._v(
-                                                        "\n                                                    Informação\n                                                "
+                                                        "\n                                                   Informação\n                                               "
                                                       ),
                                                     ]
                                                   ),
@@ -100537,7 +100380,7 @@ var render = function () {
                 [
                   _c("v-card-title", { staticClass: "text-h6" }, [
                     _vm._v(
-                      "Tens a certeza que pretendes eliminar este\n                    Bloco?"
+                      "Tens a certeza que pretendes eliminar este\n                   Bloco?"
                     ),
                   ]),
                   _vm._v(" "),
@@ -111089,7 +110932,7 @@ var render = function () {
                 1
               ),
               _vm._v(" "),
-              _vm.user.can["gerir responsavel"]
+              _vm.user.can["Gerir Blocos"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111139,7 +110982,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["gerir responsavel"]
+              _vm.user.can["Gerir Apartamentos"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111189,7 +111032,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["gerir utilizador"]
+              _vm.user.can["Gerir Utilizador"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111238,7 +111081,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["Gerir tarefas gerais"]
+              _vm.user.can["Gerir Despesas"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111295,7 +111138,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["gerir responsavel"]
+              _vm.user.can["Gerir Facturas"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111347,7 +111190,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["Gerir tarefas gerais"]
+              _vm.user.can["Gerir Pagamentos"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111404,7 +111247,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["Gerir tarefas gerais"]
+              _vm.user.can["Gerir Relatórios"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111460,7 +111303,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["Gerir funções"]
+              _vm.user.can["Gerir Funções"]
                 ? _c(
                     "inertia-link",
                     {
@@ -111512,7 +111355,7 @@ var render = function () {
                   )
                 : _vm._e(),
               _vm._v(" "),
-              _vm.user.can["gerir permissao"]
+              _vm.user.can["Gerir Permissões"]
                 ? _c(
                     "inertia-link",
                     {

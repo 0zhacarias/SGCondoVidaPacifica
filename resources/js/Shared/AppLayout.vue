@@ -294,7 +294,7 @@
                     href="/blocos/bloco"
                     class="color-text-link remover-link py-2"
                     as="v-list-item"
-                    v-if="user.can['gerir responsavel']"
+                    v-if="user.can['Gerir Blocos']"
                     :class="{
                         active: $page.url === '/blocos/bloco',
                     }"
@@ -323,7 +323,7 @@
                     href="/apartamentos/apartamento"
                     class="color-text-link remover-link py-2"
                     as="v-list-item"
-                    v-if="user.can['gerir responsavel']"
+                    v-if="user.can['Gerir Apartamentos']"
                     :class="{
                         active: $page.url === '/apartamentos/apartamento',
                     }"
@@ -352,7 +352,7 @@
                     href="/users/user"
                     class="color-text-link remover-link"
                     as="v-list-item"
-                    v-if="user.can['gerir utilizador']"
+                    v-if="user.can['Gerir Utilizador']"
                     :class="{
                         active: $page.url === '/users/user',
                     }"
@@ -516,7 +516,7 @@
                 -->
 
                     <inertia-link
-                        v-if="user.can['Gerir tarefas gerais']"
+                        v-if="user.can['Gerir Despesas']"
                         href="/financas/despesa"
                         class="color-text-link remover-link py-2 font-weight-medium text-caption"
                         as="v-list-item"
@@ -547,7 +547,7 @@
                     href="/financas/factura_pagamentos"
                     class="color-text-link remover-link py-2"
                     as="v-list-item"
-                    v-if="user.can['gerir responsavel']"
+                    v-if="user.can['Gerir Facturas']"
                     :class="{
                         active: $page.url === '/financas/factura_pagamentos',
                     }"
@@ -572,7 +572,7 @@
                     >
                 </inertia-link>
                     <inertia-link
-                        v-if="user.can['Gerir tarefas gerais']"
+                        v-if="user.can['Gerir Pagamentos']"
                         href="/financas/pagamentos"
                         class="color-text-link remover-link py-2 font-weight-medium text-caption"
                         as="v-list-item"
@@ -600,7 +600,7 @@
                     </inertia-link>
 
                     <inertia-link
-                        v-if="user.can['Gerir tarefas gerais']"
+                        v-if="user.can['Gerir Relatórios']"
                         href="/financas/index"
                         class="color-text-link remover-link py-2 font-weight-medium text-caption"
                         as="v-list-item"
@@ -627,7 +627,7 @@
                         </v-list-item-content>
                     </inertia-link>
                     <inertia-link
-                        v-if="user.can['Gerir funções']"
+                        v-if="user.can['Gerir Funções']"
                         class="color-text-link remover-link py-2 font-weight-medium text-caption"
                         href="/tabela_de_apoio/funcoes"
                         as="v-list-item"
@@ -652,7 +652,7 @@
                         </v-list-item-content>
                     </inertia-link>
                     <inertia-link
-                    v-if="user.can['gerir permissao']"
+                    v-if="user.can['Gerir Permissões']"
                     link
                     class="color-text-link remover-link"
                     href="/permission/funcoes-permissoes"

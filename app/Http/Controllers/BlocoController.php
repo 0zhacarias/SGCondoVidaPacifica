@@ -8,20 +8,38 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\Pessoa;
 use App\Models\Funcoes;
+use App\Models\TipoApartamento;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
 class BlocoController extends Controller
 {
+    protected function pessoa()
+    {
+        return Pessoa::where('user_id', auth()->id())->with('apartamento')->first();
+    }
     public function index()
     {
+       
+        switch ($this->pessoa()['funcao_id']) {
+            case 1:
+                $data['blocos'] =Bloco::with('sindico')->orderBy('created_at', 'desc')->get();
+                break;
+            case 2:
+                $data['blocos'] =Bloco::with('sindico')->where('sindico_id',$this->pessoa()['id'])->orderBy('created_at', 'desc')->get();
+                break;
 
-        $data['blocos'] =Bloco::with('sindico')->orderBy('created_at', 'desc')->get();
+            default:
+            return redirect()->route('apartamento.index');
+                break;
+        }
+       
        // dd($data['blocos']);
         $data['contar'] =count($data['blocos']);
-        $id = [2];
-        $data['gestores'] = Pessoa::whereIn('funcao_id', $id)->get();
+        $id = 2;
+        $data['gestores'] = Pessoa::where('funcao_id', $id)->get();
+        $data['tipologias'] = TipoApartamento::get();
         return Inertia::render('User/Bloco', $data);
     }
 

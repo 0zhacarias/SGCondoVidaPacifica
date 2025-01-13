@@ -7,7 +7,7 @@
                         <h3 class="font-weight-bold">Apartamentos ({{ this.apartamentos? apartamentos.length:todos_apartamentos.length }})</h3>
                     </v-col>
 
-                    <v-col class="text-right">
+                    <v-col class="text-right" v-if="bloco_id">
                         <v-btn color="corprincipal" title="Adicionar aparrtamento" class="white--text font-weight-bold"
                             @click="carregarDialog()">Adicionar
                         </v-btn>
@@ -21,13 +21,13 @@
                 </div>
                 <v-card-title>
                     <v-row class="mx-2 mt-5">
-                        <v-col cols="6" sm="6" md="2">
+                        <v-col cols="6" sm="6" md="2" v-if="bloco_id">
                             <label for="">Bloco</label>
                             <v-autocomplete prepend-icon="" @change="filtroApartamento()" :items="blocos" v-model="query" item-value="id"
                                 item-text="descricao_bloco" type="text" outlined clearable dense>
                             </v-autocomplete>
                         </v-col>
-                        <v-col cols="6" sm="6" md="3">
+                        <v-col cols="6" sm="6" md="3" v-if="bloco_id">
                             <label for="">Sindico</label>
                             <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" :items="sindicos" item-value="id"
                                 item-text="nome_pessoa" type="text" outlined clearable dense>
@@ -150,16 +150,16 @@
                                             :rules="referencaResponsavelRules" :error-messages="erros.condomino_id
                                                 " no-data-text="sem dados">
 
-                                            <!--  <template v-slot:item="data">
-                                                {{ data.item.nome_responsavel }}
+                                              <template v-slot:item="data">
+                                                {{ data.item.nome_pessoa }}
                                                 {{
                                                     data.item
-                                                        .sobre_nome_responsavel
+                                                        .sobre_nome_pessoa
                                                 }}
-                                                ({{
+                                                <!-- ({{
                                                     data.item.funcao.designacao
-                                                }})
-                                            </template> -->
+                                                }}) -->
+                                            </template> 
                                         </v-autocomplete>
                                     </v-col>
                                 </v-row>
@@ -500,13 +500,13 @@ export default {
             headers: [
                 {
                     text: "Nº",
-                    value: "descricao",
+                    value: "id",
                     class: "font-weight-bold black--text subtitle-1 my-3 ",
                     sortable: false,
                 },
                 {
                     text: "Nº do Bloco",
-                    value: "designacao",
+                    value: "descricao",
                     class: "font-weight-bold black--text subtitle-1 my-3 ",
                     sortable: false,
                 },

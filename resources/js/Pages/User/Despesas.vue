@@ -305,6 +305,7 @@ export default {
 
         Servicos(item) {
             let dados = this.servicos_map.find((eleem) => eleem.id == item)
+            this.servicos_map=this.servicos_map.filter(elem => elem.id !=item)
             this.todos_servicos = this.servicos_selecionado.push(dados)
 
 

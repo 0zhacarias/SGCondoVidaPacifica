@@ -269,7 +269,10 @@ export default {
     },
     methods: {
         Servicos(item) {
-            let dados = this.servicos_map.find((eleem) => eleem.id == item)
+            let dados = this.servicos_map.find((elem) => elem.id == item)
+            //let dadosRemov=
+            this.servicos_map=this.servicos_map.filter(elem => elem.id !=item)
+           // alert(JSON.stringify(this.servicos_map))
             this.todos_servicos = this.servicos_selecionado.push(dados)
 
 
@@ -413,10 +416,6 @@ export default {
         },
 
         editItem(item) {
-            //  this.idprojecto=item.projecto_id;
-            this.filtrarProjectoResponsavel(item.projecto_id);
-            // this.adicionarResponsavelProjecto(item.projecto_id);
-            //  alert(JSON.stringify(this.idprojecto))
             this.editedIndex = this.tarefas.indexOf(item);
             this.pagamento = Object.assign({}, item);
             this.dialog = true;
@@ -583,7 +582,7 @@ export default {
         }))
         if (this.projecto_marcado) {
             this.pagamento.projecto_id = this.projecto_marcado;
-            this.filtrarProjectoResponsavel();
+     
         }
     },
 

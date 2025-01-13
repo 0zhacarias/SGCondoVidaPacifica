@@ -31,16 +31,25 @@ class ApartamentoController extends Controller
     {
         try {
             $responsavel_logado = Pessoa::where('user_id', auth()
-         ->user()->id)
-         ->with('funcao')->first();
+                ->user()->id)
+                ->with('funcao')->first();
+            $data['tipos_apartamento'] = TipoApartamento::orderBy('created_at', 'desc')->get();
 
-      if ($responsavel_logado->funcao->id == 1) {
-        $data['todos_apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+            if ($responsavel_logado->funcao->id == 1) {
+                $data['todos_apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+              /*   $data['apartamentos'] = Apartamento::get(); */
+            } else if ($responsavel_logado->funcao->id == 2) {
+                $data['todos_apartamentos'] = Apartamento::where('created_by', $responsavel_logado->user_id)
+                ->orWhere('condomino_id', $responsavel_logado->id)
+                ->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+/*                 $data['apartamentos'] = Apartamento::where('created_by', $responsavel_logado->user_id)
+                    ->orWhere('condomino_id', $responsavel_logado->id)->get(); */
 
-      }else if($responsavel_logado->funcao->id == 2){
-        $data['todos_apartamentos'] = Apartamento::where('created_by',$responsavel_logado->user_id)->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
-
-      }
+            } else {
+            $data['todos_apartamentos'] = Apartamento::where('condomino_id', $responsavel_logado->id)->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+               // $data['apartamentos'] = Apartamento::Where('condomino_id', $responsavel_logado->id)->get();
+              //  dd($data);
+            }
             return Inertia::render('User/Apartamento', $data);
         } catch (\Exception $e) {
             dd($e->getMessage());
@@ -53,30 +62,28 @@ class ApartamentoController extends Controller
         try {
             $responsavel_logado = Pessoa::where('user_id', auth()->user()->id)->first();
             $sindico_id = Bloco::find($id)->pluck('sindico_id')->first();
-            $data['bloco_id'] =$id;
+            $data['bloco_id'] = $id;
             $data['tipos_apartamento'] = TipoApartamento::orderBy('created_at', 'desc')->get();
-           
+
             if ($responsavel_logado->funcao->id == 1) {
                 $data['apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
-                $data['condominos'] = Pessoa::where('funcao_id',2)->get();
+                $data['condominos'] = Pessoa::where('funcao_id', 2)->get();
                 // dd($sindico_id);
                 $data['sindicos'] = Pessoa::with('apartamento', 'genero')->where('id', $sindico_id)->get();
-               // dd( $data['sindicos']);
+                // dd( $data['sindicos']);
                 $data['blocos'] = Bloco::get();
-                
-            } elseif($responsavel_logado->funcao->id == 2){
-                $data['apartamentos'] = Apartamento::where('created_by',$responsavel_logado->user_id)
-                ->orWhere('bloco_id',$id)
-                ->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
-                $data['condominos'] = Pessoa::where('funcao_id',3)->get();
+            } elseif ($responsavel_logado->funcao->id == 2) {
+                $data['apartamentos'] = Apartamento::where('created_by', $responsavel_logado->user_id)
+                    ->orWhere('bloco_id', $id)
+                    ->with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+                $data['condominos'] = Pessoa::where('funcao_id', 3)->get();
                 $data['sindicos'] = Pessoa::with('apartamento', 'genero')->where('id', $sindico_id)->get();
                 $data['blocos'] = Bloco::find($id)->get();
-               /*  with(['funcao'=>function($query){
+                /*  with(['funcao'=>function($query){
                     $query->where('id',2);
                 }])->get();
                 dd($data['condominos']); */
-            }
-            else {
+            } else {
                 $data['tipos_apartamento'] = Apartamento::whereIn('created_by', $responsavel_logado)->orderBy('created_at', 'desc')->get();
                 $data['apartamentos'] = Apartamento::whereIn('created_by', $responsavel_logado)->orderBy('created_at', 'desc')->get();
             }
@@ -104,7 +111,7 @@ class ApartamentoController extends Controller
     {
 
         try {
-           //dd((request()));
+            //dd((request()));
             DB::beginTransaction();
             /*  $data_aux = strtotime($request->get('data_inicio_real') . "+" . $request->get('tempo_execucao') . "days");
             $data_termino = date("Y-m-d H:i:s", $data_aux); */

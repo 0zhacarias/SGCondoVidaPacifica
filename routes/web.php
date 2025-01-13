@@ -67,17 +67,9 @@ Route::post('/imagens-pagamentos',[PagamentoController::class,'imagens_pagamento
 Route::delete('/anular-pagamento',[PagamentoController::class,'destroy'])->name('eliminar_pagamento');
 
 });
-Route::group(['middleware'=>'auth', 'prefix'=>'relatorios'],function(){
-    Route::get('/factura/{id}',[FinancaController::class,'relatorio_factura'])->name('relatorio_factura');
-    Route::get('/despesas/{id}',[DespesaController::class,'relatorio_despesas'])->name('relatorio_despesas');
-    Route::get('/inadeplencia',[DespesaController::class,'inadeplencia'])->name('relatorio_inadeplencia');
-    Route::get('/balancete',[DespesaController::class,'balancete'])->name('relatorio_balancete');
-    Route::get('/caixa',[DespesaController::class,'caixa'])->name('relatorio_caixa');
-});
-
 
 Route::group(['prefix'=>'apartamentos','middleware'=>'auth'],function(){
-Route::get('apartamento',[ApartamentoController::class,'index']);
+Route::get('apartamento',[ApartamentoController::class,'index'])->name('apartamento.index');
 });
 Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
    Route::resource('user', \App\Http\Controllers\UserController::class);
@@ -125,8 +117,15 @@ Route::group(['prefix' => 'apartamentos', 'middleware' => 'auth'], function () {
 });
 
 //Grupo de routas de dvs
-Route::group(['prefix' => 'responsaveis', 'middleware' => 'auth'], function () {
+/* Route::group(['prefix' => 'responsaveis', 'middleware' => 'auth'], function () {
     Route::resource('/responsavel', App\Http\Controllers\PessoaController::class);
+}); */
+Route::group(['middleware'=>'auth', 'prefix'=>'relatorios'],function(){
+    Route::get('/factura/{id}',[FinancaController::class,'relatorio_factura'])->name('relatorio_factura');
+    Route::get('/despesas/{id}',[DespesaController::class,'relatorio_despesas'])->name('relatorio_despesas');
+    Route::get('/inadeplencia',[DespesaController::class,'inadeplencia'])->name('relatorio_inadeplencia');
+    Route::get('/balancete',[DespesaController::class,'balancete'])->name('relatorio_balancete');
+    Route::get('/caixa',[DespesaController::class,'caixa'])->name('relatorio_caixa');
 });
 
 Route::group(['prefix' => 'permission', 'middleware' => ['auth']], function () {

@@ -15,22 +15,10 @@ class Apartamento extends Model
         return $date->format('d M Y');
     }
 
-    public function projecto()
+    public function bloco()
     {
         // return $this->belongsTo(Projeto::class, 'responsavel_id');
-        return $this->belongsTo(Bloco::class,'projecto_id');
-    }
-    public function estadoTarefa()
-    {
-        // return $this->belongsTo(Projeto::class, 'responsavel_id');
-        return $this->belongsTo(EstadoTarefa::class);
-    }
-
-
-    public function controlTarefas()
-    {
-        // return $this->belongsTo(Projeto::class, 'responsavel_id');
-        return $this->hasMany(ControlTarefa::class,'tarefa_id');
+        return $this->belongsTo(Bloco::class);
     }
     public function tipo_apartamento()
     {
