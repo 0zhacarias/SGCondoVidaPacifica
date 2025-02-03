@@ -9,8 +9,8 @@
                             <h3 class="font-weight-bold">Despesas</h3>
                         </v-col>
                         <v-col class="text-right">
-                            <v-btn color="corprincipal" title="cadastrar despesas" class="white--text font-weight-bold"
-                                @click="carregarDialog()">Adicionar
+                            <v-btn v-if="user.can['Adicionar Serviços']" color="corprincipal" title="cadastrar despesas" class="white--text font-weight-bold"
+                                @click="carregarDialog()">Serviços
                             </v-btn>
                             <v-dialog v-if="dialogDespesas" v-model="dialogDespesas" width="500" persistent>
                                 <v-card>
@@ -18,8 +18,8 @@
                                         <v-toolbar-title>
                                             {{
                                                 editedIndex == -1
-                                                    ? "Adicionar Despesa"
-                                                    : "Atualizar Despesa"
+                                                    ? "Adicionar Serviços"
+                                                    : "Atualizar Serviços"
                                             }}
                                         </v-toolbar-title>
                                         <v-spacer></v-spacer>

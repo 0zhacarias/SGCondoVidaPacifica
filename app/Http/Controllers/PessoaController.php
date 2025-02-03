@@ -74,14 +74,12 @@ class PessoaController extends Controller
                 'username' => $username,
             ]);
             if ($user) {
-
-
                 if ($request->get('funcao_id') == 1) {
                     $user->assignRole('Administrador');
                 } elseif ($request->get('funcao_id') == 2) {
-                    $user->assignRole('Gestor de Projecto');
+                    $user->assignRole('Sindico');
                 } elseif ($request->get('funcao_id') == 3) {
-                    $user->assignRole('Analista de Sistema');
+                    $user->assignRole('Condomino');
                 } 
             }
             Pessoa::create([

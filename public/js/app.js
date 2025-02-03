@@ -12539,6 +12539,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -100480,22 +100481,24 @@ var render = function () {
                       "v-col",
                       { staticClass: "text-right" },
                       [
-                        _c(
-                          "v-btn",
-                          {
-                            staticClass: "white--text font-weight-bold",
-                            attrs: {
-                              color: "corprincipal",
-                              title: "cadastrar despesas",
-                            },
-                            on: {
-                              click: function ($event) {
-                                return _vm.carregarDialog()
+                        _vm.user.can["Adicionar Serviços"]
+                          ? _c(
+                              "v-btn",
+                              {
+                                staticClass: "white--text font-weight-bold",
+                                attrs: {
+                                  color: "corprincipal",
+                                  title: "cadastrar despesas",
+                                },
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.carregarDialog()
+                                  },
+                                },
                               },
-                            },
-                          },
-                          [_vm._v("Adicionar\n                        ")]
-                        ),
+                              [_vm._v("Serviços\n                        ")]
+                            )
+                          : _vm._e(),
                         _vm._v(" "),
                         _vm.dialogDespesas
                           ? _c(
@@ -100527,8 +100530,8 @@ var render = function () {
                                             "\n                                        " +
                                               _vm._s(
                                                 _vm.editedIndex == -1
-                                                  ? "Adicionar Despesa"
-                                                  : "Atualizar Despesa"
+                                                  ? "Adicionar Serviços"
+                                                  : "Atualizar Serviços"
                                               ) +
                                               "\n                                    "
                                           ),
@@ -108915,27 +108918,29 @@ var render = function () {
                                 ]
                               ),
                               _vm._v(" "),
-                              _c(
-                                "v-btn",
-                                {
-                                  attrs: {
-                                    color: "grey",
-                                    icon: "",
-                                    title: "atribuir permissão",
-                                  },
-                                  on: {
-                                    click: function ($event) {
-                                      return _vm.verPermissao(item)
+                              _vm.user.can["atribuir permissão"]
+                                ? _c(
+                                    "v-btn",
+                                    {
+                                      attrs: {
+                                        color: "grey",
+                                        icon: "",
+                                        title: "atribuir permissão",
+                                      },
+                                      on: {
+                                        click: function ($event) {
+                                          return _vm.verPermissao(item)
+                                        },
+                                      },
                                     },
-                                  },
-                                },
-                                [
-                                  _c("v-icon", { attrs: { small: "" } }, [
-                                    _vm._v(" perm_identity "),
-                                  ]),
-                                ],
-                                1
-                              ),
+                                    [
+                                      _c("v-icon", { attrs: { small: "" } }, [
+                                        _vm._v(" perm_identity "),
+                                      ]),
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
                             ]
                           },
                         },

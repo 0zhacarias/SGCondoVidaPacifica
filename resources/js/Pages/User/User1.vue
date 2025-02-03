@@ -93,6 +93,7 @@
                   @click="verPermissao(item)"
                   icon
                   title="atribuir permissão"
+                  v-if="user.can['atribuir permissão']"
                 >
                   <v-icon small> perm_identity </v-icon>
                 </v-btn>

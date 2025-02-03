@@ -80,8 +80,8 @@
                     </button>
                 </div>
                 </form>
-                <a class="nav-link" href="{{ route('register') }}">{{ __('Criar uma conta') }}</a>
-            </div>
+<!--                 <a class="nav-link" href="{{ route('register') }}">{{ __('Criar uma conta') }}</a>
+ -->            </div>
         </div>
     </section>
 
