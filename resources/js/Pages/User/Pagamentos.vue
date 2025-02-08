@@ -48,7 +48,7 @@
                                     </v-icon>
                                 </button> -->
                                 <button text @click="deleteItem(item)">
-                                    <v-icon color="red" large icon title="Apagar factura" :disabled="!user.can['Eliminar tarefas'] ||
+                                    <v-icon color="red" large icon title="Apagar factura" :disabled="!user.can['Eliminar factura'] ||
                                         item.estado_factura_id == 4||
                                         item.estado_factura_id == 2
                                         ">
@@ -57,13 +57,13 @@
                                 </button>
                                 <button text @click="LiquidarPagamento(item)">
                                     <v-icon v-if="item.estado_factura_id == 5" color="black" large icon title="Pagar"
-                                        :disabled="!user.can['Eliminar tarefas'] ||
+                                        :disabled="!user.can['Liquidar pagamento'] ||
                                             item.estado_factura_id == 3
                                             ">
                                         mdi mdi-cash-clock
                                     </v-icon>
                                     <v-icon color="green" large icon title="Validar pagamento"
-                                        v-else-if="item.estado_factura_id == 1">
+                                        v-else-if="item.estado_factura_id == 1 && user.can['Validar pagamentos']">
                                         mdi mdi-cash
                                     </v-icon>
                                     <v-icon color="green" large icon title="Visualizar pagamento"
@@ -877,9 +877,6 @@ export default {
                         }
                     );
                 } else {
-                    if (this.projecto_marcado) {
-                        this.pagamento.projecto_id = this.projecto_marcado;
-                    }
                     this.adicionar_pagamento.pagamento_faturas = this.pagamento
                     this.$inertia.post("/financas/adicionar-pagamento", this.adicionar_pagamento, {
                         onFinish: () => {

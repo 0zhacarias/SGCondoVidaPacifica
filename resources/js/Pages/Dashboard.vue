@@ -20,7 +20,7 @@
                          
 
                                 <p>Total de valores Pago</p>
-                                <h4 align="center" id="atualizacaoAndamento">{{ valorPago }}</h4>
+                                <h4 align="center" id="atualizacaoAndamento"> {{ valorPago }} KZ</h4>
                             </v-card-text>
                         </inertia-link>
                     </v-card>
@@ -233,10 +233,16 @@ export default {
 
     created() {
         this.renderizarDadosDashboard();
+        this.convertValor()
         // alert(1);
     },
 
     methods: {
+        convertValor(){
+            let valor=props.valorPago;
+           // return valor.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' });
+            alert(valor);
+        },
         renderizarDadosDashboard() {
             // alert(JSON.stringify('ola'));
             axios

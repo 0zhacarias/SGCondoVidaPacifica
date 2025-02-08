@@ -1210,7 +1210,7 @@ export default {
     created() {
         // this.atualizarTarefasAtrasada();
         // this.notificarTarefasAtrasada();
-        this.Notificar();
+       // this.Notificar();
     },
 
     methods: {
@@ -1270,7 +1270,7 @@ export default {
                 `/notificacoes/notificaca-lida/${btoa(btoa(btoa(this.noti.id)))}`
 
             );
-            this.Notificar();
+           // this.Notificar();
             // axios
             //   .get("/notificacoes/notificaca-lida", {
             //     params:this.noti,

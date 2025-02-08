@@ -94,18 +94,15 @@ export default {
                  title: "Relatório de Inadeplência",
                  route:"/inadeplencia"
                },
-               {
+              /*  {
                  title: "Balancete",
                   route:"/balancete"
-               },
+               }, */
                {
                  title: "Livro de caixa",
                   route:"/caixa"
                },
-               {
-                 title: "Click Me 2",
-                  route:"/click"
-               },
+             
              ],
            
 
@@ -169,9 +166,10 @@ export default {
          /*   window.open(`/relatorios${item.route}`,{
                 params:this.query
             }); */
-           axios.get(`/relatorios${item.route}`,{
+            window.open(`/relatorios${item.route}`)
+           /* axios.get(`/relatorios${item.route}`,{
                 params:this.query
-            }) 
+            })  */
         },
    
         fitroFinanca() {

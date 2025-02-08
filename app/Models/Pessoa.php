@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\EstadosCivis;
 use App\Models\Genero;
 use App\Models\Dashboard;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -58,6 +59,10 @@ class Pessoa extends Model
     }
     public function dashboard(){
         return $this->belongsTo(Dashboard::class);
+        
+    }
+    function factura_item()  {
+        return $this->hasMany(FacturaItem::class,'created_by');
         
     }
     protected static function boot() {

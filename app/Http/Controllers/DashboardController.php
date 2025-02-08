@@ -7,6 +7,8 @@ use Inertia\Inertia;
 use App\Models\Apartamento;
 use App\Models\Bloco;
 use App\Models\ControlTarefa;
+use App\Models\Factura;
+use App\Models\Pagamento;
 use App\Models\Pessoa;
 
 class DashboardController extends Controller
@@ -22,7 +24,7 @@ class DashboardController extends Controller
          $data['apartamentos'] = Apartamento::count();
          $data['condominos'] = Pessoa::where('funcao_id',3)->count();
          $data['mesesNPago'] = Apartamento::count();
-         $data['valorPago'] = Apartamento::count();
+         $data['valorPago'] = Factura::where('estado_factura_id',2)->sum('valor_a_pagar');
       } elseif($responsavel_logado->funcao->id == 2){
          //dd(2);
          $data['apartamentos'] = Apartamento::where('created_by',$responsavel_logado->user_id)->count();

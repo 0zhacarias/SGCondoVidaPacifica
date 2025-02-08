@@ -20,9 +20,14 @@ class UserController extends Controller
 
     public function index()
     {
+        $user=new FinancaController();
+
         $data['usuarios'] = User::all();
-        $data['funcoes'] = Funcoes::all();
-        $data['roles'] = Role::all();
+        if ($user->pessoa()['funcao_id']==1) {
+            $data['roles'] = Role::get();
+        } else {
+            $data['roles'] = Role::where('id',3)->get();
+        }
         $data['permissions'] = Permission::all();
         return Inertia::render('User/User1', $data);
     }
@@ -59,7 +64,7 @@ class UserController extends Controller
                 'password' => Hash::make("sigcond"),
                 'username' => $username,
             ]);
-            /*  if ($user) {
+             /* if ($user) {
 
 
                 if ($request->get('funcao_id') == 1) {
@@ -69,7 +74,8 @@ class UserController extends Controller
                 } elseif ($request->get('funcao_id') == 3) {
                     $user->assignRole('Condomino');
                 } 
-            } */
+            }  */
+            $user->assignRole($request->roles);
             Pessoa::create([
                 'nome_pessoa' => head($nomecompleto),
                 'sobre_nome_pessoa' => last($nomecompleto),
@@ -81,9 +87,9 @@ class UserController extends Controller
                 'estado_civil_id' => null,
                 'tipo_documento_identificacao_id' => isset($request->tipo_documento_identificacao_id) ? $request->tipo_documento_identificacao_id : null,
                 'genero_id' => null,
-                'chefe_area' => null,
+                'created_by' => auth()->id(),
             ]);
-            $user->assignRole($request->roles);
+            
             // RemoveRole();
 
 

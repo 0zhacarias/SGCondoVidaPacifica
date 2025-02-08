@@ -56,20 +56,18 @@ class PagamentoController extends Controller
                 'created_by' => $pesoa_id,
                 'estado_pagamento_id' => 1,
                 'data_pago_banco' => date('Y-m-d'),
-            ]);
+            ]); 
             if ($request->hasFile('imagem_pagamento')) {
                 foreach ($request->imagem_pagamento as $index => $imagem) {
-                    if ($imagem->isValid()) {
                         $caminho_img = $imagem->store('Comprovativos');
-                    } else {
-                        return ['error' => 'Conprovativo obrigatório!!'];
-                    }
                     ImagemPagamento::create([
                         'designacao' => 'Comprovativo do pagamento da fatura nº : ' . $request->input('pagamento_faturas')['faturaReference'],
                         'imagem_pagamento' => $caminho_img,
                         'pagamento_id' => $pagamento->id,
                     ]);
                 }
+            }else{
+                return ['error' => 'Conprovativo obrigatório!!'];
             }
         } else {
             return ['error'=>'Não foi possível fazer o pagamento!'];

@@ -5514,9 +5514,15 @@ __webpack_require__.r(__webpack_exports__);
     return {};
   },
   created: function created() {
-    this.renderizarDadosDashboard(); // alert(1);
+    this.renderizarDadosDashboard();
+    this.convertValor(); // alert(1);
   },
   methods: {
+    convertValor: function convertValor() {
+      var valor = props.valorPago; // return valor.toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' });
+
+      alert(valor);
+    },
     renderizarDadosDashboard: function renderizarDadosDashboard() {
       // alert(JSON.stringify('ola'));
       axios.get("/dashboard").then(function (response) {})["catch"](function (error) {//toastr.warning('Houve uma falha ao carregar os dados!...');
@@ -8281,15 +8287,14 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       items: [{
         title: "Relatório de Inadeplência",
         route: "/inadeplencia"
-      }, {
-        title: "Balancete",
-        route: "/balancete"
-      }, {
+      },
+      /*  {
+         title: "Balancete",
+          route:"/balancete"
+       }, */
+      {
         title: "Livro de caixa",
         route: "/caixa"
-      }, {
-        title: "Click Me 2",
-        route: "/click"
       }],
       headers: [{
         text: "Nº",
@@ -8339,9 +8344,10 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       /*   window.open(`/relatorios${item.route}`,{
              params:this.query
          }); */
-      axios__WEBPACK_IMPORTED_MODULE_0___default().get("/relatorios".concat(item.route), {
-        params: this.query
-      });
+      window.open("/relatorios".concat(item.route));
+      /* axios.get(`/relatorios${item.route}`,{
+           params:this.query
+       })  */
     },
     fitroFinanca: function fitroFinanca() {
       var _this = this;
@@ -8383,6 +8389,61 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Shared/AppLayout */ "./resources/js/Shared/AppLayout.vue");
 /* harmony import */ var _components_TabApartamento__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/TabApartamento */ "./resources/js/components/TabApartamento.vue");
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -8446,7 +8507,25 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
       tabs: null,
       pagamentos: [],
-      servicos: []
+      servicos: [],
+      meses: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
+      headersPagamento: [{
+        text: 'ID do Cliente',
+        value: 'condomino_id'
+      }, {
+        text: 'Nome do Cliente',
+        value: 'nome'
+      }, {
+        text: 'Serviço',
+        value: 'servico'
+      }].concat(_toConsumableArray(["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"].map(function (mes) {
+        return {
+          text: mes,
+          value: mes
+        };
+      }))),
+      // meses: [], // Será preenchido dinamicamente
+      dividas: []
     };
   },
   methods: {
@@ -8457,7 +8536,59 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
         _this.pagamentos = response.data.items;
         _this.servicos = response.data.servicos;
       })["catch"](function (error) {});
+    },
+    fetchDividas: function fetchDividas() {
+      var _this2 = this;
+
+      axios.get('/financas/dividas').then(function (response) {
+        // Define a ordem fixa dos meses para garantir a consistência
+        var ordemMeses = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']; // Processa os dados
+
+        var arryachatado = response.data.flat();
+        _this2.dividas = arryachatado.map(function (item) {
+          return {
+            condomino_id: item.condomino_id,
+            nome: item.nome,
+            servicos: item.servicos
+            /*  condomino_id,nome,servicos */
+
+          };
+        }); //alert(JSON.stringify(dividas))
+
+        /*   this.dividas = response.data.map(cliente => 
+            cliente.servicos.map(servico => ({
+              condomino_id: cliente.condomino_id,
+              nome: cliente.nome,
+              servico: servico.servico
+            }))
+          );
+        */
+        // Atualiza os headers mantendo a ordem dos meses
+
+        /* this.headersPagamento = [
+          { text: 'ID', value: 'condomino_id' },
+          { text: 'Nome', value: 'nome' },
+          { text: 'Serviço', value: 'servico' },
+          ...ordemMeses.map(mes => ({ 
+            text: mes, 
+            value: mes,
+            align: 'center',
+            sortable: false 
+          }))
+        ]; */
+      })["catch"](function (error) {
+        console.error('Erro ao buscar dívidas:', error);
+        _this2.dividas = []; // Limpa dados em caso de erro
+      });
     }
+    /*  getServiceStatus(item, mes) {
+         if (!item.servicos || !item.servicos.length) return '';
+         return item.servicos
+             .map(s => s[mes])
+             .filter(status => status)
+             .join(' | ');
+     } */
+
   },
   computed: {
     user: function user() {
@@ -8467,14 +8598,15 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
   mounted: function mounted() {},
   created: function created() {
     this.Despesas();
+    this.fetchDividas();
   },
   progress: function progress() {
-    var _this2 = this;
+    var _this3 = this;
 
     this.dialog_info = false;
     this.dialog = true;
     setTimeout(function () {
-      _this2.dialog = false;
+      _this3.dialog = false;
     }, 7000);
   }
 });
@@ -11290,10 +11422,6 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
             }
           });
         } else {
-          if (this.projecto_marcado) {
-            this.pagamento.projecto_id = this.projecto_marcado;
-          }
-
           this.adicionar_pagamento.pagamento_faturas = this.pagamento;
           this.$inertia.post("/financas/adicionar-pagamento", this.adicionar_pagamento, {
             onFinish: function onFinish() {
@@ -14088,10 +14216,9 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
     }
   },
   mounted: function mounted() {},
-  created: function created() {
-    // this.atualizarTarefasAtrasada();
+  created: function created() {// this.atualizarTarefasAtrasada();
     // this.notificarTarefasAtrasada();
-    this.Notificar();
+    // this.Notificar();
   },
   methods: {
     atualizarTarefasAtrasada: function atualizarTarefasAtrasada() {
@@ -14137,8 +14264,8 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
            this.noti
        ); */
 
-      this.$inertia.get("/notificacoes/notificaca-lida/".concat(btoa(btoa(btoa(this.noti.id)))));
-      this.Notificar(); // axios
+      this.$inertia.get("/notificacoes/notificaca-lida/".concat(btoa(btoa(btoa(this.noti.id))))); // this.Notificar();
+      // axios
       //   .get("/notificacoes/notificaca-lida", {
       //     params:this.noti,
       //   })
@@ -96882,7 +97009,7 @@ var render = function () {
                                 id: "atualizacaoAndamento",
                               },
                             },
-                            [_vm._v(_vm._s(_vm.valorPago))]
+                            [_vm._v(" " + _vm._s(_vm.valorPago) + " KZ")]
                           ),
                         ]),
                       ],
@@ -102199,168 +102326,245 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("app-layout", [
-    _c(
-      "div",
-      { staticClass: "dashboard" },
-      [
-        _c(
-          "v-card",
-          { attrs: { elevation: "0" } },
-          [
-            _c(
-              "v-row",
-              [
-                _c("v-col", { attrs: { cols: "6", sm: "6", md: "6" } }, [
-                  _c("h3", { staticClass: "font-weight-bold" }, [
-                    _vm._v("Pagamento"),
+  return _c(
+    "app-layout",
+    [
+      _c(
+        "div",
+        { staticClass: "dashboard" },
+        [
+          _c(
+            "v-card",
+            { attrs: { elevation: "0" } },
+            [
+              _c(
+                "v-row",
+                [
+                  _c("v-col", { attrs: { cols: "6", sm: "6", md: "6" } }, [
+                    _c("h3", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Pagamento"),
+                    ]),
                   ]),
+                ],
+                1
+              ),
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card",
+            { staticClass: "mt-10" },
+            [
+              _c("v-toolbar", {
+                attrs: { color: "cortab", dark: "", flat: "" },
+                scopedSlots: _vm._u([
+                  {
+                    key: "extension",
+                    fn: function () {
+                      return [
+                        _c(
+                          "v-tabs",
+                          {
+                            attrs: { centered: "" },
+                            model: {
+                              value: _vm.tabs,
+                              callback: function ($$v) {
+                                _vm.tabs = $$v
+                              },
+                              expression: "tabs",
+                            },
+                          },
+                          _vm._l(_vm.pagamentos, function (servico) {
+                            return _c("v-tab", { key: servico }, [
+                              _vm._v(
+                                "\n                                " +
+                                  _vm._s(servico.mes) +
+                                  "\n                            "
+                              ),
+                            ])
+                          }),
+                          1
+                        ),
+                      ]
+                    },
+                    proxy: true,
+                  },
                 ]),
-              ],
-              1
-            ),
-          ],
-          1
-        ),
-        _vm._v(" "),
-        _c(
-          "v-card",
-          { staticClass: "mt-10" },
+              }),
+              _vm._v(" "),
+              _c(
+                "v-tabs-items",
+                {
+                  model: {
+                    value: _vm.tabs,
+                    callback: function ($$v) {
+                      _vm.tabs = $$v
+                    },
+                    expression: "tabs",
+                  },
+                },
+                _vm._l(_vm.pagamentos, function (item) {
+                  return _c(
+                    "v-tab-item",
+                    { key: _vm.tab },
+                    [
+                      _c(
+                        "v-card",
+                        { attrs: { flat: "" } },
+                        [
+                          _c(
+                            "v-card-text",
+                            [
+                              _c(
+                                "v-row",
+                                { staticClass: "m-0 p-0" },
+                                _vm._l(item.servicos, function (servico) {
+                                  return _c(
+                                    "v-col",
+                                    {
+                                      key: servico,
+                                      staticClass: "p-1",
+                                      attrs: {
+                                        md: item.servicos.length > 4 ? 2 : 3,
+                                      },
+                                    },
+                                    [
+                                      _c(
+                                        "v-card",
+                                        {
+                                          attrs: {
+                                            color:
+                                              servico.created_by ==
+                                              _vm.user.responsavel.id
+                                                ? "green"
+                                                : "red",
+                                          },
+                                        },
+                                        [
+                                          _c("v-card-text", [
+                                            _c("h4", [
+                                              _vm._v(
+                                                "Serviços :" +
+                                                  _vm._s(
+                                                    servico.created_by ==
+                                                      _vm.user.responsavel.id
+                                                      ? "Pago"
+                                                      : "Não pago"
+                                                  )
+                                              ),
+                                            ]),
+                                            _vm._v(
+                                              "\n                                                " +
+                                                _vm._s(servico.descricao) +
+                                                "\n                                            "
+                                            ),
+                                          ]),
+                                        ],
+                                        1
+                                      ),
+                                    ],
+                                    1
+                                  )
+                                }),
+                                1
+                              ),
+                            ],
+                            1
+                          ),
+                        ],
+                        1
+                      ),
+                    ],
+                    1
+                  )
+                }),
+                1
+              ),
+            ],
+            1
+          ),
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "v-card",
+        { staticClass: "elevation-0 mb-12 mt-4" },
+        [
           [
-            _c("v-toolbar", {
-              attrs: { color: "cortab", dark: "", flat: "" },
+            _c("v-data-table", {
+              staticClass: "elevation-1",
+              attrs: {
+                headers: _vm.headersPagamento,
+                items: _vm.dividas,
+                "item-value": "condomino_id",
+                dense: "",
+              },
               scopedSlots: _vm._u([
                 {
-                  key: "extension",
-                  fn: function () {
+                  key: "body",
+                  fn: function (ref) {
+                    var items = ref.items
                     return [
                       _c(
-                        "v-tabs",
-                        {
-                          attrs: { centered: "" },
-                          model: {
-                            value: _vm.tabs,
-                            callback: function ($$v) {
-                              _vm.tabs = $$v
-                            },
-                            expression: "tabs",
-                          },
-                        },
-                        _vm._l(_vm.pagamentos, function (servico) {
-                          return _c("v-tab", { key: servico }, [
-                            _vm._v(
-                              "\n                                       " +
-                                _vm._s(servico.mes) +
-                                "\n                                   "
-                            ),
-                          ])
+                        "tbody",
+                        _vm._l(items, function (item, index) {
+                          return _c(
+                            "tr",
+                            { key: item.condomino_id },
+                            [
+                              _c("td", { attrs: { rowspan: 1 } }, [
+                                _c("strong", [
+                                  _vm._v(_vm._s(item.condomino_id)),
+                                ]),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", { attrs: { rowspan: 1 } }, [
+                                _c("strong", [_vm._v(_vm._s(item.nome))]),
+                              ]),
+                              _vm._v(" "),
+                              _c("td", [
+                                _vm._v(
+                                  _vm._s(
+                                    item.servicos.length > 0
+                                      ? item.servicos[0].servico
+                                      : "—"
+                                  )
+                                ),
+                              ]),
+                              _vm._v(" "),
+                              _vm._l(_vm.meses, function (mes) {
+                                return _c("td", { key: mes }, [
+                                  _vm._v(
+                                    "\n            " +
+                                      _vm._s(
+                                        item.servicos.length > 0
+                                          ? item.servicos[0][mes] || "—"
+                                          : "—"
+                                      ) +
+                                      "\n          "
+                                  ),
+                                ])
+                              }),
+                            ],
+                            2
+                          )
                         }),
-                        1
+                        0
                       ),
                     ]
                   },
-                  proxy: true,
                 },
               ]),
             }),
-            _vm._v(" "),
-            _c(
-              "v-tabs-items",
-              {
-                model: {
-                  value: _vm.tabs,
-                  callback: function ($$v) {
-                    _vm.tabs = $$v
-                  },
-                  expression: "tabs",
-                },
-              },
-              _vm._l(_vm.pagamentos, function (item) {
-                return _c(
-                  "v-tab-item",
-                  { key: _vm.tab },
-                  [
-                    _c(
-                      "v-card",
-                      { attrs: { flat: "" } },
-                      [
-                        _c(
-                          "v-card-text",
-                          [
-                            _c(
-                              "v-row",
-                              { staticClass: "m-0 p-0" },
-                              _vm._l(item.servicos, function (servico) {
-                                return _c(
-                                  "v-col",
-                                  {
-                                    key: servico,
-                                    staticClass: "p-1",
-                                    attrs: {
-                                      md: item.servicos.length > 4 ? 2 : 3,
-                                    },
-                                  },
-                                  [
-                                    _c(
-                                      "v-card",
-                                      {
-                                        attrs: {
-                                          color:
-                                            servico.created_by ==
-                                            _vm.user.responsavel.id
-                                              ? "green"
-                                              : "red",
-                                        },
-                                      },
-                                      [
-                                        _c("v-card-text", [
-                                          _c("h4", [
-                                            _vm._v(
-                                              "Serviços :" +
-                                                _vm._s(
-                                                  servico.created_by ==
-                                                    _vm.user.responsavel.id
-                                                    ? "Pago"
-                                                    : "Não pago"
-                                                )
-                                            ),
-                                          ]),
-                                          _vm._v(
-                                            "  " +
-                                              _vm._s(servico.descricao) +
-                                              "\n                                                   "
-                                          ),
-                                        ]),
-                                      ],
-                                      1
-                                    ),
-                                  ],
-                                  1
-                                )
-                              }),
-                              1
-                            ),
-                          ],
-                          1
-                        ),
-                      ],
-                      1
-                    ),
-                  ],
-                  1
-                )
-              }),
-              1
-            ),
           ],
-          1
-        ),
-        _vm._v(" "),
-        _c("v-card", { staticClass: "elevation-0 mb-12 py-4" }),
-      ],
-      1
-    ),
-  ])
+        ],
+        2
+      ),
+    ],
+    1
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -105719,7 +105923,7 @@ var render = function () {
                                         icon: "",
                                         title: "Apagar factura",
                                         disabled:
-                                          !_vm.user.can["Eliminar tarefas"] ||
+                                          !_vm.user.can["Eliminar factura"] ||
                                           item.estado_factura_id == 4 ||
                                           item.estado_factura_id == 2,
                                       },
@@ -105756,7 +105960,7 @@ var render = function () {
                                             title: "Pagar",
                                             disabled:
                                               !_vm.user.can[
-                                                "Eliminar tarefas"
+                                                "Liquidar pagamento"
                                               ] || item.estado_factura_id == 3,
                                           },
                                         },
@@ -105766,7 +105970,8 @@ var render = function () {
                                           ),
                                         ]
                                       )
-                                    : item.estado_factura_id == 1
+                                    : item.estado_factura_id == 1 &&
+                                      _vm.user.can["Validar pagamentos"]
                                     ? _c(
                                         "v-icon",
                                         {

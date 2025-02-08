@@ -11,6 +11,7 @@ use App\Models\Factura;
 use App\Models\Pessoa;
 use App\Models\FacturaItem;
 use App\Models\FormaPagamento;
+use App\Traits\Divida;
 use Illuminate\Support\Facades\DB;
 use PDF;
 
@@ -19,12 +20,13 @@ use Inertia\Inertia;
 
 class FinancaController extends Controller
 {
+    use Divida;
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    protected function pessoa()
+    public function pessoa()
     {
         return Pessoa::where('user_id', auth()->id())->with('apartamento')->first();
     }
@@ -61,7 +63,7 @@ class FinancaController extends Controller
         }
 
 
-      //  dd($data['facturas']);
+        //  dd($data['facturas']);
 
 
         $data['forma_pagamentos'] = FormaPagamento::get();
@@ -86,6 +88,16 @@ class FinancaController extends Controller
             return redirect()->back()->with('success', 'Serviço cadastrado com ssucesso');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Não foi possivel cadastra o serviõ', $th->getMessage());
+        }
+        //dd($request);
+    }
+    public function dividas()
+    {
+        try {
+            $data=$this->pagamentos();
+            return response()->json($data);
+        } catch (\Throwable $th) {
+            return response()->json(['error' => 'Não foi possivel cadastra o servisos', $th->getMessage()]);
         }
         //dd($request);
     }
