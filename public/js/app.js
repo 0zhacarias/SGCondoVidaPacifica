@@ -7616,10 +7616,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_3__);
-var _methods;
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
+//
+//
+//
+//
 //
 //
 //
@@ -7717,147 +7717,23 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   // props são variaveis que podem ser acessadas em qualquer parte do projeto e aqui estou a usalos para armazenas os dados vindo do banco de dado.
-  props: ["msg", "servicos", "projetos", "responsaveis", "estado_tarefas", "control_tarefas", "funcao", "index", "projecto_marcado"],
+  props: ["msg", "servicos", "index"],
   components: {
     AppLayout: _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"],
     TabApartamento: _components_TabApartamento__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   data: function data() {
     return {
-      // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
-      responsaveisTarefas: [],
-      responsaveis_projeto: [],
-      show3: "",
-      show: "",
-      show2: "",
-      dialogResponsavel: false,
-      dialogResponsaveladicionados: false,
-      dialogNaoExisteResponsavel: false,
-      dialogDeleteResponsavel: false,
-      dialog: false,
-      dialogDelete: false,
-      dialogDetalheTarefa: false,
-      dialogPercentagem: false,
-      panel_motivo: "",
-      dialogRejeitarTarefa: false,
-      dialogCancelaTarefa: false,
-      tarefa_responsavel: {
-        responsavel_id: []
-      },
-      idprojecto: "",
       factura: {},
-      defaultpagamento: {
-        data_inicio_real: " ",
-        data_fim_real: "",
-        tempo_execucao: "",
-        nome_tarefa: "",
-        responsavel_id: []
-      },
       servicos_selecionado: [],
       todos_servicos: [],
-      query: {
-        estado_tarefa_id: null,
-        data_final: null,
-        data_inicial: null,
-        responsavel_id: null,
-        tarefa_id: null
-      },
-      verver: null,
-      dadosResponsavel: {},
-      editedIndex: -1,
-      deletedIndex: -1,
-      search: "",
       erros: [],
       // Front nao aceitar campo em branco.
-      headers: [{
-        text: 'Dessert (100g serving)',
-        align: 'start',
-        sortable: false,
-        value: 'name'
-      }, {
-        text: 'Calories',
-        value: 'calories'
-      }],
-      desserts: [{
-        name: 'Frozen Yogurt',
-        calories: 159,
-        fat: 6.0,
-        carbs: 24,
-        protein: 4.0,
-        iron: 1
-      }, {
-        name: 'Ice cream sandwich',
-        calories: 237,
-        fat: 9.0,
-        carbs: 37,
-        protein: 4.3,
-        iron: 1
-      }, {
-        name: 'Lollipop',
-        calories: 392,
-        fat: 0.2,
-        carbs: 98,
-        protein: 0,
-        iron: 2
-      }],
-      nomeTarefaRules: [function (v) {
-        return !!v || "Campo Obrigatório";
-      }],
-      descricacaoTarefaRules: [function (v) {
-        return !!v || "A descrição da tarefa tem de ser clara e sugestiva com no minimo de 20 caracter para consiguir se ter a ideia da tarefa";
-      }, function (v) {
-        return v && v.length > 0 || "A descrição da tarefa é muito curta";
-      }],
-      tempoExecucaoTarefaRules: [function (v) {
-        return !!v || "O tempo da tarefa está vazio";
-      }, // v => v.length <=3 || 'O campo esta vazio',
-      function (v) {
-        return v > 0 || "Não pode ser menor que 1 dia";
-      }],
-      referencaProjetoRules: [function (v) {
-        return !!v || "Campo Obrigatório";
-      }],
-      referencaResponsavelRules: [function (v) {
-        return !!v || "Campo Obrigatório";
-      }],
-      dataFimRealRules: {
-        Valido: function Valido(value, data) {
-          return value > data || "A data de Final tem de ser maior que a data! dados";
-        }
-      },
-      dataInicioRules: [function (v) {
-        return !!v || "Data Obrigatório";
-      }, function (v) {
-        return v >= new Date().toISOString().substr(0, 10) || "Data Inicial Invalida!";
-      }],
-      dataInicialfiltroRules: [function (v) {
-        return !!v || "Data Obrigatório";
-      }],
-      dataFinalFiltrolRules: {
-        Valido: function Valido(value, data) {
-          return value >= data || "A data final não pode ser inferior que a data inicial";
-        }
-      },
       //Validar Responsavel
-      alterarPercentagemRules: [function (v) {
+      quantiaddeRules: [function (v) {
         return !!v || "Data Obrigatório";
       }, function (v) {
-        return v <= 100 || "A quantidade não pode ser superior que 100%";
-      }],
-      motivoPercentagemRules: [function (v) {
-        return !!v || "Campo Obrigatório";
-      }],
-      AdicionaroResponsavelRules: [function (v) {
-        return !!v || "Campo Obrigatório";
-      }],
-      motivoRegeicaoRules: [function (v) {
-        return !!v || "Campo Obrigatório!";
-      }],
-      motivocancelamentoRules: [function (v) {
-        return !!v || "Campo Obrigatório!";
-      }],
-      responsavelRules: [function (v) {
-        return !!v || "Capmo Obrigatorio";
+        return v <= 12 || "A quantidade não pode ser superior que 12";
       }],
       total_quantidade: 0,
       total_preco: 0,
@@ -7865,7 +7741,7 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       servicos_map: []
     };
   },
-  methods: (_methods = {
+  methods: {
     Servicos: function Servicos(item) {
       var dados = this.servicos_map.find(function (elem) {
         return elem.id == item;
@@ -7897,277 +7773,35 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
     EmitirFatura: function EmitirFatura() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_3___default().post('/financas/emitir-factura', {
-        servicos: this.servicos_selecionado
-      }).then(function (response) {
-        alert(JSON.stringify(response.data));
-
-        if (response.data.factura_id) {
-          window.open('/relatorios/factura/' + response.data.factura_id);
-          _this.servicos_selecionado = [];
-          _this.pagamento = [];
-          _this.total_quantidade = 0;
-          _this.total_preco = 0;
-          _this.total_geral = 0;
-        } else {
-          Vue.toasted.global.defaultError({
-            msg: "" + response.data.error
-          });
-        }
-      })["catch"](function (error) {// toastr.warning('Houve uma falha ao carregar os dados!...');
+      var qmenor12 = this.servicos_selecionado.some(function (item) {
+        return item.quantidade > 12;
       });
-    },
-    tarefaPendente: function tarefaPendente(item) {
-      window.open("certificado-entrada/" + btoa(btoa(btoa(item.id))));
-    },
-    getColor: function getColor(estado_tarefa_id) {
-      if (estado_tarefa_id == 1) {
-        return "orange";
-      } else if (estado_tarefa_id == 2) {
-        return "blue";
-      } else if (estado_tarefa_id == 3) {
-        return "orange";
-      } else if (estado_tarefa_id == 4) {
-        return "green";
-      } else if (estado_tarefa_id == 5) {
-        return "red";
-      } else if (estado_tarefa_id == 6) {
-        return "red";
-      } else if (estado_tarefa_id == 7) {
-        return "red";
-      } else return "green";
-    },
-    aceitarFactura: function aceitarFactura() {
-      var _this2 = this;
 
-      this.$inertia.put("/tarefas/aceitar-tarefa/" + this.pagamento.id, this.pagamento, {
-        onFinish: function onFinish() {
-          if (_this2.$page.props.flash.success != null) {
-            Vue.toasted.global.defaultSuccess({
-              msg: "" + _this2.$page.props.flash.success
-            });
-          }
-
-          if (_this2.$page.props.flash.error != null) {
+      if (qmenor12 == false) {
+        alert(JSON.stringify(qmenor12));
+        axios__WEBPACK_IMPORTED_MODULE_3___default().post('/financas/emitir-factura', {
+          servicos: this.servicos_selecionado
+        }).then(function (response) {
+          if (response.data.factura_id) {
+            window.open('/relatorios/factura/' + response.data.factura_id);
+            _this.servicos_selecionado = [];
+            _this.pagamento = [];
+            _this.total_quantidade = 0;
+            _this.total_preco = 0;
+            _this.total_geral = 0;
+          } else {
             Vue.toasted.global.defaultError({
-              msg: "" + _this2.$page.props.flash.error
+              msg: "" + response.data.error
             });
           }
-        }
-      });
-    },
-    rejeitarTarefa: function rejeitarTarefa(item) {
-      this.pagamento = Object.assign({}, item);
-      this.dialogRejeitarTarefa = true;
-    },
-    cancelarDialogRejeitarTarefa: function cancelarDialogRejeitarTarefa() {
-      var _this3 = this;
-
-      this.dialogRejeitarTarefa = false;
-      this.$nextTick(function () {
-        _this3.pagamento = Object.assign({}, _this3.defaultpagamento);
-        _this3.editedIndex = -1;
-      });
-    },
-    saveRejeitarTarefa: function saveRejeitarTarefa() {
-      var _this4 = this;
-
-      if (this.$refs["formRejeitarTarefa"].validate()) {
-        this.$inertia.put("/tarefas/rejeitar-tarefa/" + this.pagamento.id, this.pagamento, {
-          onFinish: function onFinish() {
-            if (_this4.$page.props.flash.success != null) {
-              Vue.toasted.global.defaultSuccess({
-                msg: "" + _this4.$page.props.flash.success
-              });
-            }
-
-            if (_this4.$page.props.flash.error != null) {
-              Vue.toasted.global.defaultError({
-                msg: "" + _this4.$page.props.flash.error
-              });
-            }
-
-            _this4.cancelardialogRejeitarTarefa();
-          }
-        });
-      }
-    },
-    // Cancelar tarefas
-    cancelaTarefa: function cancelaTarefa(item) {
-      this.pagamento = Object.assign({}, item);
-      this.dialogCancelaTarefa = true;
-    },
-    cancelarDialogCancelaTarefa: function cancelarDialogCancelaTarefa() {
-      var _this5 = this;
-
-      this.dialogCancelaTarefa = false;
-      this.$nextTick(function () {
-        _this5.pagamento = Object.assign({}, _this5.defaultpagamento);
-      });
-    },
-    saveCancelaTarefa: function saveCancelaTarefa() {
-      var _this6 = this;
-
-      if (this.$refs["formCancelaTarefa"].validate()) {
-        this.$inertia.put("/tarefas/cancelamento-tarefa/" + this.pagamento.id, this.pagamento, {
-          onFinish: function onFinish() {
-            if (_this6.$page.props.flash.success != null) {
-              Vue.toasted.global.defaultSuccess({
-                msg: "" + _this6.$page.props.flash.success
-              });
-            }
-
-            if (_this6.$page.props.flash.error != null) {
-              Vue.toasted.global.defaultError({
-                msg: "" + _this6.$page.props.flash.error
-              });
-            }
-
-            _this6.cancelarDialogCancelaTarefa();
-          }
-        });
-      }
-    },
-    carregarDialog: function carregarDialog() {
-      this.pagamento = Object.assign({}, this.defaultpagamento);
-      this.editedIndex = -1;
-      this.dialog = true;
-    },
-    editItem: function editItem(item) {
-      this.editedIndex = this.tarefas.indexOf(item);
-      this.pagamento = Object.assign({}, item);
-      this.dialog = true;
-    },
-    verDetalhe: function verDetalhe(item) {
-      this.pagamento = Object.assign({}, item);
-      this.dialogDetalheTarefa = true;
-    },
-    deleteItem: function deleteItem(item) {
-      this.editedIndex = this.tarefas.indexOf(item);
-      this.pagamento = Object.assign({}, item);
-      this.dialogDelete = true;
-    },
-    deleteItemConfirm: function deleteItemConfirm() {
-      var _this7 = this;
-
-      this.$inertia["delete"]("/tarefas/tarefa/" + this.pagamento.id, {
-        onFinish: function onFinish() {
-          if (_this7.$page.props.flash.success != null) {
-            Vue.toasted.global.defaultSuccess({
-              msg: "" + _this7.$page.props.flash.success
-            });
-          }
-
-          if (_this7.$page.props.flash.error != null) {
-            Vue.toasted.global.defaultError({
-              msg: "" + _this7.$page.props.flash.error
-            });
-          }
-        }
-      }), this.closeDelete();
-    },
-    tarefaConcluido: function tarefaConcluido(item) {
-      var _this8 = this;
-
-      // this.editedIndex = this.tarefas.indexOf(item)
-      this.pagamento = Object.assign({}, item);
-      this.$inertia.put("/tarefas/tarefa-concluido/" + this.pagamento.id, this.pagamento, {
-        onFinish: function onFinish() {
-          if (_this8.$page.props.flash.success != null) {
-            Vue.toasted.global.defaultSuccess({
-              msg: "" + _this8.$page.props.flash.success
-            });
-          }
-
-          if (_this8.$page.props.flash.error != null) {
-            Vue.toasted.global.defaultError({
-              msg: "" + _this8.$page.props.flash.error
-            });
-          }
-
-          _this8.cancelarDialogPercentagem();
-        }
-      });
-    }
-  }, _defineProperty(_methods, "aceitarFactura", function aceitarFactura(item) {
-    var _this9 = this;
-
-    // this.editedIndex = this.tarefas.indexOf(item)
-    this.pagamento = Object.assign({}, item);
-    this.$inertia.put("/tarefas/aceitar-tarefa/" + this.pagamento.id, this.pagamento, {
-      onFinish: function onFinish() {
-        if (_this9.$page.props.flash.success != null) {
-          Vue.toasted.global.defaultSuccess({
-            msg: "" + _this9.$page.props.flash.success
-          });
-        }
-
-        if (_this9.$page.props.flash.error != null) {
-          Vue.toasted.global.defaultError({
-            msg: "" + _this9.$page.props.flash.error
-          });
-        }
-
-        _this9.cancelarDialogPercentagem();
-      }
-    });
-  }), _defineProperty(_methods, "cancelarDialog", function cancelarDialog() {
-    this.pagamento = Object.assign({}, this.defaultpagamento);
-    this.editedIndex = -1;
-    this.dialog = false;
-  }), _defineProperty(_methods, "closeSave", function closeSave() {
-    this.pagamento = Object.assign({}, this.defaultpagamento);
-    this.editedIndex = -1;
-    this.dialog = false;
-  }), _defineProperty(_methods, "save", function save() {
-    var _this10 = this;
-
-    if (this.$refs["form"].validate()) {
-      if (this.editedIndex > -1) {
-        this.pagamento.projecto_id;
-        this.$inertia.put("/tarefas/tarefa/".concat(this.pagamento.id), this.pagamento, {
-          onFinish: function onFinish() {
-            if (_this10.$page.props.flash.success != null) {
-              Vue.toasted.global.defaultSuccess({
-                msg: "" + _this10.$page.props.flash.success
-              });
-            }
-
-            if (_this10.$page.props.flash.error != null) {
-              Vue.toasted.global.defaultError({
-                msg: "" + _this10.$page.props.flash.error
-              });
-            }
-
-            _this10.cancelarDialog();
-          }
-        });
-      } else {
-        if (this.projecto_marcado) {
-          this.pagamento.projecto_id = this.projecto_marcado;
-        } //  alert(JSON.stringify(this.pagamento))
-
-
-        this.$inertia.post("/tarefas/tarefa", this.pagamento, {
-          onFinish: function onFinish() {
-            if (_this10.$page.props.flash.success != null) {
-              Vue.toasted.global.defaultSuccess({
-                msg: "" + _this10.$page.props.flash.success
-              });
-            }
-
-            if (_this10.$page.props.flash.error != null) {
-              Vue.toasted.global.defaultError({
-                msg: "" + _this10.$page.props.flash.error
-              });
-            }
-
-            _this10.cancelarDialog();
-          }
+        })["catch"](function (error) {// toastr.warning('Houve uma falha ao carregar os dados!...');
         });
       }
     }
-  }), _methods),
+  },
+  tarefaPendente: function tarefaPendente(item) {
+    window.open("certificado-entrada/" + btoa(btoa(btoa(item.id))));
+  },
   computed: {
     user: function user() {
       return this.$page.props.auth.user;
@@ -8190,12 +7824,12 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
     }
   },
   progress: function progress() {
-    var _this11 = this;
+    var _this2 = this;
 
     this.dialog_info = false;
     this.dialog = true;
     setTimeout(function () {
-      _this11.dialog = false;
+      _this2.dialog = false;
     }, 7000);
   }
 });
@@ -101880,6 +101514,11 @@ var render = function () {
                                                         min: "0",
                                                         max: "12",
                                                         dense: "",
+                                                        rules:
+                                                          _vm.quantiaddeRules,
+                                                        "error-messages":
+                                                          _vm.erros.designacao,
+                                                        required: "",
                                                       },
                                                       on: {
                                                         keyup: function (

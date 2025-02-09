@@ -94,7 +94,7 @@ class FinancaController extends Controller
     public function dividas()
     {
         try {
-            $data=$this->pagamentos();
+            $data = $this->pagamentos();
             return response()->json($data);
         } catch (\Throwable $th) {
             return response()->json(['error' => 'Não foi possivel cadastra o servisos', $th->getMessage()]);
@@ -121,59 +121,60 @@ class FinancaController extends Controller
     public function store(Request $request)
     {
         try {
-           DB::beginTransaction();
-        //code...
-       
-        $pessoa = Pessoa::where('user_id', auth()->id())->with('apartamento')->first();
-      //  dd(request(),$pessoa);
-        // dd($pessoa->apartamento->id,count( request()->servicos));
-        $descricao = "Emissão de facturas para os serviços do condominio";
-        $factura = Factura::create([
-            'descricao' => $descricao,
-            'observacao' => $descricao,
-            'faturaReference' => 'FSC-' . date('Y') . count(Factura::get()) + 1,
-            'total_geral' => $request->input('total_preco_factura'),
-            'apartamento_id' => $pessoa->apartamento->id,
-            'valor_depositado' => $request->input('valor_depositado'),
-            'created_by' => $this->pessoa()['id'],
-            'estado_factura_id' => 5,
-            'data_vencimento' => date('Y-m-d'),
+            DB::beginTransaction();
+            //code...
 
-        ]);
-        $servicos = request()->servicos;
-        // dd($servicos);
-        $iva = 0.14;
-        $total_iva = $iva * count($servicos);
-        $total_geral = 0;
-        $valor_depositado = 0;
+            $pessoa = Pessoa::where('user_id', auth()->id())->with('apartamento')->first();
+            //  dd(request(),$pessoa);
+            // dd($pessoa->apartamento->id,count( request()->servicos));
+            $descricao = "Emissão de facturas para os serviços do condominio";
+            $factura = Factura::create([
+                'descricao' => $descricao,
+                'observacao' => $descricao,
+                'faturaReference' => 'FSC-' . date('Y') . count(Factura::get()) + 1,
+                'total_geral' => $request->input('total_preco_factura'),
+                'apartamento_id' => $pessoa->apartamento->id,
+                'valor_depositado' => $request->input('valor_depositado'),
+                'created_by' => $this->pessoa()['id'],
+                'estado_factura_id' => 5,
+                'data_vencimento' => date('Y-m-d'),
 
-
-        foreach ($servicos as $servico) {
-            $total_geral = $total_geral + $servico['total_g'];
-            $valor_depositado = $valor_depositado + $servico['preco'];
-
-            FacturaItem::create([
-                'factura_id' => $factura->id,
-                'servico_id' => $servico['id'],
-                'quantidade' => $servico['quantidade'],
-                'preco' => $servico['preco'],
-                'designacao' => $servico['designacao'],
-                'total' => $servico['total_g'],
-                'created_by' => $this->pessoa()['user_id'],
             ]);
+            $servicos = request()->servicos;
+            // dd($servicos);
+            $iva = 0.14;
+            $total_iva = $iva * count($servicos);
+            $total_geral = 0;
+            $valor_depositado = 0;
+
+
+            foreach ($servicos as $servico) {
+                $total_geral = $total_geral + $servico['total_g'];
+                $valor_depositado = $valor_depositado + $servico['preco'];
+                for ($i = 1; $i <= $servico['quantidade']; $i++) {
+                    FacturaItem::create([
+                        'factura_id' => $factura->id,
+                        'servico_id' => $servico['id'],
+                        'quantidade' => $servico['quantidade'],
+                        'preco' => $servico['preco'],
+                        'designacao' => $servico['designacao'],
+                        'total' => $servico['total_g'],
+                        'created_by' => $this->pessoa()['user_id'],
+                    ]);
+                }
+            }
+            //dd($total_geral,$valor_depositado);
+            $factura->total_preco_factura = $total_geral;
+            $factura->valor_a_pagar = $total_geral + ($total_geral * $iva);
+            $factura->total_iva = $total_geral * $iva;
+            $factura->save();
+            DB::commit();
+            return ['factura_id' => $factura->id];
+        } catch (\Throwable $th) {
+            // dd($th);
+            DB::rollBack();
+            return response()->json(['error' => 'Não foi possivel geral a fatura, Solicite o sindico']);
         }
-        //dd($total_geral,$valor_depositado);
-        $factura->total_preco_factura = $total_geral;
-        $factura->valor_a_pagar = $total_geral + ($total_geral * $iva);
-        $factura->total_iva = $total_geral * $iva;
-        $factura->save();
-        DB::commit();
-        return ['factura_id' => $factura->id];
-    } catch (\Throwable $th) {
-       // dd($th);
-        DB::rollBack();
-        return response()->json(['error'=>'Não foi possivel geral a fatura, Solicite o sindico']);
-       }
     }
     public function relatorio_factura($id)
     {
