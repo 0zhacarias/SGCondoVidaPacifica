@@ -75,7 +75,7 @@
                       <v-col cols="12" md="4">
                         <v-btn rounded outlined color="#00987b" dark class="mb-2 mx-4">
                           <inertia-link
-                            class="text-white"
+                            class="text-black"
                             href="/permission/associar-funcoes-permissoes"
                           >
                             <v-icon>sync</v-icon>&nbsp;Atribuir Permissões
@@ -236,7 +236,7 @@
                       <v-col cols="12" md="4">
                         <v-btn rounded outlined color="#00987b" dark class="mb-2 mx-3">
                           <inertia-link
-                            class="text-white"
+                            class="text-black"
                             href="/permission/associar-funcoes-permissoes"
                           >
                             <v-icon>sync</v-icon>&nbsp;Atribuir Permissões

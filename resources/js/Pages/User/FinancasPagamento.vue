@@ -8,7 +8,7 @@
                     </v-col>
                 </v-row>
             </v-card>
-            <v-card class="mt-10">
+            <v-card class="mt-10"  v-if="user.responsavel.funcao_id==3">
                 <v-toolbar color="cortab" dark flat>
                     <template v-slot:extension>
                         <v-tabs v-model="tabs" centered>
@@ -43,35 +43,31 @@
             </v-card>
 
         </div>
-        <v-card class="elevation-0 mb-12 mt-4 ">
+        <v-card class="elevation-0 mb-12 mt-4 " v-if="user.responsavel.funcao_id==1 || user.responsavel.funcao_id==2">
+            oooooooo {{ user.responsavel.funcao_id==1 }}
             <template>
-  <v-data-table
-    :headers="headersPagamento"
-    :items="dividas"
-    item-value="condomino_id"
-    class="elevation-1"
-    dense
-  >
-    <template v-slot:body="{ items }">
-      <tbody>
-        <tr v-for="(item, index) in items" :key="item.condomino_id">
-          <!-- ID e Nome com rowspan -->
-          <td :rowspan="1">
-            <strong>{{ item.condomino_id }}</strong>
-          </td>
-          <td :rowspan="1">
-            <strong>{{ item.nome }}</strong>
-          </td>
+                <v-data-table :headers="headersPagamento" :items="dividas" item-value="condomino_id" class="elevation-1"
+                    dense>
+                    <template v-slot:body="{ items }">
+                        <tbody>
+                            <tr v-for="(item, index) in items" :key="item.condomino_id">
+                                <!-- ID e Nome com rowspan -->
+                                <!-- <td :rowspan="1">
+                                    <strong>{{ item.condomino_id }}</strong>
+                                </td> -->
+                                <td :rowspan="1">
+                                    <strong>{{ item.nome }}</strong>
+                                </td>
 
-          <!-- Primeiro Serviço -->
-          
-          <td>{{ item.servicos.length > 0 ? item.servicos[0].servico : "—" }}</td>
-          <td v-for="mes in meses" :key="mes">
-            {{ item.servicos.length > 0 ? item.servicos[0][mes] || "—" : "—" }}
-          </td>
-        </tr>
-        <!-- Serviços adicionais -->
-      <!--   <tr
+                                <!-- Primeiro Serviço -->
+
+                                <td>{{ item.servicos.length > 0 ? item.servicos[0].servico : "—" }}</td>
+                                <td v-for="mes in meses" :key="mes">
+                                    {{ item.servicos.length > 0 ? item.servicos[0][mes] || "—" : "—" }}
+                                </td>
+                            </tr>
+                            <!-- Serviços adicionais -->
+                            <!--   <tr
           v-for="(servico, index) in items.servicos"
           :key="`${item.condomino_id}-servico-${index}`"
           v-if="index > 0"
@@ -81,10 +77,10 @@
             {{ servico[mes] || "—" }}
           </td>
         </tr> -->
-      </tbody>
-    </template>
-  </v-data-table>
-</template>
+                        </tbody>
+                    </template>
+                </v-data-table>
+            </template>
         </v-card>
     </app-layout>
 </template>
@@ -137,8 +133,8 @@ export default {
                 "Dezembro"
             ],
             headersPagamento: [
-                { text: 'ID do Cliente', value: 'condomino_id' },
-                { text: 'Nome do Cliente', value: 'nome' },
+/*                 { text: 'ID do Cliente', value: 'condomino_id' },
+ */                { text: 'Nome do Cliente', value: 'nome' },
                 { text: 'Serviço', value: 'servico' },
                 ...[
                     "Janeiro",
@@ -154,7 +150,7 @@ export default {
                     "Novembro",
                     "Dezembro"
                 ].map(mes => ({ text: mes, value: mes })),
-                
+
             ],
             // meses: [], // Será preenchido dinamicamente
             dividas: [],
@@ -221,13 +217,13 @@ export default {
                     this.dividas = []; // Limpa dados em caso de erro
                 });
         },
-       /*  getServiceStatus(item, mes) {
-            if (!item.servicos || !item.servicos.length) return '';
-            return item.servicos
-                .map(s => s[mes])
-                .filter(status => status)
-                .join(' | ');
-        } */
+        /*  getServiceStatus(item, mes) {
+             if (!item.servicos || !item.servicos.length) return '';
+             return item.servicos
+                 .map(s => s[mes])
+                 .filter(status => status)
+                 .join(' | ');
+         } */
     },
 
     computed: {

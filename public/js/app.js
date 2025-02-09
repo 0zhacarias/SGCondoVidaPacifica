@@ -7900,12 +7900,21 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       axios__WEBPACK_IMPORTED_MODULE_3___default().post('/financas/emitir-factura', {
         servicos: this.servicos_selecionado
       }).then(function (response) {
-        window.open('/relatorios/factura/' + response.data.factura_id);
-        _this.servicos_selecionado = [];
-        _this.pagamento = [];
-        _this.total_quantidade = 0;
-        _this.total_preco = 0;
-        _this.total_geral = 0;
+        alert(JSON.stringify(response.data));
+
+        if (response.data.factura_id) {
+          window.open('/relatorios/factura/' + response.data.factura_id);
+          _this.servicos_selecionado = [];
+          _this.pagamento = [];
+          _this.total_quantidade = 0;
+          _this.total_preco = 0;
+          _this.total_geral = 0;
+        } else {
+          Vue.toasted.global.defaultError({
+            msg: "" + response.data.error
+          });
+        }
+      })["catch"](function (error) {// toastr.warning('Houve uma falha ao carregar os dados!...');
       });
     },
     tarefaPendente: function tarefaPendente(item) {
@@ -8488,10 +8497,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
 
 
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
@@ -8509,10 +8514,10 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       pagamentos: [],
       servicos: [],
       meses: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"],
-      headersPagamento: [{
-        text: 'ID do Cliente',
-        value: 'condomino_id'
-      }, {
+      headersPagamento: [
+      /*                 { text: 'ID do Cliente', value: 'condomino_id' },
+       */
+      {
         text: 'Nome do Cliente',
         value: 'nome'
       }, {
@@ -102352,121 +102357,132 @@ var render = function () {
             1
           ),
           _vm._v(" "),
-          _c(
-            "v-card",
-            { staticClass: "mt-10" },
-            [
-              _c("v-toolbar", {
-                attrs: { color: "cortab", dark: "", flat: "" },
-                scopedSlots: _vm._u([
-                  {
-                    key: "extension",
-                    fn: function () {
-                      return [
-                        _c(
-                          "v-tabs",
-                          {
-                            attrs: { centered: "" },
-                            model: {
-                              value: _vm.tabs,
-                              callback: function ($$v) {
-                                _vm.tabs = $$v
-                              },
-                              expression: "tabs",
-                            },
-                          },
-                          _vm._l(_vm.pagamentos, function (servico) {
-                            return _c("v-tab", { key: servico }, [
-                              _vm._v(
-                                "\n                                " +
-                                  _vm._s(servico.mes) +
-                                  "\n                            "
+          _vm.user.responsavel.funcao_id == 3
+            ? _c(
+                "v-card",
+                { staticClass: "mt-10" },
+                [
+                  _c("v-toolbar", {
+                    attrs: { color: "cortab", dark: "", flat: "" },
+                    scopedSlots: _vm._u(
+                      [
+                        {
+                          key: "extension",
+                          fn: function () {
+                            return [
+                              _c(
+                                "v-tabs",
+                                {
+                                  attrs: { centered: "" },
+                                  model: {
+                                    value: _vm.tabs,
+                                    callback: function ($$v) {
+                                      _vm.tabs = $$v
+                                    },
+                                    expression: "tabs",
+                                  },
+                                },
+                                _vm._l(_vm.pagamentos, function (servico) {
+                                  return _c("v-tab", { key: servico }, [
+                                    _vm._v(
+                                      "\n                            " +
+                                        _vm._s(servico.mes) +
+                                        "\n                        "
+                                    ),
+                                  ])
+                                }),
+                                1
                               ),
-                            ])
-                          }),
-                          1
-                        ),
-                      ]
+                            ]
+                          },
+                          proxy: true,
+                        },
+                      ],
+                      null,
+                      false,
+                      1673023107
+                    ),
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "v-tabs-items",
+                    {
+                      model: {
+                        value: _vm.tabs,
+                        callback: function ($$v) {
+                          _vm.tabs = $$v
+                        },
+                        expression: "tabs",
+                      },
                     },
-                    proxy: true,
-                  },
-                ]),
-              }),
-              _vm._v(" "),
-              _c(
-                "v-tabs-items",
-                {
-                  model: {
-                    value: _vm.tabs,
-                    callback: function ($$v) {
-                      _vm.tabs = $$v
-                    },
-                    expression: "tabs",
-                  },
-                },
-                _vm._l(_vm.pagamentos, function (item) {
-                  return _c(
-                    "v-tab-item",
-                    { key: _vm.tab },
-                    [
-                      _c(
-                        "v-card",
-                        { attrs: { flat: "" } },
+                    _vm._l(_vm.pagamentos, function (item) {
+                      return _c(
+                        "v-tab-item",
+                        { key: _vm.tab },
                         [
                           _c(
-                            "v-card-text",
+                            "v-card",
+                            { attrs: { flat: "" } },
                             [
                               _c(
-                                "v-row",
-                                { staticClass: "m-0 p-0" },
-                                _vm._l(item.servicos, function (servico) {
-                                  return _c(
-                                    "v-col",
-                                    {
-                                      key: servico,
-                                      staticClass: "p-1",
-                                      attrs: {
-                                        md: item.servicos.length > 4 ? 2 : 3,
-                                      },
-                                    },
-                                    [
-                                      _c(
-                                        "v-card",
+                                "v-card-text",
+                                [
+                                  _c(
+                                    "v-row",
+                                    { staticClass: "m-0 p-0" },
+                                    _vm._l(item.servicos, function (servico) {
+                                      return _c(
+                                        "v-col",
                                         {
+                                          key: servico,
+                                          staticClass: "p-1",
                                           attrs: {
-                                            color:
-                                              servico.created_by ==
-                                              _vm.user.responsavel.id
-                                                ? "green"
-                                                : "red",
+                                            md:
+                                              item.servicos.length > 4 ? 2 : 3,
                                           },
                                         },
                                         [
-                                          _c("v-card-text", [
-                                            _c("h4", [
-                                              _vm._v(
-                                                "Serviços :" +
-                                                  _vm._s(
-                                                    servico.created_by ==
-                                                      _vm.user.responsavel.id
-                                                      ? "Pago"
-                                                      : "Não pago"
-                                                  )
-                                              ),
-                                            ]),
-                                            _vm._v(
-                                              "\n                                                " +
-                                                _vm._s(servico.descricao) +
-                                                "\n                                            "
-                                            ),
-                                          ]),
+                                          _c(
+                                            "v-card",
+                                            {
+                                              attrs: {
+                                                color:
+                                                  servico.created_by ==
+                                                  _vm.user.responsavel.id
+                                                    ? "green"
+                                                    : "red",
+                                              },
+                                            },
+                                            [
+                                              _c("v-card-text", [
+                                                _c("h4", [
+                                                  _vm._v(
+                                                    "Serviços :" +
+                                                      _vm._s(
+                                                        servico.created_by ==
+                                                          _vm.user.responsavel
+                                                            .id
+                                                          ? "Pago"
+                                                          : "Não pago"
+                                                      )
+                                                  ),
+                                                ]),
+                                                _vm._v(
+                                                  "\n                                            " +
+                                                    _vm._s(servico.descricao) +
+                                                    "\n                                        "
+                                                ),
+                                              ]),
+                                            ],
+                                            1
+                                          ),
                                         ],
                                         1
-                                      ),
-                                    ],
+                                      )
+                                    }),
                                     1
-                                  )
-                                }),
+                                  ),
+                                ],
                                 1
                               ),
                             ],
@@ -102474,94 +102490,98 @@ var render = function () {
                           ),
                         ],
                         1
-                      ),
-                    ],
+                      )
+                    }),
                     1
-                  )
-                }),
+                  ),
+                ],
                 1
-              ),
-            ],
-            1
-          ),
+              )
+            : _vm._e(),
         ],
         1
       ),
       _vm._v(" "),
-      _c(
-        "v-card",
-        { staticClass: "elevation-0 mb-12 mt-4" },
-        [
-          [
-            _c("v-data-table", {
-              staticClass: "elevation-1",
-              attrs: {
-                headers: _vm.headersPagamento,
-                items: _vm.dividas,
-                "item-value": "condomino_id",
-                dense: "",
-              },
-              scopedSlots: _vm._u([
-                {
-                  key: "body",
-                  fn: function (ref) {
-                    var items = ref.items
-                    return [
-                      _c(
-                        "tbody",
-                        _vm._l(items, function (item, index) {
-                          return _c(
-                            "tr",
-                            { key: item.condomino_id },
-                            [
-                              _c("td", { attrs: { rowspan: 1 } }, [
-                                _c("strong", [
-                                  _vm._v(_vm._s(item.condomino_id)),
-                                ]),
-                              ]),
-                              _vm._v(" "),
-                              _c("td", { attrs: { rowspan: 1 } }, [
-                                _c("strong", [_vm._v(_vm._s(item.nome))]),
-                              ]),
-                              _vm._v(" "),
-                              _c("td", [
-                                _vm._v(
-                                  _vm._s(
-                                    item.servicos.length > 0
-                                      ? item.servicos[0].servico
-                                      : "—"
-                                  )
-                                ),
-                              ]),
-                              _vm._v(" "),
-                              _vm._l(_vm.meses, function (mes) {
-                                return _c("td", { key: mes }, [
-                                  _vm._v(
-                                    "\n            " +
-                                      _vm._s(
-                                        item.servicos.length > 0
-                                          ? item.servicos[0][mes] || "—"
-                                          : "—"
-                                      ) +
-                                      "\n          "
-                                  ),
-                                ])
-                              }),
-                            ],
-                            2
-                          )
-                        }),
-                        0
-                      ),
-                    ]
+      _vm.user.responsavel.funcao_id == 1 || _vm.user.responsavel.funcao_id == 2
+        ? _c(
+            "v-card",
+            { staticClass: "elevation-0 mb-12 mt-4" },
+            [
+              _vm._v(
+                "\n        oooooooo " +
+                  _vm._s(_vm.user.responsavel.funcao_id == 1) +
+                  "\n        "
+              ),
+              [
+                _c("v-data-table", {
+                  staticClass: "elevation-1",
+                  attrs: {
+                    headers: _vm.headersPagamento,
+                    items: _vm.dividas,
+                    "item-value": "condomino_id",
+                    dense: "",
                   },
-                },
-              ]),
-            }),
-          ],
-        ],
-        2
-      ),
+                  scopedSlots: _vm._u(
+                    [
+                      {
+                        key: "body",
+                        fn: function (ref) {
+                          var items = ref.items
+                          return [
+                            _c(
+                              "tbody",
+                              _vm._l(items, function (item, index) {
+                                return _c(
+                                  "tr",
+                                  { key: item.condomino_id },
+                                  [
+                                    _c("td", { attrs: { rowspan: 1 } }, [
+                                      _c("strong", [_vm._v(_vm._s(item.nome))]),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", [
+                                      _vm._v(
+                                        _vm._s(
+                                          item.servicos.length > 0
+                                            ? item.servicos[0].servico
+                                            : "—"
+                                        )
+                                      ),
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm._l(_vm.meses, function (mes) {
+                                      return _c("td", { key: mes }, [
+                                        _vm._v(
+                                          "\n                                " +
+                                            _vm._s(
+                                              item.servicos.length > 0
+                                                ? item.servicos[0][mes] || "—"
+                                                : "—"
+                                            ) +
+                                            "\n                            "
+                                        ),
+                                      ])
+                                    }),
+                                  ],
+                                  2
+                                )
+                              }),
+                              0
+                            ),
+                          ]
+                        },
+                      },
+                    ],
+                    null,
+                    false,
+                    3470064345
+                  ),
+                }),
+              ],
+            ],
+            2
+          )
+        : _vm._e(),
     ],
     1
   )
@@ -102784,7 +102804,7 @@ var render = function () {
                                                   _c(
                                                     "inertia-link",
                                                     {
-                                                      staticClass: "text-white",
+                                                      staticClass: "text-black",
                                                       attrs: {
                                                         href: "/permission/associar-funcoes-permissoes",
                                                       },
@@ -103333,7 +103353,7 @@ var render = function () {
                                                   _c(
                                                     "inertia-link",
                                                     {
-                                                      staticClass: "text-white",
+                                                      staticClass: "text-black",
                                                       attrs: {
                                                         href: "/permission/associar-funcoes-permissoes",
                                                       },

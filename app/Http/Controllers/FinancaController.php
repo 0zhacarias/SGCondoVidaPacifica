@@ -120,9 +120,12 @@ class FinancaController extends Controller
      */
     public function store(Request $request)
     {
-        DB::beginTransaction();
-        //dd(request());
+        try {
+           DB::beginTransaction();
+        //code...
+       
         $pessoa = Pessoa::where('user_id', auth()->id())->with('apartamento')->first();
+      //  dd(request(),$pessoa);
         // dd($pessoa->apartamento->id,count( request()->servicos));
         $descricao = "Emissão de facturas para os serviços do condominio";
         $factura = Factura::create([
@@ -166,7 +169,11 @@ class FinancaController extends Controller
         $factura->save();
         DB::commit();
         return ['factura_id' => $factura->id];
+    } catch (\Throwable $th) {
+       // dd($th);
         DB::rollBack();
+        return response()->json(['error'=>'Não foi possivel geral a fatura, Solicite o sindico']);
+       }
     }
     public function relatorio_factura($id)
     {

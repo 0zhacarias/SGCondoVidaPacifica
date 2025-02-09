@@ -287,13 +287,23 @@ export default {
             axios.post('/financas/emitir-factura', {
                 servicos: this.servicos_selecionado,
             }).then((response) => {
-                window.open('/relatorios/factura/' + response.data.factura_id)
+                alert(JSON.stringify(response.data))
+                if(response.data.factura_id){
+                    window.open('/relatorios/factura/' + response.data.factura_id)
                 this.servicos_selecionado = []
                 this.pagamento = []
                 this.total_quantidade = 0
                 this.total_preco = 0
                 this.total_geral = 0
-            })
+                }else{
+                    Vue.toasted.global.defaultError({
+                                msg: "" + response.data.error,
+                            });
+                }
+               
+            }).catch((error) => {
+                   // toastr.warning('Houve uma falha ao carregar os dados!...');
+                });
 
         },
         tarefaPendente(item) {
