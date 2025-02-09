@@ -46,18 +46,23 @@
                                         <tbody>
                                             <tr v-for="item in servicos_selecionado" :key="item.designacao">
                                                 <td>{{ item.designacao }}</td>
-                                                <td>{{ (item.preco).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' }) }}</td>
+                                                <td>{{ (item.preco).toLocaleString('pt-AO', {
+                                                    style: 'currency',
+                                                    currency: 'AOA' }) }}</td>
                                                 <td>
-                                                  
+
                                                     <v-text-field v-model="item.quantidade" type="number" min="0"
                                                         max="12" dense @keyup.enter="TotalGeral(servicos_selecionado)"
                                                         @input="TotalGeral(servicos_selecionado)"
-                                                         :rules="quantiaddeRules" :error-messages="erros.designacao" required
-                                                        >
+                                                        :rules="quantiaddeRules" :error-messages="erros.designacao"
+                                                        required>
                                                     </v-text-field>
-                                             
+
                                                 </td>
-                                                <td v-if="item.quantidade">{{ (item.total_g=item.preco * item.quantidade).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
+                                                <td v-if="item.quantidade">{{ (item.total_g = item.preco *
+                                                    item.quantidade).toLocaleString('pt-AO', {
+                                                        style: 'currency',
+                                                    currency: 'AOA' })
                                                     }}</td>
                                             </tr>
 
@@ -112,7 +117,7 @@ export default {
         "msg",
         "servicos",
         "index",
-       
+
     ],
     components: {
         AppLayout,
@@ -121,17 +126,17 @@ export default {
 
     data() {
         return {
-         
-            
+
+
             factura: {
             },
-           
+
             servicos_selecionado: [],
             todos_servicos: [],
-                      erros: [],
+            erros: [],
             // Front nao aceitar campo em branco.
 
-          
+
             //Validar Responsavel
             quantiaddeRules: [
                 (v) => !!v || "Data Obrigatório",
@@ -146,11 +151,11 @@ export default {
     },
     methods: {
 
-         Servicos(item) {
+        Servicos(item) {
             let dados = this.servicos_map.find((elem) => elem.id == item)
             //let dadosRemov=
-            this.servicos_map=this.servicos_map.filter(elem => elem.id !=item)
-           // alert(JSON.stringify(this.servicos_map))
+            this.servicos_map = this.servicos_map.filter(elem => elem.id != item)
+            // alert(JSON.stringify(this.servicos_map))
             this.todos_servicos = this.servicos_selecionado.push(dados)
 
 
@@ -158,39 +163,40 @@ export default {
         TotalGeral(total) {
             this.total_quantidade = total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.quantidade), 0)
             this.total_preco = (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.preco), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
-            this.total_geral =  (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
-            
+            this.total_geral = (total.reduce((primeiro, ultimo) => primeiro + parseInt(ultimo.total_g), 0)).toLocaleString('pt-AO', { style: 'currency', currency: 'AOA' })
+
         },
         EmitirFatura() {
-            let qmenor12=this.servicos_selecionado.some((item)=>item.quantidade>12)
-            if(qmenor12==false){
-            
-                    alert(JSON.stringify(qmenor12))
-            axios.post('/financas/emitir-factura', {
-                servicos: this.servicos_selecionado,
-            }).then((response) => {
-                
-                if(response.data.factura_id){
-                    window.open('/relatorios/factura/' + response.data.factura_id)
-                this.servicos_selecionado = []
-                this.pagamento = []
-                this.total_quantidade = 0
-                this.total_preco = 0
-                this.total_geral = 0
-                }else{
-                    Vue.toasted.global.defaultError({
-                                msg: "" + response.data.error,
-                            });
-                }
-               
-            }).catch((error) => {
-                   // toastr.warning('Houve uma falha ao carregar os dados!...');
+            let qmenor12 = this.servicos_selecionado.some((item) => item.quantidade > 12)
+            if (qmenor12 == false) {
+
+                alert(JSON.stringify(qmenor12))
+                axios.post('/financas/emitir-factura', {
+                    servicos: this.servicos_selecionado,
+                }).then((response) => {
+
+                    if (response.data.factura_id) {
+                        window.open('/relatorios/factura/' + response.data.factura_id)
+                        this.servicos_selecionado = []
+                        this.pagamento = []
+                        this.total_quantidade = 0
+                        this.total_preco = 0
+                        this.total_geral = 0
+                    } else {
+                        Vue.toasted.global.defaultError({
+                            msg: "" + response.data.error,
+                        });
+                    }
+
+                }).catch((error) => {
+                    // toastr.warning('Houve uma falha ao carregar os dados!...');
                 });
-            }}
-        },
-        tarefaPendente(item) {
-            window.open("certificado-entrada/" + btoa(btoa(btoa(item.id))));
-        },
+            }
+        }
+    },
+    tarefaPendente(item) {
+        window.open("certificado-entrada/" + btoa(btoa(btoa(item.id))));
+    },
     computed: {
         user() {
             return this.$page.props.auth.user;
@@ -212,7 +218,7 @@ export default {
         }))
         if (this.projecto_marcado) {
             this.pagamento.projecto_id = this.projecto_marcado;
-     
+
         }
     },
 

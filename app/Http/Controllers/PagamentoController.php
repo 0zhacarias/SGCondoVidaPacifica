@@ -9,6 +9,7 @@ use App\Models\ImagemPagamento;
 use App\Models\Pessoa;
 use App\Models\Servico;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class PagamentoController extends Controller
 {
@@ -40,6 +41,7 @@ class PagamentoController extends Controller
      */
     public function store(Request $request)
     {
+        DB::beginTransaction();
         $factura = Factura::find($request->input('pagamento_faturas')['id']);
         if ($factura) {
             $factura->estado_factura_id = 1;
@@ -58,6 +60,7 @@ class PagamentoController extends Controller
                 'data_pago_banco' => date('Y-m-d'),
             ]); 
             if ($request->hasFile('imagem_pagamento')) {
+                DB::commit();
                 foreach ($request->imagem_pagamento as $index => $imagem) {
                         $caminho_img = $imagem->store('Comprovativos');
                     ImagemPagamento::create([
@@ -67,10 +70,12 @@ class PagamentoController extends Controller
                     ]);
                 }
             }else{
-                return ['error' => 'Conprovativo obrigatório!!'];
+                DB::rollBack();
+                return redirect()->back()->with('error', 'Conprovativo obrigatório!!');
             }
         } else {
-            return ['error'=>'Não foi possível fazer o pagamento!'];
+            DB::rollBack();
+            return redirect()->back()->with('error','Não foi possível fazer o pagamento!');
         }
     }
 

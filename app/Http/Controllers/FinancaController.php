@@ -137,6 +137,7 @@ class FinancaController extends Controller
                 'valor_depositado' => $request->input('valor_depositado'),
                 'created_by' => $this->pessoa()['id'],
                 'estado_factura_id' => 5,
+                //'quantidade' => 5,
                 'data_vencimento' => date('Y-m-d'),
 
             ]);
@@ -155,7 +156,7 @@ class FinancaController extends Controller
                     FacturaItem::create([
                         'factura_id' => $factura->id,
                         'servico_id' => $servico['id'],
-                        'quantidade' => $servico['quantidade'],
+                        'quantidade' => 1,
                         'preco' => $servico['preco'],
                         'designacao' => $servico['designacao'],
                         'total' => $servico['total_g'],

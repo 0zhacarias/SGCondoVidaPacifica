@@ -67,7 +67,7 @@ class ApartamentoController extends Controller
 
             if ($responsavel_logado->funcao->id == 1) {
                 $data['apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
-                $data['condominos'] = Pessoa::where('funcao_id', 2)->get();
+                $data['condominos'] = Pessoa::whereIn('funcao_id', [2,3])->get();
                 // dd($sindico_id);
                 $data['sindicos'] = Pessoa::with('apartamento', 'genero')->where('id', $sindico_id)->get();
                 // dd( $data['sindicos']);
