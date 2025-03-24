@@ -8,8 +8,8 @@ trait Divida
     public function pagamentos()
     {
         try {
-            $condominos = Pessoa::with(['factura_item.servico', 'factura_item.factura'])->get();
-
+            $condominos = Pessoa::with(['factura_item.servico', 'factura_item.factura', 'apartamento'])->get();
+           
             // Array com os nomes dos meses
             $meses = [
                 1 => 'Janeiro',
@@ -30,9 +30,11 @@ trait Divida
                 $dataCondomino = [
                     'condomino_id' => $condomino->id,
                     'nome' => $condomino->nome_pessoa,
+                    'apartamento' => $condomino->apartamento?->designacao,
                     'servicos' => [],
                 ];
                 $servicos = $condomino->factura_item->groupBy('servico_id');
+                //dd($servicos,$condomino);
                 foreach ($servicos as $pagamento => $pagamento_servico) {
                     $dataServico = [
                         'servico' => $pagamento_servico->first()->servico->designacao,
@@ -42,7 +44,7 @@ trait Divida
                         $dataServico[$nome] = 'Não Pago';
                     }
                  $qPagamentos = $pagamento_servico->filter(function ($pag) {
-                            return $pag->factura->estado_factura_id === 2;
+                            return $pag->factura?->estado_factura_id == 2;
                         })->count();
                         for ($i = 1; $i <= $qPagamentos; $i++) {
                             if (isset($meses[$i])) {
@@ -55,11 +57,12 @@ trait Divida
                 }
                 $data[][] = $dataCondomino;
             }
+            
             return $data;
         } catch (\Throwable $th) {
-            return response()->json(['error' => 'Não foi possivel cadastra o servisos', $th->getMessage()]);
+            return response()->json(['error' => 'Não foi possivel recuperar os dados', $th->getMessage()]);
         }
-        //dd($request);
+
     } 
 }
 

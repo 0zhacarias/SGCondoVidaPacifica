@@ -14,26 +14,13 @@
         <template>
           <v-card-title>
             <v-col cols="11">
-              <v-text-field
-                v-model="search"
-                append-icon="mdi-magnify"
-                label="Pesquisar Usuários"
-                single-line
-                hide-details
-                class="my-5"
-              >
+              <v-text-field v-model="search" append-icon="mdi-magnify" label="Pesquisar Usuários" single-line
+                hide-details class="my-5">
               </v-text-field>
             </v-col>
             <!-- <v-spacer class="" vertical></v-spacer> -->
             <div class="">
-              <v-btn
-                bottom
-                color="#00897B"
-                class=""
-                elevation="3"
-                dark
-                @click="carregarDialog()"
-              >
+              <v-btn bottom color="#00897B" class="" elevation="3" dark @click="carregarDialog()">
                 <v-icon>add </v-icon>
               </v-btn>
               <!-- <v-btn
@@ -51,50 +38,25 @@
             </div>
           </v-card-title>
           <v-card-text>
-            <v-data-table
-              :headers="headers"
-              :items="usuarios"
-              :search="search"
-              sort-by="name"
-            >
+            <v-data-table :headers="headers" :items="usuarios" :search="search" sort-by="name">
               <template v-slot:item.numero="{ item, index }">
                 <tr>
                   <td>{{ index + 1 }}</td>
                 </tr>
               </template>
               <template v-slot:item.actions="{ item }">
-                <v-icon
-                  small
-                  class="mr-2"
-                  @click="editedItem(item)"
-                  color="blue"
-                  :disabled="!user.can['editar usuario']"
-                >
+                <v-icon small class="mr-2" @click="editedItem(item)" color="blue"
+                  :disabled="!user.can['editar usuario']">
                   mdi-pencil
                 </v-icon>
-                <v-icon
-                  small
-                  @click="deleteItem(item)"
-                  color="red"
-                  :disabled="!user.can['delete usuario']"
-                >
+                <v-icon small @click="deleteItem(item)" color="red" :disabled="!user.can['delete usuario']">
                   mdi-delete
                 </v-icon>
-                <v-icon
-                  small
-                  @click="verDetalhe(item)"
-                  color="green"
-                  :disabled="!user.can['ver usuario']"
-                >
+                <v-icon small @click="verDetalhe(item)" color="green" :disabled="!user.can['ver usuario']">
                   visibility
                 </v-icon>
-                <v-btn
-                  color="grey"
-                  @click="verPermissao(item)"
-                  icon
-                  title="atribuir permissão"
-                  v-if="user.can['atribuir permissão']"
-                >
+                <v-btn color="grey" @click="verPermissao(item)" icon title="atribuir permissão"
+                  v-if="user.can['atribuir permissão']">
                   <v-icon small> perm_identity </v-icon>
                 </v-btn>
               </template>
@@ -120,25 +82,13 @@
               <v-card-text>
                 <v-row>
                   <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="usuario.name"
-                      label="Nome Completo do Usuario"
-                      hide-details="auto"
-                      prepend-icon="person"
-                      :rules="nomeCompletoRules"
-                      :error-messages="erros.name"
-                    ></v-text-field>
+                    <v-text-field v-model="usuario.name" label="Nome Completo do Usuario" hide-details="auto"
+                      prepend-icon="person" :rules="nomeCompletoRules" :error-messages="erros.name"></v-text-field>
                   </v-col>
                   <v-col cols="12" md="6">
-                    <v-text-field
-                      v-model="usuario.username"
-                      label="User name"
-                      hide-details="auto"
-                      prepend-icon="person"
-                      :disabled="editedIndex == -1"
-                      v-if="userNameCompletoRules"
-                      :error-messages="erros.username"
-                    ></v-text-field>
+                    <v-text-field v-model="usuario.username" label="User name" hide-details="auto" prepend-icon="person"
+                      :disabled="editedIndex == -1" v-if="userNameCompletoRules"
+                      :error-messages="erros.username"></v-text-field>
                   </v-col>
                   <!-- <v-col cols="6" sm="12" md="6">
                       <v-text-field v-model="usuario.username" label="Nome de Utilizador" prepend-icon="person">
@@ -147,40 +97,26 @@
                 </v-row>
                 <v-row>
                   <v-col cols="6" sm="12" md="6">
-                    <v-text-field
-                      label="Email"
-                      v-model="usuario.email"
-                      hide-details="auto"
-                      prepend-icon="alternate_email"
-                      :rules="emailRules"
-                      :error-messages="erros.email"
-                    ></v-text-field>
+                    <v-text-field label="Email" v-model="usuario.email" hide-details="auto"
+                      prepend-icon="alternate_email" :rules="emailRules" :error-messages="erros.email"></v-text-field>
                   </v-col>
                   <v-col cols="6" sm="12" md="6">
-                    <v-text-field
-                      v-model="usuario.telefone"
-                      label="Numero de telefone"
-                      :rules="telefoneRules"
-                      :error-messages="erros.telefone"
-                      prepend-icon="phone_in_talk"
-                    >
+                    <v-text-field v-model="usuario.telefone" label="Numero de telefone" :rules="telefoneRules"
+                      :error-messages="erros.telefone" prepend-icon="phone_in_talk">
                     </v-text-field>
                   </v-col>
                 </v-row>
                 <v-row>
-                  <v-col cols="6" sm="12" md="12">
-                    <v-autocomplete
-                      v-model="usuario.roles"
-                      prepend-icon="assignment_ind"
-                      dense
-                      :rules="funcaoRules"
-                      :error-messages="erros.funcao"
-                      required
-                      label="Função"
-                      item-value="name"
-                      item-text="name"
-                      :items="roles"
-                    >
+                  <v-col cols="6" sm="12" md="6">
+                    <v-autocomplete v-model="usuario.roles" prepend-icon="assignment_ind" dense :rules="funcaoRules"
+                      :error-messages="erros.funcao" required label="Função" item-value="name" item-text="name"
+                      :items="roles">
+                    </v-autocomplete>
+                  </v-col>
+                  <v-col cols="6" sm="12" md="6">
+                    <v-autocomplete v-model="usuario.apartamento_id" prepend-icon="assignment_ind" dense
+                      :rules="funcaoRules" :error-messages="erros.funcao" required label="Apartamento" item-value="id"
+                      item-text="designacao" :items="apartamentos">
                     </v-autocomplete>
                   </v-col>
                 </v-row>
@@ -198,9 +134,7 @@
 
       <v-dialog v-model="dialogDeleteUsuario" max-width="500px">
         <v-card>
-          <v-card-title class="text-h6"
-            >Tens a certeza que desajas eliminar?</v-card-title
-          >
+          <v-card-title class="text-h6">Tens a certeza que desajas eliminar?</v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="red" dark @click="closeDelete">não</v-btn>
@@ -210,13 +144,8 @@
         </v-card>
       </v-dialog>
       <v-row>
-        <v-dialog
-          v-if="dialogDetalheUsuario"
-          v-model="dialogDetalheUsuario"
-          fullscreen
-          hide-overlay
-          transition="dialog-bottom-transition"
-        >
+        <v-dialog v-if="dialogDetalheUsuario" v-model="dialogDetalheUsuario" fullscreen hide-overlay
+          transition="dialog-bottom-transition">
           <v-card>
             <v-card-title class="corprincipal">
               <v-spacer></v-spacer>
@@ -227,11 +156,10 @@
             </v-card-title>
             <v-card-text>
               <v-container>
-                <v-card class="mt-12">
+                <v-card class="my-12">
                   <v-subheader class="corprincipal font-weight-regular white--text">
                     <span style="font-weight: bolder">
-                      DADOS PESSOAIS DO RESPONSAVEL</span
-                    >
+                      DADOS PESSOAIS DO RESPONSAVEL</span>
                   </v-subheader>
                   <v-row class="mx-auto text-left">
                     <v-col cols="3">
@@ -281,24 +209,7 @@
                     </v-col>
                   </v-row>
 
-                  <!-- <v-row class="mx-auto text-left">
-                    <v-col cols="4"> </v-col>
-                  </v-row>  <v-subheader class="font-weight-regular primary white--text"><span style="font-weight: bolder">DADOS
-                      DO PROJECTO
 
-                    </span></v-subheader>
-                  <v-row class="mx-auto text-left">
-                    <v-col cols="4">
-                      <div class="font-weight-normal">
-                        <strong>Função</strong><br />
-                        {{}}
-                      </div>
-                    </v-col>
-
-                  </v-row>
-                  <v-row class="mx-auto text-left">
-                    <v-col cols="4"> </v-col>
-                  </v-row> -->
                   <!-- <v-card v-if="usuario.length>0">
 
 
@@ -311,6 +222,38 @@
                   </v-data-table>
                 </v-card> -->
                 </v-card>
+                <v-card v-if="usuario.responsavel.apartamento">
+                  <v-subheader class="font-weight-regular corprincipal text-white"><span style="font-weight: bolder">INFORMAÇÕES DO
+                      BLOCO
+                    </span></v-subheader>
+                  <v-row class="mx-auto text-left">
+                    <v-col cols="3">
+                      <div class="font-weight-normal">
+                        <strong>Bloco</strong><br />
+                        {{usuario.responsavel.apartamento.bloco.designacao}}
+                      </div>
+                    </v-col>
+                   <v-col cols="3">
+                      <div class="font-weight-normal">
+                        <strong>Apartamento</strong><br />
+                        {{usuario.responsavel.apartamento.designacao}}
+                      </div>
+                    </v-col>
+                    <v-col cols="3">
+                      <div class="font-weight-normal">
+                        <strong>Andar</strong><br />
+                        {{usuario.responsavel.apartamento.andar}}
+                      </div>
+                    </v-col>
+                    <v-col cols="3">
+                      <div class="font-weight-normal">
+                        <strong>Síndico</strong><br />
+                        {{usuario.responsavel.apartamento.bloco.sindico.nome_pessoa}} {{usuario.responsavel.apartamento.bloco.sindico.sobre_nome_pessoa}}
+                      </div>
+                    </v-col>
+                  </v-row>
+
+                </v-card>
               </v-container>
             </v-card-text>
             <div style="flex: 1 1 auto"></div>
@@ -318,14 +261,8 @@
         </v-dialog>
       </v-row>
 
-      <v-dialog
-        v-if="dialog_visualizar"
-        v-model="dialog_visualizar"
-        fullscreen
-        hide-overlay
-        transition="dialog-bottom-transition"
-        scrollable
-      >
+      <v-dialog v-if="dialog_visualizar" v-model="dialog_visualizar" fullscreen hide-overlay
+        transition="dialog-bottom-transition" scrollable>
         <v-card tile>
           <v-card-title class="corprincipal">
             <v-btn icon dark @click="dialog_visualizar = false">
@@ -352,18 +289,11 @@
           <v-card-text>
             <v-container>
               <v-card class="mt-12">
-                <v-alert
-                  v-if="roles.length > 0 && $page.props.flash.success"
-                  text
-                  type="success"
-                  >{{ $page.props.flash.success }}</v-alert
-                >
-                <v-alert
-                  v-if="roles.length > 0 && $page.props.flash.error"
-                  text
-                  type="error"
-                  >{{ $page.props.flash.error }}</v-alert
-                >
+                <v-alert v-if="roles.length > 0 && $page.props.flash.success" text type="success">{{
+                  $page.props.flash.success
+                }}</v-alert>
+                <v-alert v-if="roles.length > 0 && $page.props.flash.error" text type="error">{{ $page.props.flash.error
+                  }}</v-alert>
               </v-card>
 
               <v-card class="mt-12">
@@ -371,15 +301,12 @@
                   <v-card>
                     <v-toolbar flat color="#00897B" dark>
                       <v-app-bar-nav-icon></v-app-bar-nav-icon>
-                      <v-toolbar-title class="text-uppercase text-center mt-4"
-                        ><h5>
-                          ASSOCIAR FUNÇÕES VS PERMISSÕES AO UTILIZADOR &nbsp;<span
-                            v-if="usuario_permissao"
-                            style="font-weight: bolder"
-                            >{{ usuario_permissao.name }}</span
-                          >
-                        </h5></v-toolbar-title
-                      >
+                      <v-toolbar-title class="text-uppercase text-center mt-4">
+                        <h5>
+                          ASSOCIAR FUNÇÕES VS PERMISSÕES AO UTILIZADOR &nbsp;<span v-if="usuario_permissao"
+                            style="font-weight: bolder">{{ usuario_permissao.name }}</span>
+                        </h5>
+                      </v-toolbar-title>
                     </v-toolbar>
 
                     <v-tabs vertical>
@@ -396,56 +323,30 @@
                       <v-tab-item>
                         <v-card flat>
                           <v-card-text>
-                            <v-data-table
-                              :headers="headersRoles"
-                              :items="filtrerFuncoes"
-                              sort-by="name"
-                              class="elevation-1"
-                            >
-                            <template v-slot:item.created_at="{ item }">
-                        <span>{{ item.created_at | formatDate }}</span>
-                      </template>
-                      <template v-slot:item.updated_at="{ item }">
-                        <span>{{ item.updated_at | formatDate }}</span>
-                      </template>
+                            <v-data-table :headers="headersRoles" :items="filtrerFuncoes" sort-by="name"
+                              class="elevation-1">
+                              <template v-slot:item.created_at="{ item }">
+                                <span>{{ item.created_at | formatDate }}</span>
+                              </template>
+                              <template v-slot:item.updated_at="{ item }">
+                                <span>{{ item.updated_at | formatDate }}</span>
+                              </template>
                               <template v-slot:top>
                                 <v-toolbar flat color="white">
-                                  <v-toolbar-title
-                                    >Total({{ roles.length }})</v-toolbar-title
-                                  >
-                                  <v-divider
-                                    class="mx-4"
-                                    inset
-                                    vertical
-                                    md="6"
-                                  ></v-divider>
-                                  <v-text-field
-                                    v-model="busca_roles"
-                                    append-icon="search"
-                                    label="Procurar"
-                                    single-line
-                                    hide-details
-                                  >
+                                  <v-toolbar-title>Total({{ roles.length }})</v-toolbar-title>
+                                  <v-divider class="mx-4" inset vertical md="6"></v-divider>
+                                  <v-text-field v-model="busca_roles" append-icon="search" label="Procurar" single-line
+                                    hide-details>
                                   </v-text-field>
                                   <div class="text-right mb-6">
-                                    <v-btn
-                                      color="#00897B"
-                                      dark
-                                      class="mb-2"
-                                      @click="concederFuncoes"
-                                      >ACTUALIZAR</v-btn
-                                    >
+                                    <v-btn color="#00897B" dark class="mb-2" @click="concederFuncoes">ACTUALIZAR</v-btn>
                                   </div>
                                 </v-toolbar>
                               </template>
 
                               <template v-slot:item.actions="{ item }">
                                 <div class="d-flex">
-                                  <v-checkbox
-                                    v-model="user_roles"
-                                    :value="item.name"
-                                    color="#00897b"
-                                  ></v-checkbox>
+                                  <v-checkbox v-model="user_roles" :value="item.name" color="#00897b"></v-checkbox>
                                 </div>
                               </template>
                             </v-data-table>
@@ -457,58 +358,33 @@
                       <v-tab-item>
                         <v-card flat>
                           <v-card-text>
-                            <v-data-table
-                              :headers="headersPermissions"
-                              :items="filtrerPermissoes"
-                              item-key="name"
-                              sort-by="name"
-                              class="elevation-1"
-                            >
-                            <template v-slot:item.created_at="{ item }">
-                        <span>{{ item.created_at | formatDate }}</span>
-                      </template>
-                      <template v-slot:item.updated_at="{ item }">
-                        <span>{{ item.updated_at | formatDate }}</span>
-                      </template>
+                            <v-data-table :headers="headersPermissions" :items="filtrerPermissoes" item-key="name"
+                              sort-by="name" class="elevation-1">
+                              <template v-slot:item.created_at="{ item }">
+                                <span>{{ item.created_at | formatDate }}</span>
+                              </template>
+                              <template v-slot:item.updated_at="{ item }">
+                                <span>{{ item.updated_at | formatDate }}</span>
+                              </template>
                               <template v-slot:top>
                                 <v-toolbar flat color="white">
-                                  <v-toolbar-title
-                                    >Total({{ permissions.length }})</v-toolbar-title
-                                  >
-                                  <v-divider
-                                    class="mx-4"
-                                    inset
-                                    vertical
-                                    md="6"
-                                  ></v-divider>
+                                  <v-toolbar-title>Total({{ permissions.length }})</v-toolbar-title>
+                                  <v-divider class="mx-4" inset vertical md="6"></v-divider>
 
-                                  <v-text-field
-                                    v-model="busca_permission"
-                                    append-icon="search"
-                                    label="Procurar"
-                                    single-line
-                                    hide-details
-                                  >
+                                  <v-text-field v-model="busca_permission" append-icon="search" label="Procurar"
+                                    single-line hide-details>
                                   </v-text-field>
                                   <div class="text-right mb-6">
-                                    <v-btn
-                                      color="#00897B"
-                                      dark
-                                      class="mb-2"
-                                      @click="concederPermissoes"
-                                      >ACTUALIZAR</v-btn
-                                    >
+                                    <v-btn color="#00897B" dark class="mb-2"
+                                      @click="concederPermissoes">ACTUALIZAR</v-btn>
                                   </div>
                                 </v-toolbar>
                               </template>
 
                               <template v-slot:item.actions="{ item }">
                                 <div class="d-flex">
-                                  <v-checkbox
-                                    color="#00897b"
-                                    v-model="user_permissions"
-                                    :value="item.name"
-                                  ></v-checkbox>
+                                  <v-checkbox color="#00897b" v-model="user_permissions"
+                                    :value="item.name"></v-checkbox>
                                 </div>
                               </template>
                             </v-data-table>
@@ -548,7 +424,7 @@ const gradients = [
   ["#f72047", "#ffd200", "#1feaea"],
 ];
 export default {
-  props: ["responsavel", "funcao", "usuarios", "funcoes", "roles", "permissions"],
+  props: ["responsavel", "usuarios", "apartamentos", "roles", "permissions"],
   components: {
     AppLayout,
   },
@@ -557,10 +433,10 @@ export default {
     return {
       usuario: {
         roles: {
-          name:"",
-          id:null
+          name: "",
+          id: null
         },
-        name:"",
+        name: "",
       },
       defaultusuario: {},
       editedIndex: -1,
@@ -735,12 +611,10 @@ export default {
   },
 
   mounted() {
-    setTimeout(() => {
-      this.dialog = false;
-    }, 7000);
+
   },
 
-  created() {},
+  created() { },
 
   methods: {
     validate() {
@@ -915,8 +789,10 @@ export default {
 table {
   font-weight: bold;
 }
+
 .corprincipal {
   background-color: #00897b !important;
 }
+
 @import "vuetify/dist/vuetify.min.css";
 </style>

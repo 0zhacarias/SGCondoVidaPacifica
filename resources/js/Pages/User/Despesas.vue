@@ -86,7 +86,7 @@
                                                     Preço
                                                 </th>
                                                 <th class="text-left">
-                                                    Quantidade
+                                                    Quantidade de meses
                                                 </th>
                                                 <th class="text-left">
                                                     Total

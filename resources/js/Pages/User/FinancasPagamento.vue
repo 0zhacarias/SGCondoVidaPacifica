@@ -1,6 +1,6 @@
 <template>
     <app-layout>
-        <div class="dashboard">
+        <div>
             <v-card elevation="0">
                 <v-row>
                     <v-col cols="6" sm="6" md="6">
@@ -8,7 +8,7 @@
                     </v-col>
                 </v-row>
             </v-card>
-            <v-card class="mt-10"  v-if="user.responsavel.funcao_id==3">
+            <v-card class="mt-10" v-if="user.responsavel.funcao_id == 3">
                 <v-toolbar color="cortab" dark flat>
                     <template v-slot:extension>
                         <v-tabs v-model="tabs" centered>
@@ -43,22 +43,22 @@
             </v-card>
 
         </div>
-        <v-card class="elevation-0 mb-12 mt-4 " v-if="user.responsavel.funcao_id==1 || user.responsavel.funcao_id==2">
-            oooooooo {{ user.responsavel.funcao_id==1 }}
-            <template>
+        <v-card class="elevation-0 mb-12 mt-4 "
+            v-if="user.responsavel.funcao_id == 1 || user.responsavel.funcao_id == 2">
+<template>
                 <v-data-table :headers="headersPagamento" :items="dividas" item-value="condomino_id" class="elevation-1"
                     dense>
                     <template v-slot:body="{ items }">
                         <tbody>
                             <tr v-for="(item, index) in items" :key="item.condomino_id">
-                                <!-- ID e Nome com rowspan -->
-                                <!-- <td :rowspan="1">
-                                    <strong>{{ item.condomino_id }}</strong>
-                                </td> -->
-                                <td :rowspan="1">
+                             
+                                <td class="px-10">
                                     <strong>{{ item.nome }}</strong>
-                                </td>
 
+                                </td>
+                                <td class="width-3">
+                                    <strong>{{ item.apartamento }}</strong>
+                                </td>
                                 <!-- Primeiro Serviço -->
 
                                 <td>{{ item.servicos.length > 0 ? item.servicos[0].servico : "—" }}</td>
@@ -66,17 +66,6 @@
                                     {{ item.servicos.length > 0 ? item.servicos[0][mes] || "—" : "—" }}
                                 </td>
                             </tr>
-                            <!-- Serviços adicionais -->
-                            <!--   <tr
-          v-for="(servico, index) in items.servicos"
-          :key="`${item.condomino_id}-servico-${index}`"
-          v-if="index > 0"
-        >
-          <td>{{ servico.servico }}</td>
-          <td v-for="mes in meses" :key="mes">
-            {{ servico[mes] || "—" }}
-          </td>
-        </tr> -->
                         </tbody>
                     </template>
                 </v-data-table>
@@ -135,6 +124,7 @@ export default {
             headersPagamento: [
 /*                 { text: 'ID do Cliente', value: 'condomino_id' },
  */                { text: 'Nome do Cliente', value: 'nome' },
+                { text: 'Apartamento', value: 'apartamento' },
                 { text: 'Serviço', value: 'servico' },
                 ...[
                     "Janeiro",
@@ -163,6 +153,7 @@ export default {
                 .get("/financas/despesas", {})
                 .then((response) => {
                     this.pagamentos = response.data.items;
+                    // this.apartamento = response.data.apartamento;
                     this.servicos = response.data.servicos;
 
                 })
@@ -186,11 +177,12 @@ export default {
                         return {
                             condomino_id: item.condomino_id,
                             nome: item.nome,
+                            apartamento: item.apartamento,
                             servicos: item.servicos,
                             /*  condomino_id,nome,servicos */
                         }
                     })
-                    //alert(JSON.stringify(dividas))
+                    // alert(JSON.stringify(this.dividas))
                     /*   this.dividas = response.data.map(cliente => 
                         cliente.servicos.map(servico => ({
                           condomino_id: cliente.condomino_id,

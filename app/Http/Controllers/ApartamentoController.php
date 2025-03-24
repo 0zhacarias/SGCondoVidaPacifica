@@ -66,7 +66,7 @@ class ApartamentoController extends Controller
             $data['tipos_apartamento'] = TipoApartamento::orderBy('created_at', 'desc')->get();
 
             if ($responsavel_logado->funcao->id == 1) {
-                $data['apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->get();
+                $data['apartamentos'] = Apartamento::with('condomino', 'tipo_apartamento', 'estado_apartamento')->where('bloco_id',$id)->get();
                 $data['condominos'] = Pessoa::whereIn('funcao_id', [2,3])->get();
                 // dd($sindico_id);
                 $data['sindicos'] = Pessoa::with('apartamento', 'genero')->where('id', $sindico_id)->get();
@@ -85,7 +85,7 @@ class ApartamentoController extends Controller
                 dd($data['condominos']); */
             } else {
                 $data['tipos_apartamento'] = Apartamento::whereIn('created_by', $responsavel_logado)->orderBy('created_at', 'desc')->get();
-                $data['apartamentos'] = Apartamento::whereIn('created_by', $responsavel_logado)->orderBy('created_at', 'desc')->get();
+                $data['apartamentos'] = Apartamento::whereIn('created_by', $responsavel_logado)->where('bloco_id',$id)->orderBy('created_at', 'desc')->get();
             }
 
 
@@ -109,29 +109,31 @@ class ApartamentoController extends Controller
      */
     public function store(Request $request)
     {
-
+        $bloco=Bloco::find(request()->bloco_id)->pluck('numero_apartamento')->first();
+        $qApartamento=Apartamento::where('bloco_id',request()->bloco_id)->count();
+        //dd($bloco,$qApartamento);
         try {
-            //dd((request()));
             DB::beginTransaction();
-            /*  $data_aux = strtotime($request->get('data_inicio_real') . "+" . $request->get('tempo_execucao') . "days");
-            $data_termino = date("Y-m-d H:i:s", $data_aux); */
             $data = request()->all();
-            $data['estado_apartamento_id'] = 1;
-            $data['created_by'] = auth()->id();
-            $data['bloco_id'] = (int) request()->bloco_id;
-            $data['condomino_id'] = implode(request()->condomino_id);
-
-            $apartamento = Apartamento::create($data);
-            DB::commit();
-            // Mail::to('flaviodecarvalho6@gmail.com')->send(new notificar_tarefa($vtarefa->nome_tarefa, $vtarefa->descricao, $vtarefa->data_inicio_real, $vtarefa->tempo_execucao, $vtarefa->data_fim_real, $vtarefa->percentagem, $nomecriadoPor, $nomeProjecto, $nomeEstado, $url));
-            return redirect()->back()->with('success', 'Foi cadastra com sucesso a apartamento');
+            
+            if ($bloco>=$qApartamento) {
+                $data['estado_apartamento_id'] = 1;
+                $data['created_by'] = auth()->id();
+                $data['bloco_id'] = (int) request()->bloco_id;
+                $data['condomino_id'] = request()->condomino_id;
+                $data['andar'] = request()->andar;
+                Apartamento::create($data);
+                DB::commit();
+                return redirect()->back()->with('success', 'Foi cadastra com sucesso a apartamento');
+            } else {
+                return redirect()->back()->with('error', 'A quantidade de apartamento já escedeu o numero do bloco');
+            }
         } catch (\Exception $e) {
             dd($e->getMessage());
             DB::rollback();
             return redirect()->back()->with('error', 'Não foi possivel cadastrar essa apartamento');
         }
     }
-    //Inserindo multipos elemento numa rela;\ao muito para muitos
     public function adicionar_responsavel_tarefa(Request $request)
     {
         try {

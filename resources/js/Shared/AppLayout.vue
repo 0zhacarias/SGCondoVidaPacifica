@@ -3,7 +3,7 @@
         <!--menu Vertical-->
         <v-app-bar
         height="100px"
-            color="white"
+            class="menu_color"
             :clipped-right="$vuetify.breakpoint.lgAndUp"
             app
         >
@@ -13,10 +13,6 @@
             >
                 <v-icon>menu</v-icon>
             </v-app-bar-nav-icon>
-
-            <!-- <v-toolbar-title class="ml-0 pl-4">
-                <span class="hidden-sm-and-down">Infosat LDA</span>
-            </v-toolbar-title> -->
 
             <!-- <v-btn text href="/ home" >
                 <v-img class="align-center"  src="/img/UMA.png"
@@ -30,8 +26,6 @@
                 <span>GP_MUTUE</span>
             </v-toolbar-title> -->
 
-      
-            <v-spacer />
             <v-spacer />
             <inertia-link href="/home" class="white--text remover-link">
                 <v-btn icon class="white--text">
@@ -167,29 +161,7 @@
                     SIG-COND
                 </h1>
                 <div class="text-center text-sm-subtitle-2">Sistema de gestão financeira para o condominio Vida pacífica</div>
-                <!-- Comentado pelo Flávio de Carvalho -->
-                <!-- <v-list-item class="white" @click="dialogFoto = false"> -->
-      <!--           <v-img
-                    src="/assets/img/LogoM/gphoto.png"
-                    class="center"
-                    max-height="140"
-                    max-width="140"
-                    style="margin-inline: auto"
-                    contain
-                ></v-img> -->
-
-                <!-- <v-list-item-avatar size="80">
-                        <v-img  src="/img/person.png" v-if="user.foto==null"></v-img>
-                        <v-img v-if="user.foto " src="/storage/" + user.foto ></v-img>
-                    </v-list-item-avatar> -->
-
-                <!-- Comentado pelo Flávio de Carvalho -->
-                <!-- <v-list-item-title color="#0e85a3">
-                        <div class="subheading"></div>
-                        <div class="body-1"></div>
-                    </v-list-item-title>
-                </v-list-item> -->
-            </inertia-link>
+             </inertia-link>
 
             <v-dialog
                 transition="dialog-top-transition"
@@ -1338,7 +1310,8 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap");
 .body {
     font-family: "Lato", sans-serif;
-    background: rgb(1, 65, 95);
+    background-color: #c6f0fa !important;
+    /* background: rgb(1, 65, 95); */
     background: linear-gradient(
         250deg,
         rgba(131, 58, 180, 0.04525560224089631) 0%,
@@ -1357,7 +1330,7 @@ export default {
 
 }
 .text-azul{
-    color: #0e85a3;
+    color: #f9fafa;
 }
 
 .active {
@@ -1380,7 +1353,10 @@ export default {
 .color-text-link:a hover {
     color: #0e85a3 !important;
 }
-
+.menu_color{
+    background-color: #0e85a3 !important;
+    color: white;
+}
 .remover-link {
     text-decoration: none !important;
 

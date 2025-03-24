@@ -106,11 +106,6 @@ class User extends Authenticatable
         }
         return $permissions;
     }
-
- 
-
-
-
 public function responsavel()
 {
     return $this->hasOne(Pessoa::class);
@@ -122,7 +117,7 @@ public function notificacao()
     # code...
 }
 public function role(){
-    return $this->belongsTo(Role::class);
+    return $this->belongsTo(Role::class);   
 }
-    
+
 }

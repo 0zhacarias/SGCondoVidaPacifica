@@ -69,9 +69,6 @@ Route::delete('/anular-pagamento',[PagamentoController::class,'destroy'])->name(
 
 });
 
-Route::group(['prefix'=>'apartamentos','middleware'=>'auth'],function(){
-Route::get('apartamento',[ApartamentoController::class,'index'])->name('apartamento.index');
-});
 Route::group(['prefix' => 'users', 'middleware' => 'auth'], function () {
    Route::resource('user', \App\Http\Controllers\UserController::class);
     Route::get('/perfils', [\App\Http\Controllers\UserController::class, 'perfil'])->name('perfil');
@@ -107,14 +104,7 @@ Route::group(['prefix' => 'blocos', 'middleware' => 'auth'], function () {
     //Grupo de routas de tarefas
 Route::group(['prefix' => 'apartamentos', 'middleware' => 'auth'], function () {
     Route::resource('/apartamento', App\Http\Controllers\ApartamentoController::class);
-    // atualizar percentagem
-    Route::put('rejeitar-tarefa/{id}', [App\Http\Controllers\ApartamentoController::class, 'rejeitar_tarefa']);
-    Route::put('tarefa-concluido/{id}', [App\Http\Controllers\ApartamentoController::class, 'tarefa_concluido']);
-    Route::put('aceitar-tarefa/{id}', [App\Http\Controllers\ApartamentoController::class, 'aceitar_tarefa']);
-    Route::put('cancelamento-tarefa/{id}',[App\Http\Controllers\ApartamentoController::class,'cancelamento_tarefa']);
-
-    // Route::post('/adicionar-responsavel-tarefa', [App\Http\Controllers\ApartamentoController::class, 'adicionar_responsavel_tarefa'] );
-
+    Route::get('apartamento',[ApartamentoController::class,'index'])->name('apartamento.index');
 });
 
 //Grupo de routas de dvs

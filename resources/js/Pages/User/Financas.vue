@@ -91,7 +91,7 @@ export default {
             // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
              items: [
                {
-                 title: "Relatório de Inadeplência",
+                 title: "Relatório de inadimplência",
                  route:"/inadeplencia"
                },
               /*  {

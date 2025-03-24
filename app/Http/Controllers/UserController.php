@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Apartamento;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
@@ -22,13 +23,15 @@ class UserController extends Controller
     {
         $user=new FinancaController();
 
-        $data['usuarios'] = User::all();
+        $data['usuarios'] = User::with('responsavel.apartamento.bloco.sindico')->get();
+        $data['apartamentos'] = Apartamento::select('id','designacao')->whereNull('condomino_id')->get();
         if ($user->pessoa()['funcao_id']==1) {
             $data['roles'] = Role::get();
         } else {
             $data['roles'] = Role::where('id',3)->get();
         }
         $data['permissions'] = Permission::all();
+        //dd($data);
         return Inertia::render('User/User1', $data);
     }
 
@@ -47,7 +50,7 @@ class UserController extends Controller
     }
     public function store(Request $request)
     {
-        //   dd($request);
+        //dd($request);
         DB::beginTransaction();
 
         try {
@@ -76,7 +79,7 @@ class UserController extends Controller
                 } 
             }  */
             $user->assignRole($request->roles);
-            Pessoa::create([
+          $pessoa=Pessoa::create([
                 'nome_pessoa' => head($nomecompleto),
                 'sobre_nome_pessoa' => last($nomecompleto),
                 'numero_identificacao' => isset($request->numero_identificacao) ? $request->numero_identificacao : $user->telefone,
@@ -89,7 +92,7 @@ class UserController extends Controller
                 'genero_id' => null,
                 'created_by' => auth()->id(),
             ]);
-            
+            $apartamento=Apartamento::find(request()->apartamento_id)->update(['condomino_id'=>$pessoa->id]);
             // RemoveRole();
 
 

@@ -17,7 +17,7 @@
                         <v-tabs v-model="tabs" left>
                             <v-tab> Descrição </v-tab>
                             <v-tab> Sindico </v-tab>
-                            <v-tab> Pagamentos </v-tab>
+                            <!-- <v-tab> Pagamentos </v-tab> -->
                         </v-tabs>
                     </template>
                 </v-toolbar>
@@ -209,8 +209,14 @@ export default {
                 {
                     text: "Nº do Bloco",
                     value: "designacao",
-                    class: "font-weight-bold black--text subtitle-1 my-3 ",
+                    class: "font-weight-bold black--text subtitle-1 my-3",
                     sortable: false,
+                },
+                {
+                    text: "Andar",
+                    value: "andar",
+                    class: "font-weight-bold black--text subtitle-1 my-3",
+
                 },
                 {
                     text: "Nome do condomino",
@@ -219,9 +225,15 @@ export default {
                     sortable: false,
                 },
 
-                {
+              /*   {
                     text: "Estado",
                     value: "estado_apartamento.designacao",
+                    class: "font-weight-bold black--text subtitle-1 my-3",
+                    sortable: false,
+                }, */
+               {
+                    text: "Tipo de apartamento",
+                    value: "tipo_apartamento.descricao",
                     class: "font-weight-bold black--text subtitle-1 my-3",
                     sortable: false,
                 },
@@ -229,18 +241,10 @@ export default {
                     text: "Data de ingresso",
                     value: "data_ingresso",
                     align: "center",
-                    class: "font-weight-bold black--text subtitle-1 my-3 ",
+                    class: "font-weight-bold black--text subtitle-1 my-3",
                     sortable: false,
                     // color: "teal darken-1",
                 },
-
-                {
-                    text: "Tipo de apartamento",
-                    value: "tipo_apartamento.descricao",
-                    class: "font-weight-bold black--text subtitle-1 my-3 ",
-                    sortable: false,
-                },
-
                 {
                     text: "Opções",
                     value: "actions",
@@ -268,12 +272,12 @@ export default {
                     class: "font-weight-bold  black--text subtitle-1 my-3",
                     sortable: false,
                 },
-                {
+               /*  {
                     text: "Gênero",
                     value: "genero.designacao",
                     class: "font-weight-bold  black--text subtitle-1 my-3",
                     sortable: false,
-                },
+                }, */
 /*                 {
                     text: "Estado Cívil",
                     value: "",

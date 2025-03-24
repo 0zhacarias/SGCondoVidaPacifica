@@ -6004,6 +6004,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -6035,6 +6047,9 @@ __webpack_require__.r(__webpack_exports__);
       search: "",
       erros: [],
       nomeapartamentoRules: [function (v) {
+        return !!v || "Campo Obrigatório";
+      }],
+      andarRules: [function (v) {
         return !!v || "Campo Obrigatório";
       }],
       descricacaoapartamentoRules: [function (v) {
@@ -6074,14 +6089,23 @@ __webpack_require__.r(__webpack_exports__);
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
       }, {
-        text: "Nome do condominio",
+        text: "Andar",
+        value: "andar",
+        "class": "font-weight-bold black--text subtitle-1 my-3 "
+      }, {
+        text: "Nome do condomino",
         value: "condomino.nome_pessoa",
         "class": "font-weight-bold  black--text subtitle-1 my-3",
         sortable: false
       }, {
-        text: "Estado",
-        value: "estado_apartamento.designacao",
+        text: "Andar",
+        value: "andar",
         "class": "font-weight-bold black--text subtitle-1 my-3",
+        sortable: false
+      }, {
+        text: "Tipo",
+        value: "tipo_apartamento.descricao",
+        "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false
       }, {
         text: "Data de ingresso",
@@ -6090,11 +6114,6 @@ __webpack_require__.r(__webpack_exports__);
         "class": "font-weight-bold black--text subtitle-1 my-3 ",
         sortable: false // color: "teal darken-1",
 
-      }, {
-        text: "Tipo de apartamento",
-        value: "tipo_apartamento.descricao",
-        "class": "font-weight-bold black--text subtitle-1 my-3 ",
-        sortable: false
       }, {
         text: "Opções",
         value: "actions",
@@ -7783,7 +7802,6 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       });
 
       if (qmenor12 == false) {
-        alert(JSON.stringify(qmenor12));
         axios__WEBPACK_IMPORTED_MODULE_3___default().post('/financas/emitir-factura', {
           servicos: this.servicos_selecionado
         }).then(function (response) {
@@ -7933,7 +7951,7 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       query: {},
       // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
       items: [{
-        title: "Relatório de Inadeplência",
+        title: "Relatório de inadimplência",
         route: "/inadeplencia"
       },
       /*  {
@@ -8125,17 +8143,6 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
@@ -8160,6 +8167,9 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
         text: 'Nome do Cliente',
         value: 'nome'
       }, {
+        text: 'Apartamento',
+        value: 'apartamento'
+      }, {
         text: 'Serviço',
         value: 'servico'
       }].concat(_toConsumableArray(["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"].map(function (mes) {
@@ -8177,7 +8187,8 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       var _this = this;
 
       axios.get("/financas/despesas", {}).then(function (response) {
-        _this.pagamentos = response.data.items;
+        _this.pagamentos = response.data.items; // this.apartamento = response.data.apartamento;
+
         _this.servicos = response.data.servicos;
       })["catch"](function (error) {});
     },
@@ -8193,11 +8204,12 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
           return {
             condomino_id: item.condomino_id,
             nome: item.nome,
+            apartamento: item.apartamento,
             servicos: item.servicos
             /*  condomino_id,nome,servicos */
 
           };
-        }); //alert(JSON.stringify(dividas))
+        }); // alert(JSON.stringify(this.dividas))
 
         /*   this.dividas = response.data.map(cliente => 
             cliente.servicos.map(servico => ({
@@ -10763,6 +10775,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 
@@ -12188,134 +12203,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", "violet"], ["#00c6ff", "#F0F", "#FF0"], ["#f72047", "#ffd200", "#1feaea"]];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  props: ["responsavel", "funcao", "usuarios", "funcoes", "roles", "permissions"],
+  props: ["responsavel", "usuarios", "apartamentos", "roles", "permissions"],
   components: {
     AppLayout: _Shared_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -12478,13 +12369,7 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       }
     }
   },
-  mounted: function mounted() {
-    var _this3 = this;
-
-    setTimeout(function () {
-      _this3.dialog = false;
-    }, 7000);
-  },
+  mounted: function mounted() {},
   created: function created() {},
   methods: {
     validate: function validate() {
@@ -12515,32 +12400,32 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       this.dialogDeleteUsuario = true;
     },
     closeDelete: function closeDelete() {
-      var _this4 = this;
+      var _this3 = this;
 
       this.dialogDeleteUsuario = false;
       this.$nextTick(function () {
-        _this4.usuario = Object.assign({}, _this4.defaultusuario);
-        _this4.editedIndex = -1;
+        _this3.usuario = Object.assign({}, _this3.defaultusuario);
+        _this3.editedIndex = -1;
       });
     },
     deleteItemConfirm: function deleteItemConfirm() {
-      var _this5 = this;
+      var _this4 = this;
 
       this.$inertia["delete"]("/users/user/" + this.usuario.id, {
         onFinish: function onFinish() {
-          if (_this5.$page.props.flash.success != null) {
+          if (_this4.$page.props.flash.success != null) {
             Vue.toasted.global.defaultSuccess({
-              msg: "" + _this5.$page.props.flash.success
+              msg: "" + _this4.$page.props.flash.success
             });
           }
 
-          if (_this5.$page.props.flash.error != null) {
+          if (_this4.$page.props.flash.error != null) {
             Vue.toasted.global.defaultError({
-              msg: "" + _this5.$page.props.flash.error
+              msg: "" + _this4.$page.props.flash.error
             });
           }
 
-          _this5.closeDelete();
+          _this4.closeDelete();
         }
       });
     },
@@ -12550,54 +12435,54 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
       this.dialog = false;
     },
     save: function save() {
-      var _this6 = this;
+      var _this5 = this;
 
       if (this.$refs["form"].validate()) {
         if (this.editedIndex > -1) {
           this.$inertia.put("/users/user/" + this.usuario.id, this.usuario, {
             onFinish: function onFinish() {
               Vue.toasted.global.defaultSuccess({
-                msg: " " + _this6.$page.props.flash.success
+                msg: " " + _this5.$page.props.flash.success
               });
 
-              _this6.closeSave();
+              _this5.closeSave();
             }
           });
         } else {
           this.$inertia.post("/users/user", this.usuario, {
             onFinish: function onFinish() {
-              if (_this6.$page.props.flash.success != null) {
+              if (_this5.$page.props.flash.success != null) {
                 Vue.toasted.global.defaultSuccess({
-                  msg: "" + _this6.$page.props.flash.success
+                  msg: "" + _this5.$page.props.flash.success
                 });
               }
 
-              if (_this6.$page.props.flash.error != null) {
+              if (_this5.$page.props.flash.error != null) {
                 Vue.toasted.global.defaultError({
-                  msg: "" + _this6.$page.props.flash.error
+                  msg: "" + _this5.$page.props.flash.error
                 });
               }
 
-              _this6.closeSave();
+              _this5.closeSave();
             }
           });
         }
       }
     },
     verPermissao: function verPermissao(item) {
-      var _this7 = this;
+      var _this6 = this;
 
       this.dialog_visualizar = true;
       this.usuario_permissao = item;
       item.roles.forEach(function (role) {
-        _this7.user_roles.push(role.name);
+        _this6.user_roles.push(role.name);
       });
       item.permissions.forEach(function (permission) {
-        _this7.user_permissions.push(permission.name);
+        _this6.user_permissions.push(permission.name);
       });
     },
     concederFuncoes: function concederFuncoes() {
-      var _this8 = this;
+      var _this7 = this;
 
       this.loading = true; // this.$inertia.put('/permission/concederFuncoes/' + this.user.id,{user_roles: this.user_roles,})
 
@@ -12607,29 +12492,29 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
           user_roles: this.user_roles
         },
         onFinish: function onFinish() {
-          if (_this8.$page.props.flash.success != null) {
+          if (_this7.$page.props.flash.success != null) {
             Vue.toasted.global.defaultSuccess({
-              msg: "" + _this8.$page.props.flash.success
+              msg: "" + _this7.$page.props.flash.success
             });
           }
 
-          if (_this8.$page.props.flash.error != null) {
+          if (_this7.$page.props.flash.error != null) {
             Vue.toasted.global.defaultError({
-              msg: "" + _this8.$page.props.flash.error
+              msg: "" + _this7.$page.props.flash.error
             });
           }
 
           setTimeout(function () {
-            _this8.loading = false;
+            _this7.loading = false;
 
-            _this8.$inertia.reload("/permission/concederFuncoes/" + _this8.usuario_permissao.id);
+            _this7.$inertia.reload("/permission/concederFuncoes/" + _this7.usuario_permissao.id);
           }, 100);
-          _this8.user_roles = [];
+          _this7.user_roles = [];
         }
       });
     },
     concederPermissoes: function concederPermissoes() {
-      var _this9 = this;
+      var _this8 = this;
 
       this.loading = true;
       alert(this.user_permissions); // this.$inertia.put('/permission/concederPermissoes/' + this.usuario_permissao.id,{user_permissions: this.user_permissions,})
@@ -12641,26 +12526,26 @@ var gradients = [["#222"], ["#42b3f4"], ["red", "orange", "yellow"], ["purple", 
         },
         onFinish: function onFinish() {
           onFinish: (function () {
-            if (_this9.$page.props.flash.success != null) {
+            if (_this8.$page.props.flash.success != null) {
               Vue.toasted.global.defaultSuccess({
-                msg: "" + _this9.$page.props.flash.success
+                msg: "" + _this8.$page.props.flash.success
               });
             }
 
-            if (_this9.$page.props.flash.error != null) {
+            if (_this8.$page.props.flash.error != null) {
               Vue.toasted.global.defaultError({
-                msg: "" + _this9.$page.props.flash.error
+                msg: "" + _this8.$page.props.flash.error
               });
             }
 
-            _this9.user_roles = [];
+            _this8.user_roles = [];
           }), setTimeout(function () {
-            _this9.loading = false;
+            _this8.loading = false;
 
-            _this9.$inertia.reload("/permission/concederPermissoes/" + _this9.usuario_permissao.id);
+            _this8.$inertia.reload("/permission/concederPermissoes/" + _this8.usuario_permissao.id);
           }, 100);
 
-          _this9.user_permissions = [];
+          _this8.user_permissions = [];
         }
       });
     }
@@ -12683,34 +12568,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuetify_mask__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuetify-mask */ "./node_modules/vuetify-mask/index.js");
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -14182,30 +14039,36 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         text: "Nº do Bloco",
         value: "designacao",
-        "class": "font-weight-bold black--text subtitle-1 my-3 ",
+        "class": "font-weight-bold black--text subtitle-1 my-3",
         sortable: false
+      }, {
+        text: "Andar",
+        value: "andar",
+        "class": "font-weight-bold black--text subtitle-1 my-3"
       }, {
         text: "Nome do condomino",
         value: "condomino.nome_pessoa",
         "class": "font-weight-bold  black--text subtitle-1 my-3",
         sortable: false
-      }, {
-        text: "Estado",
-        value: "estado_apartamento.designacao",
+      },
+      /*   {
+            text: "Estado",
+            value: "estado_apartamento.designacao",
+            class: "font-weight-bold black--text subtitle-1 my-3",
+            sortable: false,
+        }, */
+      {
+        text: "Tipo de apartamento",
+        value: "tipo_apartamento.descricao",
         "class": "font-weight-bold black--text subtitle-1 my-3",
         sortable: false
       }, {
         text: "Data de ingresso",
         value: "data_ingresso",
         align: "center",
-        "class": "font-weight-bold black--text subtitle-1 my-3 ",
+        "class": "font-weight-bold black--text subtitle-1 my-3",
         sortable: false // color: "teal darken-1",
 
-      }, {
-        text: "Tipo de apartamento",
-        value: "tipo_apartamento.descricao",
-        "class": "font-weight-bold black--text subtitle-1 my-3 ",
-        sortable: false
       }, {
         text: "Opções",
         value: "actions",
@@ -14230,12 +14093,14 @@ __webpack_require__.r(__webpack_exports__);
         value: "nome_pessoa",
         "class": "font-weight-bold  black--text subtitle-1 my-3",
         sortable: false
-      }, {
-        text: "Gênero",
-        value: "genero.designacao",
-        "class": "font-weight-bold  black--text subtitle-1 my-3",
-        sortable: false
       },
+      /*  {
+           text: "Gênero",
+           value: "genero.designacao",
+           class: "font-weight-bold  black--text subtitle-1 my-3",
+           sortable: false,
+       }, */
+
       /*                 {
                           text: "Estado Cívil",
                           value: "",
@@ -39117,7 +38982,7 @@ __webpack_require__.r(__webpack_exports__);
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 ___CSS_LOADER_EXPORT___.push([module.id, "@import url(https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap);"]);
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "\n.body[data-v-c876a902] {\r\n    font-family: \"Lato\", sans-serif;\r\n    background: rgb(1, 65, 95);\r\n    background: linear-gradient(\r\n        250deg,\r\n        rgba(131, 58, 180, 0.04525560224089631) 0%,\r\n        rgba(253, 29, 29, 0.053658963585434205) 40%,\r\n        rgba(101, 235, 88, 0.04245448179271705) 71%\r\n    );\n}\n.corprincipal[data-v-c876a902] {\r\n    background-color: #0e85a3 !important;\n}\n.textcor[data-v-c876a902]{\r\n    color: #0e85a3;\r\n    font-weight: 800;\r\n    margin-top: .1rem;\r\n    margin-bottom: 0;\n}\n.text-azul[data-v-c876a902]{\r\n    color: #0e85a3;\n}\n.active[data-v-c876a902] {\r\n    color: #ffffff;\r\n    background: #0e85a3;\n}\n.active_name_group[data-v-c876a902] {\r\n    color: #ffffff !important;\n}\n.font-lato[data-v-c876a902] {\r\n    font-family: \"Lato\";\n}\n.color-text-link[data-v-c876a902]:hover {\r\n    color: #0e85a3 !important;\n}\n.color-text-link:a hover[data-v-c876a902] {\r\n    color: #0e85a3 !important;\n}\n.remover-link[data-v-c876a902] {\r\n    text-decoration: none !important;\n}\n.remover-link[data-v-c876a902]:visited {\r\n    color: black;\n}\n.v-application .primary--text[data-v-c876a902] {\r\n    color: black !important;\r\n    font-weight: bold;\r\n\r\n    font-size: 0.8125rem;\r\n    font-weight: 500;\r\n    line-height: 1rem;\n}\n.nome[data-v-c876a902] {\r\n    width: 12em;\r\n    height: em;\n}\n.nome_usuario[data-v-c876a902] {\r\n    width: 12em;\r\n    height: 1.5em;\r\n    float: left;\n}\r\n", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, "\n.body[data-v-c876a902] {\r\n    font-family: \"Lato\", sans-serif;\r\n    background-color: #c6f0fa !important;\r\n    /* background: rgb(1, 65, 95); */\r\n    background: linear-gradient(\r\n        250deg,\r\n        rgba(131, 58, 180, 0.04525560224089631) 0%,\r\n        rgba(253, 29, 29, 0.053658963585434205) 40%,\r\n        rgba(101, 235, 88, 0.04245448179271705) 71%\r\n    );\n}\n.corprincipal[data-v-c876a902] {\r\n    background-color: #0e85a3 !important;\n}\n.textcor[data-v-c876a902]{\r\n    color: #0e85a3;\r\n    font-weight: 800;\r\n    margin-top: .1rem;\r\n    margin-bottom: 0;\n}\n.text-azul[data-v-c876a902]{\r\n    color: #f9fafa;\n}\n.active[data-v-c876a902] {\r\n    color: #ffffff;\r\n    background: #0e85a3;\n}\n.active_name_group[data-v-c876a902] {\r\n    color: #ffffff !important;\n}\n.font-lato[data-v-c876a902] {\r\n    font-family: \"Lato\";\n}\n.color-text-link[data-v-c876a902]:hover {\r\n    color: #0e85a3 !important;\n}\n.color-text-link:a hover[data-v-c876a902] {\r\n    color: #0e85a3 !important;\n}\n.menu_color[data-v-c876a902]{\r\n    background-color: #0e85a3 !important;\r\n    color: white;\n}\n.remover-link[data-v-c876a902] {\r\n    text-decoration: none !important;\n}\n.remover-link[data-v-c876a902]:visited {\r\n    color: black;\n}\n.v-application .primary--text[data-v-c876a902] {\r\n    color: black !important;\r\n    font-weight: bold;\r\n\r\n    font-size: 0.8125rem;\r\n    font-weight: 500;\r\n    line-height: 1rem;\n}\n.nome[data-v-c876a902] {\r\n    width: 12em;\r\n    height: em;\n}\n.nome_usuario[data-v-c876a902] {\r\n    width: 12em;\r\n    height: 1.5em;\r\n    float: left;\n}\r\n", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -97663,9 +97528,9 @@ var render = function () {
                                   [
                                     _c(
                                       "v-col",
-                                      { attrs: { cols: "12" } },
+                                      { attrs: { cols: "6" } },
                                       [
-                                        _c("v-textarea", {
+                                        _c("v-text-field", {
                                           attrs: {
                                             outlined: "",
                                             dense: "",
@@ -97688,6 +97553,37 @@ var render = function () {
                                             },
                                             expression:
                                               "apartamento.designacao",
+                                          },
+                                        }),
+                                      ],
+                                      1
+                                    ),
+                                    _vm._v(" "),
+                                    _c(
+                                      "v-col",
+                                      { attrs: { cols: "6" } },
+                                      [
+                                        _c("v-text-field", {
+                                          attrs: {
+                                            outlined: "",
+                                            dense: "",
+                                            label: "Nº do Andar",
+                                            "prepend-icon": "description",
+                                            rules: _vm.andarRules,
+                                            "error-messages": _vm.erros.andar,
+                                            required: "",
+                                            rows: "1",
+                                          },
+                                          model: {
+                                            value: _vm.apartamento.andar,
+                                            callback: function ($$v) {
+                                              _vm.$set(
+                                                _vm.apartamento,
+                                                "andar",
+                                                $$v
+                                              )
+                                            },
+                                            expression: "apartamento.andar",
                                           },
                                         }),
                                       ],
@@ -97774,144 +97670,37 @@ var render = function () {
                                     _vm._v(" "),
                                     _c(
                                       "v-col",
-                                      {
-                                        attrs: {
-                                          cols: "12",
-                                          md: _vm.projecto_marcado ? 12 : 6,
-                                        },
-                                      },
+                                      { attrs: { sm: "12", md: "6" } },
                                       [
-                                        _c("v-autocomplete", {
+                                        _c("v-text-field", {
                                           attrs: {
                                             outlined: "",
-                                            multiple: "",
-                                            items: _vm.condominos,
-                                            chips: "",
-                                            dense: "",
-                                            "small-chips": "",
-                                            "item-text": "nome_pessoa",
-                                            "item-value": "id",
-                                            "prepend-icon": "person",
-                                            label: "Dono do apartamento",
-                                            rules:
-                                              _vm.referencaResponsavelRules,
+                                            "prepend-icon": "date_range",
+                                            label: "Data da Criação(*)",
+                                            rules: _vm.dataInicioRules,
                                             "error-messages":
-                                              _vm.erros.condomino_id,
-                                            "no-data-text": "sem dados",
+                                              _vm.erros.data_ingresso,
+                                            type: "date",
+                                            dense: "",
+                                            required: "",
                                           },
-                                          scopedSlots: _vm._u(
-                                            [
-                                              {
-                                                key: "item",
-                                                fn: function (data) {
-                                                  return [
-                                                    _vm._v(
-                                                      "\n                                            " +
-                                                        _vm._s(
-                                                          data.item.nome_pessoa
-                                                        ) +
-                                                        "\n                                            " +
-                                                        _vm._s(
-                                                          data.item
-                                                            .sobre_nome_pessoa
-                                                        ) +
-                                                        "\n                                            "
-                                                    ),
-                                                  ]
-                                                },
-                                              },
-                                            ],
-                                            null,
-                                            false,
-                                            377364122
-                                          ),
                                           model: {
-                                            value: _vm.apartamento.condomino_id,
+                                            value:
+                                              _vm.apartamento.data_ingresso,
                                             callback: function ($$v) {
                                               _vm.$set(
                                                 _vm.apartamento,
-                                                "condomino_id",
+                                                "data_ingresso",
                                                 $$v
                                               )
                                             },
                                             expression:
-                                              "apartamento.condomino_id",
+                                              "apartamento.data_ingresso",
                                           },
                                         }),
                                       ],
                                       1
                                     ),
-                                  ],
-                                  1
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "v-row",
-                                  [
-                                    _vm.editedIndex > -1
-                                      ? _c(
-                                          "v-col",
-                                          { attrs: { sm: "12", md: "12" } },
-                                          [
-                                            _c("v-text-field", {
-                                              attrs: {
-                                                outlined: "",
-                                                "prepend-icon": "date_range",
-                                                label: "Data de ingresso (*)",
-                                                type: "date",
-                                                dense: "",
-                                                required: "",
-                                              },
-                                              model: {
-                                                value:
-                                                  _vm.apartamento.data_ingresso,
-                                                callback: function ($$v) {
-                                                  _vm.$set(
-                                                    _vm.apartamento,
-                                                    "data_ingresso",
-                                                    $$v
-                                                  )
-                                                },
-                                                expression:
-                                                  "apartamento.data_ingresso",
-                                              },
-                                            }),
-                                          ],
-                                          1
-                                        )
-                                      : _c(
-                                          "v-col",
-                                          { attrs: { sm: "12", md: "12" } },
-                                          [
-                                            _c("v-text-field", {
-                                              attrs: {
-                                                outlined: "",
-                                                "prepend-icon": "date_range",
-                                                label: "Data da Criação(*)",
-                                                rules: _vm.dataInicioRules,
-                                                "error-messages":
-                                                  _vm.erros.data_ingresso,
-                                                type: "date",
-                                                dense: "",
-                                                required: "",
-                                              },
-                                              model: {
-                                                value:
-                                                  _vm.apartamento.data_ingresso,
-                                                callback: function ($$v) {
-                                                  _vm.$set(
-                                                    _vm.apartamento,
-                                                    "data_ingresso",
-                                                    $$v
-                                                  )
-                                                },
-                                                expression:
-                                                  "apartamento.data_ingresso",
-                                              },
-                                            }),
-                                          ],
-                                          1
-                                        ),
                                   ],
                                   1
                                 ),
@@ -100592,7 +100381,7 @@ var render = function () {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                                                Quantidade\n                                            "
+                                                "\n                                                Quantidade de meses\n                                            "
                                               ),
                                             ]
                                           ),
@@ -101464,7 +101253,7 @@ var render = function () {
                                             { staticClass: "text-left" },
                                             [
                                               _vm._v(
-                                                "\n                                                Quantidade\n                                            "
+                                                "\n                                                Quantidade de meses\n                                            "
                                               ),
                                             ]
                                           ),
@@ -101980,7 +101769,6 @@ var render = function () {
     [
       _c(
         "div",
-        { staticClass: "dashboard" },
         [
           _c(
             "v-card",
@@ -102029,9 +101817,9 @@ var render = function () {
                                 _vm._l(_vm.pagamentos, function (servico) {
                                   return _c("v-tab", { key: servico }, [
                                     _vm._v(
-                                      "\n                            " +
+                                      "\n                                " +
                                         _vm._s(servico.mes) +
-                                        "\n                        "
+                                        "\n                            "
                                     ),
                                   ])
                                 }),
@@ -102044,7 +101832,7 @@ var render = function () {
                       ],
                       null,
                       false,
-                      1673023107
+                      3214468739
                     ),
                   }),
                   _vm._v(" "),
@@ -102112,9 +101900,9 @@ var render = function () {
                                                   ),
                                                 ]),
                                                 _vm._v(
-                                                  "\n                                            " +
+                                                  "\n                                                " +
                                                     _vm._s(servico.descricao) +
-                                                    "\n                                        "
+                                                    "\n                                            "
                                                 ),
                                               ]),
                                             ],
@@ -102151,11 +101939,6 @@ var render = function () {
             "v-card",
             { staticClass: "elevation-0 mb-12 mt-4" },
             [
-              _vm._v(
-                "\n        oooooooo " +
-                  _vm._s(_vm.user.responsavel.funcao_id == 1) +
-                  "\n        "
-              ),
               [
                 _c("v-data-table", {
                   staticClass: "elevation-1",
@@ -102179,8 +101962,14 @@ var render = function () {
                                   "tr",
                                   { key: item.condomino_id },
                                   [
-                                    _c("td", { attrs: { rowspan: 1 } }, [
+                                    _c("td", { staticClass: "px-10" }, [
                                       _c("strong", [_vm._v(_vm._s(item.nome))]),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("td", { staticClass: "width-3" }, [
+                                      _c("strong", [
+                                        _vm._v(_vm._s(item.apartamento)),
+                                      ]),
                                     ]),
                                     _vm._v(" "),
                                     _c("td", [
@@ -102196,13 +101985,13 @@ var render = function () {
                                     _vm._l(_vm.meses, function (mes) {
                                       return _c("td", { key: mes }, [
                                         _vm._v(
-                                          "\n                                " +
+                                          "\n                                    " +
                                             _vm._s(
                                               item.servicos.length > 0
                                                 ? item.servicos[0][mes] || "—"
                                                 : "—"
                                             ) +
-                                            "\n                            "
+                                            "\n                                "
                                         ),
                                       ])
                                     }),
@@ -102218,7 +102007,7 @@ var render = function () {
                     ],
                     null,
                     false,
-                    3470064345
+                    2260503681
                   ),
                 }),
               ],
@@ -105567,6 +105356,31 @@ var render = function () {
                           fn: function (ref) {
                             var item = ref.item
                             return [
+                              item.estado_factura_id == 2
+                                ? _c(
+                                    "button",
+                                    [
+                                      _c(
+                                        "v-icon",
+                                        {
+                                          attrs: { color: "red", title: "PDF" },
+                                          on: {
+                                            click: function ($event) {
+                                              return _vm.verDetalhde(item)
+                                            },
+                                          },
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                            mdi mdi-file-pdf-box\n                            "
+                                          ),
+                                        ]
+                                      ),
+                                    ],
+                                    1
+                                  )
+                                : _vm._e(),
+                              _vm._v(" "),
                               _c(
                                 "button",
                                 {
@@ -109038,7 +108852,7 @@ var render = function () {
                                           attrs: {
                                             cols: "6",
                                             sm: "12",
-                                            md: "12",
+                                            md: "6",
                                           },
                                         },
                                         [
@@ -109065,6 +108879,46 @@ var render = function () {
                                                 )
                                               },
                                               expression: "usuario.roles",
+                                            },
+                                          }),
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-col",
+                                        {
+                                          attrs: {
+                                            cols: "6",
+                                            sm: "12",
+                                            md: "6",
+                                          },
+                                        },
+                                        [
+                                          _c("v-autocomplete", {
+                                            attrs: {
+                                              "prepend-icon": "assignment_ind",
+                                              dense: "",
+                                              rules: _vm.funcaoRules,
+                                              "error-messages":
+                                                _vm.erros.funcao,
+                                              required: "",
+                                              label: "Apartamento",
+                                              "item-value": "id",
+                                              "item-text": "designacao",
+                                              items: _vm.apartamentos,
+                                            },
+                                            model: {
+                                              value: _vm.usuario.apartamento_id,
+                                              callback: function ($$v) {
+                                                _vm.$set(
+                                                  _vm.usuario,
+                                                  "apartamento_id",
+                                                  $$v
+                                                )
+                                              },
+                                              expression:
+                                                "usuario.apartamento_id",
                                             },
                                           }),
                                         ],
@@ -109246,7 +109100,7 @@ var render = function () {
                                 [
                                   _c(
                                     "v-card",
-                                    { staticClass: "mt-12" },
+                                    { staticClass: "my-12" },
                                     [
                                       _c(
                                         "v-subheader",
@@ -109390,6 +109244,174 @@ var render = function () {
                                     ],
                                     1
                                   ),
+                                  _vm._v(" "),
+                                  _vm.usuario.responsavel.apartamento
+                                    ? _c(
+                                        "v-card",
+                                        [
+                                          _c(
+                                            "v-subheader",
+                                            {
+                                              staticClass:
+                                                "font-weight-regular corprincipal text-white",
+                                            },
+                                            [
+                                              _c(
+                                                "span",
+                                                {
+                                                  staticStyle: {
+                                                    "font-weight": "bolder",
+                                                  },
+                                                },
+                                                [
+                                                  _vm._v(
+                                                    "INFORMAÇÕES DO\n                    BLOCO\n                  "
+                                                  ),
+                                                ]
+                                              ),
+                                            ]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-row",
+                                            {
+                                              staticClass: "mx-auto text-left",
+                                            },
+                                            [
+                                              _c(
+                                                "v-col",
+                                                { attrs: { cols: "3" } },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "font-weight-normal",
+                                                    },
+                                                    [
+                                                      _c("strong", [
+                                                        _vm._v("Bloco"),
+                                                      ]),
+                                                      _c("br"),
+                                                      _vm._v(
+                                                        "\n                      " +
+                                                          _vm._s(
+                                                            _vm.usuario
+                                                              .responsavel
+                                                              .apartamento.bloco
+                                                              .designacao
+                                                          ) +
+                                                          "\n                    "
+                                                      ),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-col",
+                                                { attrs: { cols: "3" } },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "font-weight-normal",
+                                                    },
+                                                    [
+                                                      _c("strong", [
+                                                        _vm._v("Apartamento"),
+                                                      ]),
+                                                      _c("br"),
+                                                      _vm._v(
+                                                        "\n                      " +
+                                                          _vm._s(
+                                                            _vm.usuario
+                                                              .responsavel
+                                                              .apartamento
+                                                              .designacao
+                                                          ) +
+                                                          "\n                    "
+                                                      ),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-col",
+                                                { attrs: { cols: "3" } },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "font-weight-normal",
+                                                    },
+                                                    [
+                                                      _c("strong", [
+                                                        _vm._v("Andar"),
+                                                      ]),
+                                                      _c("br"),
+                                                      _vm._v(
+                                                        "\n                      " +
+                                                          _vm._s(
+                                                            _vm.usuario
+                                                              .responsavel
+                                                              .apartamento.andar
+                                                          ) +
+                                                          "\n                    "
+                                                      ),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                              _vm._v(" "),
+                                              _c(
+                                                "v-col",
+                                                { attrs: { cols: "3" } },
+                                                [
+                                                  _c(
+                                                    "div",
+                                                    {
+                                                      staticClass:
+                                                        "font-weight-normal",
+                                                    },
+                                                    [
+                                                      _c("strong", [
+                                                        _vm._v("Síndico"),
+                                                      ]),
+                                                      _c("br"),
+                                                      _vm._v(
+                                                        "\n                      " +
+                                                          _vm._s(
+                                                            _vm.usuario
+                                                              .responsavel
+                                                              .apartamento.bloco
+                                                              .sindico
+                                                              .nome_pessoa
+                                                          ) +
+                                                          " " +
+                                                          _vm._s(
+                                                            _vm.usuario
+                                                              .responsavel
+                                                              .apartamento.bloco
+                                                              .sindico
+                                                              .sobre_nome_pessoa
+                                                          ) +
+                                                          "\n                    "
+                                                      ),
+                                                    ]
+                                                  ),
+                                                ]
+                                              ),
+                                            ],
+                                            1
+                                          ),
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e(),
                                 ],
                                 1
                               ),
@@ -110218,9 +110240,9 @@ var render = function () {
       _c(
         "v-app-bar",
         {
+          staticClass: "menu_color",
           attrs: {
             height: "100px",
-            color: "white",
             "clipped-right": _vm.$vuetify.breakpoint.lgAndUp,
             app: "",
           },
@@ -110240,8 +110262,6 @@ var render = function () {
             [_c("v-icon", [_vm._v("menu")])],
             1
           ),
-          _vm._v(" "),
-          _c("v-spacer"),
           _vm._v(" "),
           _c("v-spacer"),
           _vm._v(" "),
@@ -111431,8 +111451,6 @@ var render = function () {
                             _c("v-tab", [_vm._v(" Descrição ")]),
                             _vm._v(" "),
                             _c("v-tab", [_vm._v(" Sindico ")]),
-                            _vm._v(" "),
-                            _c("v-tab", [_vm._v(" Pagamentos ")]),
                           ],
                           1
                         ),

@@ -36,7 +36,7 @@
                                                     Preço
                                                 </th>
                                                 <th class="text-left">
-                                                    Quantidade
+                                                    Quantidade de meses
                                                 </th>
                                                 <th class="text-left">
                                                     Total
@@ -170,7 +170,6 @@ export default {
             let qmenor12 = this.servicos_selecionado.some((item) => item.quantidade > 12)
             if (qmenor12 == false) {
 
-                alert(JSON.stringify(qmenor12))
                 axios.post('/financas/emitir-factura', {
                     servicos: this.servicos_selecionado,
                 }).then((response) => {

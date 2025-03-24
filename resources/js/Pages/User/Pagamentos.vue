@@ -47,6 +47,11 @@
                                         mdi-pencil
                                     </v-icon>
                                 </button> -->
+                                <button v-if="item.estado_factura_id == 2">
+                               <v-icon color="red" @click="verDetalhde(item)" title="PDF" >
+                                mdi mdi-file-pdf-box
+                                </v-icon> 
+                            </button>
                                 <button text @click="deleteItem(item)">
                                     <v-icon color="red" large icon title="Apagar factura" :disabled="!user.can['Eliminar factura'] ||
                                         item.estado_factura_id == 4||
@@ -72,9 +77,7 @@
                                     </v-icon>
 
                                 </button>
-                     <!--            <v-icon color="green" icon @click="verDetalhe(item)" title="Visualizar detalhes">
-                                    visibility
-                                </v-icon> -->
+                                
                             </template>
                         </v-data-table>
                         <v-card-text> </v-card-text>

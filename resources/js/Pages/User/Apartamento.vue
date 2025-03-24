@@ -4,7 +4,8 @@
             <v-card elevation="0">
                 <v-row>
                     <v-col cols="6" sm="6" md="6">
-                        <h3 class="font-weight-bold">Apartamentos ({{ this.apartamentos? apartamentos.length:todos_apartamentos.length }})</h3>
+                        <h3 class="font-weight-bold">Apartamentos ({{ this.apartamentos ?
+                            apartamentos.length :todos_apartamentos.length }})</h3>
                     </v-col>
 
                     <v-col class="text-right" v-if="bloco_id">
@@ -23,26 +24,30 @@
                     <v-row class="mx-2 mt-5">
                         <v-col cols="6" sm="6" md="2" v-if="bloco_id">
                             <label for="">Bloco</label>
-                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" :items="blocos" v-model="query" item-value="id"
-                                item-text="descricao_bloco" type="text" outlined clearable dense>
+                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" :items="blocos"
+                                v-model="query" item-value="id" item-text="descricao_bloco" type="text" outlined
+                                clearable dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="3" v-if="bloco_id">
                             <label for="">Sindico</label>
-                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query" :items="sindicos" item-value="id"
-                                item-text="nome_pessoa" type="text" outlined clearable dense>
+                            <v-autocomplete prepend-icon="" @change="filtroApartamento()" v-model="query"
+                                :items="sindicos" item-value="id" item-text="nome_pessoa" type="text" outlined clearable
+                                dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="2">
                             <label for="">Apartamento</label>
-                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" :items="apartamentos"  item-text="designacao"
-                                item-value="id" prepend-icon="" outlined dense>
+                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query"
+                                :items="apartamentos" item-text="designacao" item-value="id" prepend-icon="" outlined
+                                dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="2">
                             <label for="">Tipologia</label>
-                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query" :items="tipos_apartamento"  item-text="descricao"
-                                item-value="id" prepend-icon="" label="Tipologia" outlined dense>
+                            <v-autocomplete @change="filtroApartamento()" clearable v-model="query"
+                                :items="tipos_apartamento" item-text="descricao" item-value="id" prepend-icon=""
+                                label="Tipologia" outlined dense>
                             </v-autocomplete>
                         </v-col>
                         <v-col cols="6" sm="6" md="3">
@@ -60,8 +65,8 @@
                     </v-row>
                 </v-card-title>
             </v-card>
-            <tab-apartamento v-if="apartamentos":apartamentos="apartamentos" :sindicos="sindicos"> </tab-apartamento>
-            <v-container v-if="todos_apartamentos" >
+            <tab-apartamento v-if="apartamentos" :apartamentos="apartamentos" :sindicos="sindicos"> </tab-apartamento>
+            <v-container v-if="todos_apartamentos">
                 <v-card class="elevation-0">
                     <template>
                         <v-data-table :headers="headers" :items="todos_apartamentos" :search="search">
@@ -122,11 +127,16 @@
                         <v-container>
                             <v-card-text>
                                 <v-row>
-                                    <v-col cols="12">
-                                        <v-textarea outlined dense label="Nome  da apartamento"
+                                    <v-col cols="6">
+                                        <v-text-field outlined dense label="Nome  da apartamento"
                                             v-model="apartamento.designacao" prepend-icon="description"
                                             :rules="nomeapartamentoRules" :error-messages="erros.designacao" required
-                                            rows="1"></v-textarea>
+                                            rows="1"></v-text-field>
+                                    </v-col>
+                                    <v-col cols="6">
+                                        <v-text-field outlined dense label="Nº do Andar" v-model="apartamento.andar"
+                                            prepend-icon="description" :rules="andarRules" :error-messages="erros.andar"
+                                            required rows="1"></v-text-field>
                                     </v-col>
                                     <v-col cols="12">
                                         <v-textarea outlined dense label="Descrição da apartamento"
@@ -142,42 +152,46 @@
                                             item-text="descricao" :rules="referencaApartamentoRules" :error-messages="erros.nome_apartamneto
                                                 " item-value="id" prepend-icon="folder" dense />
                                     </v-col>
-
-                                    <v-col cols="12" :md="projecto_marcado ? 12 : 6">
-                                        <v-autocomplete outlined multiple v-model="apartamento.condomino_id"
-                                            :items="condominos" chips dense small-chips item-text="nome_pessoa"
-                                            item-value="id" prepend-icon="person" label="Dono do apartamento"
-                                            :rules="referencaResponsavelRules" :error-messages="erros.condomino_id
-                                                " no-data-text="sem dados">
-
-                                              <template v-slot:item="data">
-                                                {{ data.item.nome_pessoa }}
-                                                {{
-                                                    data.item
-                                                        .sobre_nome_pessoa
-                                                }}
-                                                <!-- ({{
-                                                    data.item.funcao.designacao
-                                                }}) -->
-                                            </template> 
-                                        </v-autocomplete>
-                                    </v-col>
-                                </v-row>
-
-                                <v-row>
-                                    <v-col sm="12" md="12" v-if="editedIndex > -1">
-                                        <v-text-field outlined prepend-icon="date_range" label="Data de ingresso (*)"
-                                            v-model="apartamento.data_ingresso" type="date" dense required>
-                                        </v-text-field>
-                                    </v-col>
-                                    <v-col sm="12" md="12" v-else>
+                                    <v-col sm="12" md="6" >
                                         <v-text-field outlined prepend-icon="date_range" label="Data da Criação(*)"
                                             v-model="apartamento.data_ingresso" :rules="dataInicioRules"
                                             :error-messages="erros.data_ingresso
                                                 " type="date" dense required>
                                         </v-text-field>
                                     </v-col>
+                                   <!--  <v-col cols="12" :md="projecto_marcado ? 12 : 6">
+                                        <v-autocomplete outlined v-model="apartamento.condomino_id" :items="condominos"
+                                            chips dense small-chips item-text="nome_pessoa" item-value="id"
+                                            prepend-icon="person" label="Dono do apartamento"
+                                            :rules="referencaResponsavelRules" :error-messages="erros.condomino_id
+                                                " no-data-text="sem dados">
+
+                                            <template v-slot:item="data">
+                                                {{ data.item.nome_pessoa }}
+                                                {{
+                                                    data.item
+                                                        .sobre_nome_pessoa
+                                                }}
+                                             
+                                            </template>
+                                        </v-autocomplete>
+                                    </v-col> -->
                                 </v-row>
+
+                              <!--   <v-row>
+                                    <v-col sm="12" md="1" v-if="editedIndex > -1">
+                                        <v-text-field outlined prepend-icon="date_range" label="Data de ingresso (*)"
+                                            v-model="apartamento.data_ingresso" type="date" dense required>
+                                        </v-text-field>
+                                    </v-col>
+                                    <v-col sm="12" md="6" v-else>
+                                        <v-text-field outlined prepend-icon="date_range" label="Data da Criação(*)"
+                                            v-model="apartamento.data_ingresso" :rules="dataInicioRules"
+                                            :error-messages="erros.data_ingresso
+                                                " type="date" dense required>
+                                        </v-text-field>
+                                    </v-col>
+                                </v-row> -->
                             </v-card-text>
                             <v-card-actions class="justify-end">
                                 <v-btn rounded outlined dark @click="cancelarDialog()" color="red">Cancelar</v-btn>
@@ -241,14 +255,14 @@
                                                     <v-list-item-title class="font-weight-bold">Nome</v-list-item-title>
                                                     <v-list-item-subtitle class="black--text">{{
                                                         apartamento.nome_apartamento
-                                                    }}</v-list-item-subtitle>
+                                                        }}</v-list-item-subtitle>
                                                 </v-list-item-content>
                                                 <v-list-item-content>
                                                     <v-list-item-title
                                                         class="font-weight-bold">Percentagem</v-list-item-title>
                                                     <v-list-item-subtitle class="black--text">{{
                                                         apartamento.percentagem
-                                                    }}%</v-list-item-subtitle>
+                                                        }}%</v-list-item-subtitle>
                                                 </v-list-item-content>
                                             </v-list-item>
                                             <v-divider class="ma-0"></v-divider>
@@ -258,7 +272,7 @@
                                                     </v-list-item-title>
                                                     <v-list-item-subtitle class="black--text">{{
                                                         apartamento.tempo_execucao
-                                                    }}</v-list-item-subtitle>
+                                                        }}</v-list-item-subtitle>
                                                 </v-list-item-content>
                                                 <v-list-item-content>
                                                     <v-list-item-title
@@ -353,11 +367,9 @@
                                             }}</v-icon>
                                         </v-btn>
                                     </v-card-actions>
-
                                     <v-expand-transition v-model="panel_motivo">
                                         <div v-show="show">
                                             <v-divider></v-divider>
-
                                             <v-card-text class="text-justify white text--corprincipal"
                                                 v-html="apartamento.descricao">
                                             </v-card-text>
@@ -440,7 +452,7 @@ export default {
     data() {
         return {
             // A qui são declaradas as outras variaveisque serão usadas para manipular os dados quer o do banco de dados como as instancias recorrentes.
-           dialogApartamento:false,
+            dialogApartamento: false,
             dialogDetalheapartamento: false,
             dialogRejeitarapartamento: false,
             dialogCancelaapartamento: false,
@@ -448,7 +460,7 @@ export default {
                 responsavel_id: [],
             },
             apartamento: {
-                bloco_id:[]
+                bloco_id: []
             },
             defaultapartamento: {
 
@@ -461,6 +473,7 @@ export default {
             search: "",
             erros: [],
             nomeapartamentoRules: [(v) => !!v || "Campo Obrigatório"],
+            andarRules: [(v) => !!v || "Campo Obrigatório"],
             descricacaoapartamentoRules: [
                 (v) =>
                     !!v ||
@@ -511,18 +524,33 @@ export default {
                     sortable: false,
                 },
                 {
-                    text: "Nome do condominio",
+                    text: "Andar",
+                    value: "andar",
+                    class: "font-weight-bold black--text subtitle-1 my-3 ",
+
+                },
+                {
+                    text: "Nome do condomino",
                     value: "condomino.nome_pessoa",
                     class: "font-weight-bold  black--text subtitle-1 my-3",
                     sortable: false,
                 },
 
-                {
-                    text: "Estado",
-                    value: "estado_apartamento.designacao",
+                 {
+                    text: "Andar",
+                    value: "andar",
                     class: "font-weight-bold black--text subtitle-1 my-3",
                     sortable: false,
                 },
+ 
+
+                {
+                    text: "Tipo",
+                    value: "tipo_apartamento.descricao",
+                    class: "font-weight-bold black--text subtitle-1 my-3 ",
+                    sortable: false,
+                },
+
                 {
                     text: "Data de ingresso",
                     value: "data_ingresso",
@@ -531,14 +559,6 @@ export default {
                     sortable: false,
                     // color: "teal darken-1",
                 },
-
-                {
-                    text: "Tipo de apartamento",
-                    value: "tipo_apartamento.descricao",
-                    class: "font-weight-bold black--text subtitle-1 my-3 ",
-                    sortable: false,
-                },
-
                 {
                     text: "Opções",
                     value: "actions",
@@ -641,7 +661,7 @@ export default {
                 this.apartamento = Object.assign({}, this.defaultapartamento);
             });
         },
-     saveCancelaapartamento() {
+        saveCancelaapartamento() {
             if (this.$refs["formCancelaapartamento"].validate()) {
                 this.$inertia.put(
                     "/apartamentos/cancelamento-apartamento/" + this.apartamento.id,
@@ -680,7 +700,7 @@ export default {
             this.apartamento = Object.assign({}, item);
             this.dialogDetalheapartamento = true;
         },
-         deleteItem(item) {
+        deleteItem(item) {
             this.editedIndex = this.apartamentos.indexOf(item);
             this.apartamento = Object.assign({}, item);
             this.dialogDelete = true;
@@ -727,7 +747,7 @@ export default {
         save() {
             if (this.$refs["formapartamentos"].validate()) {
                 if (this.editedIndex > -1) {
-                    this.apartamento.bloco_id=this.bloco_id;
+                    this.apartamento.bloco_id = this.bloco_id;
 
                     this.$inertia.put(
                         `/apartamentos/apartamento/${this.apartamento.id}`,
@@ -750,7 +770,7 @@ export default {
                         }
                     );
                 } else {
-                    this.apartamento.bloco_id=this.bloco_id;
+                    this.apartamento.bloco_id = this.bloco_id;
                     // alert(JSON.stringify(this.bloco_id))
                     this.$inertia.post("/apartamentos/apartamento", this.apartamento, {
                         onFinish: () => {
@@ -771,7 +791,7 @@ export default {
             }
         },
 
-  
+
         filtroApartamento() {
             if (this.projecto_marcado) {
                 this.query.projecto_id = this.projecto_marcado;

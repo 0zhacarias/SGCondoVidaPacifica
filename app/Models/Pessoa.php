@@ -65,6 +65,7 @@ class Pessoa extends Model
         return $this->hasMany(FacturaItem::class,'created_by');
         
     }
+    
     protected static function boot() {
         parent::boot();
         $relacoes=['equipaProjecto','controlTarefa','projecto','user'];

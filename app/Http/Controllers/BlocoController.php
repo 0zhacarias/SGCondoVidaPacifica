@@ -51,7 +51,6 @@ class BlocoController extends Controller
     public function store(Request $request)
 
     {
-       // dd($request);
         try {
             $projeto=New Bloco;
             $projeto->designacao =request()->designacao ; 
@@ -77,50 +76,11 @@ class BlocoController extends Controller
 
         return redirect()->back()->with('success', ' O Bloco Foi registrado com sucesso!');
     }
-    public function adicionar_sindico(Request $request)
-    {
 
-        $projecto =Bloco::findOrFail($request->projecto_id);
-        $responsaveis = Pessoa::whereIn('id', $request->get('responsavel_id'))->select('id')->get();
-        DB::beginTransaction();
-        foreach ($request->get('responsavel_id') as $responsavel) {
-            try {
-                EquipaProjecto::create([
-                    'projecto_id' => $request->projecto_id,
-                    'responsavel_id' => $responsavel,
-                    'created_by' => auth()->user()->id,
-                ]);
-            } catch (\Throwable $e) {
-                DB::rollBack();
-                return redirect()->back()->with('error', 'Não foi possivel adicionar o responsavel:');
-            }
-        };
-
-        DB::commit();
-
-        return redirect()->back()->with('success', 'Responsavel adicionado com sucesso!');
-    }
-
-
-    public function  tarefa_concluido(Request $request, $id)
-    {
-        $tarefa = Apartamento::find($id);
-        // dd($tarefa);
-        if ($request->get('percentagem') == 100) {
-            $data['estado_tarefa_id'] = 4;
-        }
-        $tarefa->update($data);
-        return redirect()->back()->with('success', 'Atualização da percentagem com sucesso');
-    }
 
 
     public function filtrar_responsavel_projecto(Request $request)
     {
-    }
-    public function filtrar_estado(Request $request)
-    {
-       
-        return response()->json($projetos);
     }
 
     public function bloco_pdf($id_projeto)

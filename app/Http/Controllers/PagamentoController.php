@@ -96,7 +96,7 @@ class PagamentoController extends Controller
     {
         $pessoa_id=Pessoa::where('user_id',auth()->id())->pluck('id')->first();
       
-       // dd(2);
+       // dd($pessoa_id);
         // Definição dos meses com suas descrições e números
         $meses = [
             ['nome' => 'Janeiro', 'numero' => 1],
